@@ -1,0 +1,26 @@
+<html>
+	<head>
+		<title>
+			Opening a New Window with Parameters and Closing It
+		</title>
+		<script language="JavaScript">
+			function newWindow(){
+			   winObj=window.open("zhangfei.JPEG",
+				  "winter","width=1150,height=350,resizable=yes,scrollbars=yes,location=yes");
+			   winObj.focus();
+			   //winObj.blur();
+			}
+			function closeWindow(){
+			   winObj.close();
+			}
+		</script>
+	</head>
+	
+	<body bgColor="lightblue">
+		<h2>Winter Scene from the Old Country</h2>
+		<h3>Click the link to see my winter window<br>
+		<a href="javascript:newWindow()">open Winter Scene</a>
+		<p>When you are ready to close the window, click here<br>
+		<a href="javascript:closeWindow()">Close the window</a></h3>
+	</body>
+</html>

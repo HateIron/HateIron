@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<title>Looping Constructs</title>
+	</head>
+	<body>
+		<h2>While Loop</h2>
+		<script language="JavaScript">
+			document.write("<font size='+2'>");
+			while (true) {
+				var grade=eval(prompt("What was your grade? ",""));
+				if (grade < 0 || grade > 100) {
+				   document.write("Illegal choice<br>");
+				   continue;   // Go back to the top of the loop
+				}
+				
+				if (grade > 89 && grade < 101) {
+					document.write("A<br>");
+				}
+				else if (grade > 79 && grade < 90) {
+					document.write("B<br>");
+				}
+				else if (grade > 69 && grade < 80) {
+					document.write("C<br>");
+				}
+				else if (grade > 59 && grade < 70) {
+					document.write("D<br>");
+				}
+				else {
+					document.write("You Failed.<br>");
+				}
+				
+				answer=prompt("Do you want to enter another grade? ","");
+				if (answer != "yes"){
+				   break;    // Break out of the loop to line 12
+				}
+				document.write("So long.<br/>");
+			}
+		</script>
+	</body>
+</html>
