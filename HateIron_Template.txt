@@ -1,4 +1,4 @@
-[入 库 原 因]：无
-[入 库 影 响]：
-[入   库  人]：HateIron
-[走   查  人]：无
+[commit reason] nothing
+[influence    ] nothing
+[commit man   ] HateIron
+[code checker ] none
