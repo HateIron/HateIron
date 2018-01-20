@@ -1,0 +1,206 @@
+<html> 
+<head> 
+<title>JavaScript串口调试工具</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<SCRIPT   ID=clientEventHandlersJS   LANGUAGE=javascript> 
+<!--   
+  function   MSComm1_OnComm()   
+  {      
+      switch(MSComm1.CommEvent)
+     {
+       case 1:{ window.alert("Send OK＿); break;}  //发送事件
+       case 2: { Receive();break;} //接收事件
+       default: alert("Event Raised!"+MSComm1.CommEvent);;
+      }       
+ } 
+//--> 
+</SCRIPT>
+
+<SCRIPT   LANGUAGE=javascript   FOR=MSComm1   EVENT=OnComm> 
+<!--
+// MSComm1控件每遇到OnComm 事件就调用 MSComm1_OnComm()函数
+     MSComm1_OnComm();
+//--> 
+</SCRIPT> 
+
+<script  language="JavaScript"   type="text/JavaScript"> 
+<!-- 
+    String.prototype.Blength = function()
+	{  
+		var arr = this.match(/[^\x00-\xff]/ig);  
+		return  arr == null ? this.length : this.length + arr.length;  
+    }  
+
+  function OperatePort()
+  {
+    if(MSComm1.PortOpen==true)
+    {
+      try
+	  {
+	    MSComm1.PortOpen=false;
+        document.getElementById("OperateButton").value="打开串口";
+      }
+	  catch(ex)
+      {
+		  alert(ex.message);
+	  }       
+    }
+    else
+	{
+     try
+	 { 
+		MSComm1.PortOpen=true;
+        document.getElementById("OperateButton").value="关闭串口";
+     }
+	 catch(ex)
+     {
+		 alert(ex.message);
+	 }     
+    }
+ }
+
+ function ConfigPort()
+ {
+   if(MSComm1.PortOpen==false)
+   {   
+    try
+	{
+      MSComm1.CommPort=document.getElementById("ComName").value;
+      MSComm1.Settings=document.getElementById("BaudRate").value.toString()+
+                        ","+document.getElementById("CheckBit").value.toString()+
+                        ","+document.getElementById("DataBits").value.toString()+
+                        ","+document.getElementById("StopBits").value.toString();   
+       MSComm1.OutBufferCount =0;           //清空发送缓冲区
+       MSComm1.InBufferCount = 0;           //滑空接收缓冲匿                        
+       alert("已配置串口COM"+MSComm1.CommPort+"\n 参数:"+MSComm1.Settings);       
+     }
+	 catch(ex)
+	 {
+		 alert(ex.message);
+	 }
+   }
+  else
+   { 
+	  alert("请先关闭串口后再设置＿);
+   }
+ }
+
+ function Send()
+ {
+    //alert(document.getElementById("txtSend").value);
+    var orgstr=document.getElementById("txtSend").value;     
+    var newstr="";
+    var hexflag=document.getElementById("isSendHex").checked;
+     if(hexflag&&orgstr!="")
+    {
+      if(orgstr.substr(0,2)=="0x"||orgstr.substr(0,2)=="0X")
+	  {
+		  orgstr=orgstr.substring(2,orgstr.length);
+	  }
+      if(orgstr.length%2!=0)
+	  {
+		  orgstr="0"+orgstr;
+	  }
+      if((newstr=str2hex(orgstr,16))=="")
+	  {
+		  alert("错误的16进制数);return false;
+	  }
+    }
+     try
+	 {
+       MSComm1.Output=hexflag?newstr:orgstr;      
+     }
+	 catch(ex)     
+     {
+		 alert(ex.message);
+	 }
+ }
+function Receive()
+{   
+   document.getElementById("txtReceive").value += MSComm1.Input;   
+}
+ 
+function ClearReceived()
+ {
+    document.getElementById("txtReceive").innerText="";
+ } 
+--> 
+</script>   
+
+</head> 
+<body>
+<form name="form1">     
+<fieldset style="width:200px;height:250px;text-align:center;">
+   <legend>配置串口</legend>
+   <div style="float:left;width:200px">   
+   <br/>   
+   <span>串口号</span>
+   <select name="ComName" id="ComName" style="width:75px" >
+   <option value="1"  >COM1</option>
+   <option value="2"  >COM2</option>
+   <option value="3" selected >COM3</option>
+   <option value="4"  >COM4</option>   
+   </select>   
+   <br/>   
+   <span>波特率</span>
+   <select name="BaudRate" id="BaudRate" style="width:75px" >
+   <option value="9600" selected  >9600</option>
+   <option value="57600"  >57600</option>
+   <option value="115200" >115200</option>   
+   </select>   
+   <br/>
+ 
+   <span>校验位</span>
+   <select name="CheckBit" id="CheckBit" style="width:75px" >
+   <option value="N" selected  >无NONE</option>
+   <option value="O" >奇ODD</option>
+   <option value="E" >偶EVEN</option>   
+   </select>   
+   <br/>   
+  
+   <span>数据位</span>
+   <input type=text id="DataBits" name="DataBits" value=8 style="width:75px;height:20px">
+   <br/>
+ 
+   <span>停止位</span>
+   <input type=text id="StopBits" name="StopBits" value=1 style="width:75px;height:20px">
+   <br/>
+   <br/>
+   <input   type="button" id="ConfigButton" style="width:80px;height:30px;font-size:13px"   name="ConfigButton"   value="配置串口"   onClick="ConfigPort()">       
+   <input   type="button" id="OperateButton" style="width:80px;height:30px;font-size:13px"   name="OperateButton"   value="打开串口"   onClick="OperatePort()">       
+   </div> 
+</fieldset>
+
+<fieldset style="width:200px;height:250px;text-align:center;">
+   <legend>发送区域</legend>
+   <div style="float:left;">
+   <textarea id="txtSend"  name="txtSend" style="width:200px;height:160px"></textarea> 
+   <br/>
+   <span><input id="isSendHex" name="isSendHex" type="checkbox" checked="0" />16进制</span>
+   <input   type="button" id="SendButton" style="width:100px;height:30px"   name="SendButton"   value="发送"  onClick="Send()">   
+   </div> 
+</fieldset>
+
+<fieldset style="width:200px;height:250px;text-align:center;">
+   <legend>接收区域</legend>   
+   <div style="float:left;">
+   <textarea id="txtReceive" READONLY=TRUE  name="txtReceive" style="width:200px;height:160px"></textarea>  
+   <br/>
+   <span><input id="isReceiveHex" name="isReceiveHex" type="checkbox" />16进制</span>
+   <input  type="button" id="ClearButton" style="width:100px;height:30px"   name="ClearButton"   value="清空"   onClick="ClearReceived()">
+   </div>
+</fieldset>   
+</form> 
+
+<OBJECT ID="MSComm1" WIDTH=100 HEIGHT=51 type="application/x-oleobject"
+ CLASSID="CLSID:648A5600-2C6E-101B-82B6-000000000014"
+ CODEBASE="MSCOMM32.OCX">
+    <PARAM NAME="_ExtentX" VALUE="2646">
+    <PARAM NAME="_ExtentY" VALUE="1323">
+    <PARAM NAME="_Version" VALUE="393216">
+    <PARAM NAME="DTREnable" VALUE="-1">
+    <PARAM NAME="RThreshold" VALUE="1">
+    <PARAM NAME="RTSEnable" VALUE="-1">
+</OBJECT>
+</body> 
+</html>  
