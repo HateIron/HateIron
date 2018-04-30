@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script src="https://csdnimg.cn/public/common/libs/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://csdnimg.cn/public/static/css/avatar.css">
+<link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/production/main-f869aa95a4.css">
+<link rel="stylesheet" href="https://csdnimg.cn/public/common/toolbar/content_toolbar_css/content_toolbar.css">
+
+    <script src="https://csdnimg.cn/rabbit/exposure-click/main-1.0.5.js"></script>
+    <script type="text/javascript" src="https://csdnimg.cn/pubfooter/js/tracking-1.0.2.js" charset="utf-8"></script>
+    <script type="text/javascript" src="https://csdnimg.cn/release/phoenix/production/main-1d131eb4c2.js"></script>
+    <meta name="description" content="PHP安装
+1、到官网下载适合自己电脑的PHP版本(PHP官网)，我教程示例的版本是php-5.5.37-Win32-VC11-x86
+2、根据自己的寻求下载对应的版本，下载完成之后。将它解压到你要安装的目录下(比如，我解压在D:\DevelopmentTools\PHP目录下)
+3、在解压的根目录(比如,我的根目录为D:\DevelopmentTools\PHP)下找到文件php.ini-" />
+    <meta name="keywords" content="apache,php" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+    <meta name="shenma-site-verification" content="5a59773ab8077d4a62bf469ab966a63b_1497598848">
+    <title>win10 搭建PHP + Apache + MySQL运行环境 - CSDN博客</title>
+            <style>
+            .MathJax, .MathJax_Message, .MathJax_Preview{
+                display: none
+            }
+      </style>
+</head>
+<body>
+  <main>
+    <article>
+        <h1 class="csdn_top">win10 搭建PHP + Apache + MySQL运行环境</h1>
+
+
+<div class="htmledit_views">
+                        
+<h1>PHP安装</h1>
+<p><span style="white-space:pre;"></span>1、到官网下载适合自己电脑的PHP版本(<a href="http://php.net"><span style="color:#3333ff;">PHP官网</span></a>)，我教程示例的版本是php-5.5.37-Win32-VC11-x86</p>
+<p><span style="white-space:pre;"></span>2、根据自己的寻求下载对应的版本，下载完成之后。将它解压到你要安装的目录下(比如，我解压在D:\DevelopmentTools\PHP目录下)</p>
+<p><span style="white-space:pre;"></span>3、在解压的根目录(比如,我的根目录为D:\DevelopmentTools\PHP)下找到文件php.ini-development，将其改名为php.ini</p>
+<p><span style="white-space:pre;"></span>4、我们在php.ini里可以指定开启或关闭对应的模块:</p>
+<p><span style="white-space:pre;"></span>4.1 extension_dir 表示扩展库路径</p>
+<p><span style="white-space:pre;"></span>在php.ini文件中找到该行</p>
+<pre class="html">; extension_dir = "ext"</pre><span style="white-space:pre;"></span>将其改为
+<p></p>
+<p></p>
+<pre class="html">extension_dir = "D:/DevelopmentTools/PHP/ext"</pre><br />
+此时表示扩展库的路径为 根目录\ext (例如，我的电脑路径就为D:\DevelopmentTools\PHP\ext)
+<p></p>
+<p><span style="white-space:pre;"></span>4.2 开启MySQL数据库支持</p>
+<p><span style="white-space:pre;"></span>(1)在php.ini文件查找</p>
+<p></p>
+<pre class="html">;extension=php_mysql.dll</pre><br /><span style="white-space:pre;"></span>将其改为
+<p></p>
+<p></p>
+<pre class="html">extension=php_mysql.dll</pre><span style="white-space:pre;"> </span>(2)继续查找
+<p></p>
+<p></p>
+<pre class="html">;extension=php_mysqli.dll</pre><br /><span style="white-space:pre;"></span>将其改为
+<p></p>
+<p></p>
+<pre class="html">extension=php_mysqli.dll</pre><span style="white-space:pre;"> </span>(如果还需要其他功能，按照此方法查阅文档后(<a href="http://php.net/manual/zh/ini.php"><span style="color:#3366ff;">点我</span></a>)，自行开启)
+<p></p>
+<h1>Apache配置：</h1>
+<p><span style="white-space:pre;"></span>1、到Apache官网下载自己需要的版本(<a href="http://httpd.apache.org/download.cgi"><span style="color:#3366ff;">Apache官网</span></a>)，我使用的是httpd-2.4.23-win32-VC14</p>
+<p><span style="white-space:pre;"></span>2、根据自己的寻求下载对应的版本，下载完成之后。将它解压到你要安装的目录下(比如，我解压在D:\DevelopmentTools\Apache\Apache24目录下)</p>
+<p><span style="white-space:pre;"></span>3、<span style="color:rgb(54,46,43);font-family:Arial;font-size:14px;line-height:26px;">环境变量配置：此电脑-属性-高级系统设置-环境变量，找到环境变量path(从系统变量找)，将“Apache解压的根目录\bin” 加入变量中，如：</span></p>
+<p><img src="https://img-blog.csdn.net/20160731163830276?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="" /></p>
+<p><img src="https://img-blog.csdn.net/20160731163837195?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="" /><br /><br /></p>
+<p><span style="white-space:pre;"></span>4、打开 Apache安装根目录\conf 下的 httpd.conf (在我的电脑的目录为 D:\DevelopmentTools\Apache\Apache24\conf\httpd.conf )</p>
+<p><span style="white-space:pre;"></span>4.1 在httpd.conf 文件中，查找</p>
+<p></p>
+<pre class="html">ServerRoot "c:/Apache24"</pre><span style="white-space:pre;"> </span>将其路径改为 Apache程序的根目录，以我的电脑为例：
+<p></p>
+<p></p>
+<pre class="html">ServerRoot "D:/DevelopmentTools/Apache/Apache24"</pre><span style="white-space:pre;"> </span>4.2 继续在httpd.conf查找<br /><pre class="html">DocumentRoot "c:/Apache24/htdocs"</pre><span style="white-space:pre;"> DocumentRoot</span>为网站的源文件存放的目录，后边填入你要存放网站源文件的路径即可，还是以我的电脑为例：
+<p></p>
+<p></p>
+<pre class="html">DocumentRoot "D:/DevelopmentTools/Apache/website/htdocs"</pre>
+<p></p>
+<p><span style="white-space:pre;"></span>继续查找</p>
+<p></p>
+<pre class="html">&lt;Directory "c:/Apache24/htdocs"&gt;</pre><span style="white-space:pre;"> </span>我们将，这里面的路径修改成和 DocumentRoot 一样的
+<p></p>
+<p><span style="white-space:pre;"></span><span style="color:#ff0000;">注意</span>：我们要将 \ 替换为 / ，否则可能当成转义字符</p>
+<p>4.3 在httpd.conf 的末尾加上，以我的电脑为例(因为安装路径的不同会有些许差异，根据自己的安装路径来确定)：</p>
+<p></p>
+<pre class="html"># php5 support
+LoadModule php5_module "D:/DevelopmentTools/PHP/php5apache2_4.dll"
+AddHandler application/x-httpd-php .php
+
+# configure thepath to php.ini
+PHPIniDir "D:/DevelopmentTools/PHP"</pre><br /><p></p>
+<p><span style="white-space:pre;"></span></p>
+<p><span style="white-space:pre;"></span>4.4 在httpd.conf查找(可选)</p>
+<p></p>
+<pre class="html">DirectoryIndex index.html</pre>
+<p><span style="white-space:pre;">DirectoryIndex </span>为Apache服务器的默认索引，我们根据需要可以修改默认索引,比如我的索引顺序：</p>
+<p></p>
+<pre class="html">&lt;IfModule dir_module&gt;
+    DirectoryIndex index.php index.htm index.html 
+&lt;/IfModule&gt;</pre><span style="white-space:pre;"> </span>索引优先级 index.php &gt; index.htm &gt; index.html , 大家可以根据需要来设置<br /><p></p>
+<h1>MySQL 安装</h1>
+<p></p>
+<h1>运行</h1>
+<p><span style="white-space:pre;"></span>1、按win+R，输入cmd，点击确定，打开cmd界面，输入httpd按回车，如果没有其他输出，则Apache服务器成功运行，此时不能关闭cmd窗口，否则服务器被关闭。</p>
+<p><span style="white-space:pre;"></span>2、在浏览器输入 http://localhost 则访问Apache服务器。</p>
+<p><span style="color:#ff0000;">注意</span>：</p>
+<p><span style="white-space:pre;"></span>1、如果输入httpd，之后出现</p>
+<pre class="html">httpd: Syntax error on line 523 of D:/DevelopmentTools/Apache/Apache24/conf/httpd.conf: Cannot load D:/DevelopmentTools/PHP/php5apache2_4.dll into server: \xd5\xd2\xb2\xbb\xb5\xbd\xd6\xb8\xb6\xa8\xb5\xc4\xc4\xa3\xbf\xe9\xa1\xa3</pre>
+<p></p>
+<p><span style="white-space:pre;"></span>类似这样的错误代码，则此时应该是缺少vcredist_x86.exe 文件，重新安装一个即可<span style="color:rgb(85,85,85);font-family:'microsoft yahei';font-size:15.3333330154419px;line-height:35px;"></span></p>
+<p><span style="white-space:pre;"></span>2、如果端口冲突，我们有两种解决办法，</p>
+<p><span style="white-space:pre;"></span>(1)简单粗暴点：我们将占用这个端口的软件关了，或者装卸了。查询端口是否被占用命令：</p>
+<p></p>
+<pre class="html">netstat -aon|findstr "80"</pre><br /><span style="white-space:pre;"></span>80为端口号
+<p></p>
+<p><img src="https://img-blog.csdn.net/20160731174826198?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="" /><br /></p>
+<p><span style="white-space:pre;"></span>根据得到的pid，即可杀死进程，或者装卸相应的程序</p>
+<p><span style="white-space:pre;"></span>(2)温柔点：我们打开  Apache根目录\conf\httpd.conf  ,查找ServerName 将其变为：</p>
+<p></p>
+<pre class="html">ServerName localhost:新端口号</pre>访问时，我们就不能直接http://localhost , 需要http://localhost:新端口号 来访问<br /><span style="white-space:pre;"></span>至此本教程结束！
+<p></p>
+                </div>
+                    </div>
+        <script>
+        $(".MathJax").remove();
+        </script>
+    </article>
+
+      <!-- <h3 class="recommend_tit" id="related">相关文章推荐</h3> -->
+      <div class="recommend_list clearfix" id="rasss">
+                                          <dl class="clearfix csdn-tracking-statistics recommend_article" data-mod="popu_387" data-poputype="feed"  data-feed-show="false"  data-dsm="post">
+                <a href="https://blog.csdn.net/luopotaotao/article/details/52289891"  target="_blank" strategy="BlogCommendFromBaidu_0">
+                    <dd>
+                        <h2>win10 php开发环境搭建</h2>
+                        <div class="summary">
+                            win10 php开发环境搭建1.安装php    下载并解压php7到d:\php7http://windows.php.net/download#php-7.0 选择合适的版本下载2.安装Apac...                        </div>
+
+                        <ul>
+                            <li class="avatar_img"><img src="https://avatar.csdn.net/8/A/8/3_luopotaotao.jpg" alt="luopotaotao" title="luopotaotao"></li>
+                            <li class="user_name">luopotaotao</li>
+                            <li class="time">2016年08月23日 12:48</li>
+                            <li class="visited_num"><i class="icon iconfont icon-read"></i><span>2593</span></li>
+                        </ul>
+                    </dd>
+                </a>
+            </dl>
+                                                    <dl class="clearfix csdn-tracking-statistics recommend_article" data-mod="popu_387" data-poputype="feed"  data-feed-show="false"  data-dsm="post">
+                <a href="https://blog.csdn.net/hysh_keystone/article/details/70195699"  target="_blank" strategy="BlogCommendFromBaidu_1">
+                    <dd>
+                        <h2>Win10下使用WampServer搭建PHP开发环境</h2>
+                        <div class="summary">
+                            WAMP(WampServer)是一个支持Windows平台的web开发环境搭建工具。它可帮助你搭建一个支持Apache2、PHP和MySQL技术的Web应用，并提供了PhpMyAdmin管理你的数据...                        </div>
+
+                        <ul>
+                            <li class="avatar_img"><img src="https://avatar.csdn.net/B/1/C/3_hysh_keystone.jpg" alt="hysh_keystone" title="hysh_keystone"></li>
+                            <li class="user_name">hysh_keystone</li>
+                            <li class="time">2017年04月16日 15:21</li>
+                            <li class="visited_num"><i class="icon iconfont icon-read"></i><span>4354</span></li>
+                        </ul>
+                    </dd>
+                </a>
+            </dl>
+
+<dl class="clearfix csdn-tracking-statistics recommend_article" data-mod="popu_387" data-poputype="feed"  data-feed-show="false"  data-dsm="post">
+                <a href="https://blog.csdn.net/wyccyw123456/article/details/50769019"  target="_blank" strategy="BlogCommendFromBaidu_2">
+                    <dd>
+                        <h2>win10搭建php开发环境（php7+mysql5.6+apache2.4）</h2>
+                        <div class="summary">
+                            环境:win10 64.位
+PHP7.0.3（http://windows.php.net/download/）
+Apache2.4.10（http://www.apachelounge.com/do...                        </div>
+
+                        <ul>
+                            <li class="avatar_img"><img src="https://avatar.csdn.net/E/B/F/3_wyccyw123456.jpg" alt="wyccyw123456" title="wyccyw123456"></li>
+                            <li class="user_name">wyccyw123456</li>
+                            <li class="time">2016年02月29日 22:53</li>
+                            <li class="visited_num"><i class="icon iconfont icon-read"></i><span>2715</span></li>
+                        </ul>
+                    </dd>
+                </a>
+            </dl>
+                                                    <dl class="clearfix csdn-tracking-statistics recommend_article" data-mod="popu_387" data-poputype="feed"  data-feed-show="false"  data-dsm="post">
+                <a href="https://blog.csdn.net/u014076894/article/details/50547544"  target="_blank" strategy="BlogCommendFromBaidu_3">
+                    <dd>
+                        <h2>WIN10本地搭建APACHE+PHP运行环境</h2>
+                        <div class="summary">
+                            微软全新操作系统Windows10在190个国家和地区正式同步上市，正版Windows7、Windows8.1用户均可在一年内免费升级。介绍一下在升级后的Windwos10系统上安装及配置Apache...                        </div>
+
+                        <ul>
+                            <li class="avatar_img"><img src="https://avatar.csdn.net/E/D/3/3_u014076894.jpg" alt="u014076894" title="u014076894"></li>
+                            <li class="user_name">u014076894</li>
+                            <li class="time">2016年01月20日 12:10</li>
+                            <li class="visited_num"><i class="icon iconfont icon-read"></i><span>5775</span></li>
+                        </ul>
+                    </dd>
+                </a>
+            </dl>
+                                                    <dl class="clearfix csdn-tracking-statistics recommend_article" data-mod="popu_387" data-poputype="feed"  data-feed-show="false"  data-dsm="post">
+                <a href="https://blog.csdn.net/csdn18233218611/article/details/54865667"  target="_blank" strategy="BlogCommendFromBaidu_4">
+                    <dd>
+                        <h2>win10环境下配置win10Apache+PHP+MySQL环境的方法</h2>
+                        <div class="summary">
+                            一、搭建前的准备
+需要下载如下四个文件由于版本更新太快这里就不附加下载链接了
+
+1、vc_redist.x64.exe（MicrosoftVisual C++ 2015 RC Redistributa...                        </div>
+
+                        <ul>
+                            <li class="avatar_img"><img src="https://avatar.csdn.net/7/7/E/3_csdn18233218611.jpg" alt="csdn18233218611" title="csdn18233218611"></li>
+                            <li class="user_name">csdn18233218611</li>
+                            <li class="time">2017年02月04日 20:11</li>
+                            <li class="visited_num"><i class="icon iconfont icon-read"></i><span>2670</span></li>
+                        </ul>
+                    </dd>
+                </a>
+            </dl>
+                                                    <dl class="clearfix csdn-tracking-statistics recommend_article" data-mod="popu_387" data-poputype="feed"  data-feed-show="false"  data-dsm="post">
+                <a href="https://blog.csdn.net/sinat_22991367/article/details/73431316"  target="_blank" strategy="BlogCommendFromBaidu_5">
+                    <dd>
+                        <h2>Php与Apache的三种结合方式以及各自优缺点</h2>
+                        <div class="summary">
+                            httpd与php的结合方式：
+如果网站的访问量很小，同一时间仅仅处理单个请求，那么各种结合方式的特点并不能很好的体现。这里我们仅考虑在高访问量、高并发情况下各种结合方式的优缺点。
+
+CGI...                        </div>
+                    </dd>
+                </a>
+            </dl>
+                                                    <dl class="clearfix csdn-tracking-statistics recommend_article" data-mod="popu_387" data-poputype="feed"  data-feed-show="false"  data-dsm="post">
+                <a href="https://blog.csdn.net/sinat_25926481/article/details/52471068"  target="_blank" strategy="BlogCommendFromBaidu_6">
+                    <dd>
+                        <h2>搭建apache2.4+php5.6环境</h2>
+                        <div class="summary">
+                            工具下载地址apache2.4  下载地址：http://httpd.apache.org/php5.6 下载地址：http://windows.php.net/download#php-5.6一、安...</div>
+                    </dd>
+                </a>
+            </dl>
+                                                    <dl class="clearfix csdn-tracking-statistics recommend_article" data-mod="popu_387" data-poputype="feed"  data-feed-show="false"  data-dsm="post">
+                <a href="https://blog.csdn.net/forrest_ou/article/details/60780218"  target="_blank" strategy="BlogCommendFromBaidu_7">
+                    <dd>
+                        <h2>Linux安装php-7.0.16，完成php和apache的配置</h2>
+                        <div class="summary">
+                            Linux安装php-7.0.16，完成php和apache的配置                        </div>
+                    </dd>
+                </a>
+            </dl>
+                                                    <dl class="clearfix csdn-tracking-statistics recommend_article" data-mod="popu_387" data-poputype="feed"  data-feed-show="false"  data-dsm="post">
+                <a href="https://blog.csdn.net/qq_25858235/article/details/78848598"  target="_blank" strategy="BlogCommendFromBaidu_8">
+                    <dd>
+                        <h2>在Windows下配置php7 和Apache2.4</h2>
+                        <div class="summary">
+                            1.首先下载Apache2.4并且解压安装： 
+ 用管理员命令打开cmd命令 cd到Apache bin目录下，输入：httpd -k install -n apache2.4 
+ PS：如果安装失败...                        </div>
+                    </dd>
+                </a>
+            </dl>
+                                                    <dl class="clearfix csdn-tracking-statistics recommend_article" data-mod="popu_387" data-poputype="feed"  data-feed-show="false"  data-dsm="post">
+                <a href="https://blog.csdn.net/l1028386804/article/details/48208813"  target="_blank" strategy="BlogCommendFromBaidu_9">
+                    <dd>
+                        <h2>Apache之——整合PHP</h2>
+                        <div class="summary">
+                            Apache整合PHP的操作很简单，只需要修改相应的配置文件即可，下面我们就一起来整合吧。
+1、准备
+
+首先到http://www.apache.org下载apache服务器，到http://www....                        </div>
+
+                    </dd>
+                </a>
+            </dl>
+                              </div>
+  </main>
+<aside>
+
+  </div>
+</aside>
+</div>
+
+</script>
+</body>
