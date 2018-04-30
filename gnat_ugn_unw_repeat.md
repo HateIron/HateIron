@@ -6,6 +6,9 @@
 本文讲述 ada 编译器、软件开发工具 GNAT 的用法、针对版本 ada 95。
 讲述 gnat 的特征以及开发的细节
 
+本文翻译自：
+	http://share.wishcell.cn/gnat_ugn_unw.pdf
+
 其它网站：
 	http://www.gnavi.org/launch.php?URL=http%3A%2F%2Fwww.adaic.org%2Fstandards%2F95lrm%2Fhtml%2FRM-TTL.html
 	
