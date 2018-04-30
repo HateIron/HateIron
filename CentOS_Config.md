@@ -205,5 +205,17 @@ username map = /etc/samba/smbusers
 >
 > ​    默认输入法的切换快捷键为 'supper + space'，实际上 supper 键就是  win 键
 
+## 十四、虚拟机在切换网络时，怎样实时修改IP
+
+```powershell
+[wishcell@localhost ~]$ cat /readme
+ifconfig enp0s3 192.168.43.222 netmask 255.255.255.0 up
+ifconfig enp0s3 192.168.1.222 netmask 255.255.255.0 up
+
+vim /etc/resolv.conf
+vim /etc/sysconfig/network-scripts/ifcfg-enp0s3
+service network restart
+```
+
 
 
