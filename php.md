@@ -101,3 +101,24 @@ MySQL免安装版环境配置已有朋友写过相关经验，我就不赘述了
 
 
 
+## 三、第一个页面
+
+```powershell
+在 E:\phptools\ApacheServer\Apache\htdocs 目录下，建立一个 index.php ，内容如下：
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<?php
+echo "Hello World!<br/>";
+echo strlen("Hello world!\n"); 
+?>
+
+</body>
+</html>
+```
+
+> 启动 apache服务器，并浏览之
+>
+> ![](./pictures/apache_php_run.png)
