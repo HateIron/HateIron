@@ -54,6 +54,24 @@ i will use \n $HOME
 
 
 
+##四、`tar`命令的使用
+
+### 1、正常打包
+
+```
+tar -vcf ./abc.tar ./
+```
+
+### 2、排除某个目录打包
+
+```powershell
+tar -vcf ./abc.tar ./  --exclude=./dir1 --exclude=./dir2/release
+注意：
+是 --exclude=./dir1 而不是 --exclude=./dir1/
+```
+
+
+
 
 
 
