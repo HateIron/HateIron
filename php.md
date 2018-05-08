@@ -21,7 +21,7 @@
 >- 下载apache 2.4.23， httpd-2.4.23-win64-VC14.zip，网址为http://www.apachelounge.com/download/，这里选择的是免安装版的
 >- 下载php-7.1.0，php-7.1.0-Win32-VC14-x64.zip 
 >   这里我们选择的是线程安全版，关于线程安全版与非线程安全版的区别可 
->  自行上网查阅相关资料，下载网址为http://windows.php.net/download/ 
+>    自行上网查阅相关资料，下载网址为http://windows.php.net/download/ 
 >   ，最后注意选择相应位数的版本下载，这里我是下载64位的
 >- 下载mysql-5.7.16，mysql-5.7.16-winx64.zip，下载网址为http://dev.mysql.com/downloads/mysql/，同样的选择64位的下载。32位的电脑下载32位的。这个软件也是免安装版的，到时候只要解压到某个文件夹就好了。
 
@@ -103,6 +103,8 @@ MySQL免安装版环境配置已有朋友写过相关经验，我就不赘述了
 
 ## 三、第一个页面
 
+###1、第一个静态页面
+
 ```powershell
 在 E:\phptools\ApacheServer\Apache\htdocs 目录下，建立一个 index.php ，内容如下：
 
@@ -119,6 +121,865 @@ echo strlen("Hello world!\n");
 </html>
 ```
 
+> 
+>
 > 启动 apache服务器，并浏览之
 >
 > ![](./pictures/apache_php_run.png)
+
+### 2、用于调试的函数
+
+#### A、exit 和 die 函数，效果相同，输出一个字符串，然后退出
+
+```php
+<?php exit("hello word"); ?>
+<?php die("hello word"); ?>
+```
+
+####B、var_dump()和print_r()
+
+```powershell
+网页内容：
+<pre>
+	<?php
+		$a = array  ('a' => 'apple',
+					'b' => 'banana',
+					'c' => array ('x','y','z'));
+		var_dump  ($a);
+		print_r   ($a);
+	?>
+</pre>
+
+输出：
+array(3) {
+  ["a"]=>
+  string(5) "apple"
+  ["b"]=>
+  string(6) "banana"
+  ["c"]=>
+  array(3) {
+    [0]=>
+    string(1) "x"
+    [1]=>
+    string(1) "y"
+    [2]=>
+    string(1) "z"
+  }
+}
+Array
+(
+    [a] => apple
+    [b] => banana
+    [c] => Array
+        (
+            [0] => x
+            [1] => y
+            [2] => z
+        )
+)
+```
+
+###3、`PHP file_put_contents()`将内容打印到后台文件中查看
+
+![](./pictures/php_save_log.png)
+
+
+
+##四、 PHP 学习正式开始（runoob 誊写）
+
+### 1、helloworld 样例
+
+```powershell
+//基本输出指令是 echo 和 print
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>My first PHP page</h1>
+
+<?php
+echo "Hello World!";
+?>
+
+</body>
+</html>
+```
+
+### 2、PHP变量
+
+```powershell
+php 文件内容：
+<?php
+	$x=5;
+	$y=6;
+	$z=$x+$y;
+	echo $z;
+?>
+
+将此文件放到 apache 根目录的一个子目录下，然后访问之：
+http://127.0.0.1/study/var.php
+
+输出
+11
+```
+
+
+
+###3、变量作用域
+
+```powershell
+ <?php
+$x=5; // 全局变量
+
+function myTest()
+{
+    $y=10; // 局部变量
+    echo "<p>测试函数内变量:<p>";
+    echo "变量 x 为: $x";
+    echo "<br>";
+    echo "变量 y 为: $y";
+} 
+
+myTest();
+
+echo "<p>测试函数外变量:<p>";
+echo "变量 x 为: $x";
+echo "<br>";
+echo "变量 y 为: $y";
+?> 
+```
+
+### 4、global 关键字
+
+```powershell
+<?php
+$x=5;
+$y=10;
+ 
+function myTest()
+{
+    //声明 x 、 y 为全局变量
+    global $x,$y;
+    $y=$x+$y;
+}
+ 
+myTest();
+echo $y; // 输出 15
+?>
+
+
+PHP 将所有全局变量存储在一个名为 $GLOBALS[index] 的数组中。 index 保存变量的名称。这个数组可以在函数内部访问，也可以直接用来更新全局变量。
+
+上面的实例可以写成这样：
+
+<?php
+$x=5;
+$y=10;
+ 
+function myTest()
+{
+    $GLOBALS['y']=$GLOBALS['x']+$GLOBALS['y'];
+} 
+ 
+myTest();
+echo $y;
+?>
+```
+
+### 5、static 关键字
+
+```powershell
+<?php
+function myTest()
+{
+    static $x=0;
+    echo $x;
+    $x++;
+}
+ 
+myTest();
+myTest();
+myTest();
+?>
+输出：
+012
+```
+
+### 6、参数
+
+```php
+<?php
+function myTest($x)
+{
+    echo $x;
+}
+myTest(5);
+?>
+```
+
+### 7、`echo / print` 语句
+
+> echo 语句
+
+```php
+<?php
+	$txt1="学习 PHP";
+	$txt2="RUNOOB.COM";
+	$cars=array("Volvo","BMW","Toyota");
+	 
+	echo $txt1;
+	echo "<br>";
+	echo "在 $txt2 学习 PHP ";
+	echo "<br>";
+	echo "我车的品牌是 {$cars[0]}";
+?>
+
+//输出如下：
+学习 PHP
+在 RUNOOB.COM 学习 PHP
+我车的品牌是 Volvo
+```
+
+> print 语句
+
+```php
+<?php
+$txt1="学习 PHP";
+$txt2="RUNOOB.COM";
+$cars=array("Volvo","BMW","Toyota");
+ 
+print $txt1;
+print "<br>";
+print "在 $txt2 学习 PHP ,use print";
+print "<br>";
+print "我车的品牌是 {$cars[0]}";
+?>
+//输出如下：
+学习 PHP
+在 RUNOOB.COM 学习 PHP ,use print
+我车的品牌是 Volvo
+```
+
+### 8、EOF关键字
+
+```powershell
+<?php
+echo <<<EOF
+    <h1>我的第一个标题</h1>
+    <p>我的第一个段落。</p>
+EOF;
+// 结束需要独立一行且前后不能空格
+?>
+```
+
+### 9、数据类型
+
+```powershell
+String（字符串）, Integer（整型）, Float（浮点型）, 
+Boolean（布尔型）, Array（数组）, Object（对象）, NULL（空值）。
+```
+
+```powershell
+<?php 
+	$x = 5985;
+	var_dump($x);
+	echo "<br>"; 
+	$x = -345; // 负数 
+	var_dump($x);
+	echo "<br>"; 
+	$x = 0x8C; // 十六进制数
+	var_dump($x);
+	echo "<br>";
+	$x = 047; // 八进制数
+	var_dump($x);
+?>
+
+输出：
+int(5985)
+int(-345)
+int(140)
+int(39) 
+```
+
+> 浮点类型数据
+
+```powershell
+<?php 
+	$x = 10.365;
+	var_dump($x);
+	echo "<br>"; 
+	$x = 2.4e3;
+	var_dump($x);
+	echo "<br>"; 
+	$x = 8E-5;
+	var_dump($x);
+?>
+
+//输出
+float(10.365)
+float(2400)
+float(8.0E-5) 
+```
+
+> 数组类型
+
+```powershell
+<?php 
+$cars=array("Volvo","BMW","Toyota");
+var_dump($cars);
+?>
+输出：
+array(3) { [0]=> string(5) "Volvo" [1]=> string(3) "BMW" [2]=> string(6) "Toyota" } 
+```
+
+> NULL 数据类型
+
+```powershell
+<?php
+$x="Hello world!";
+$x=null;
+var_dump($x);
+?>
+输出：
+NULL 
+```
+
+> 常量
+
+```powershell
+区分大小写的常量
+<?php
+// 区分大小写的常量名
+define("GREETING", "欢迎访问 Runoob.com");
+echo GREETING;    // 输出 "欢迎访问 Runoob.com"
+echo '<br>';
+echo greeting;   // 输出 "greeting"
+?>
+输出：
+欢迎访问 Runoob.com
+greeting
+```
+
+```powershell
+不区分大小写的常量
+<?php
+// 不区分大小写的常量名
+define("GREETING", "欢迎访问 Runoob.com", true);
+echo greeting;  // 输出 "欢迎访问 Runoob.com"
+?>
+
+输出：
+欢迎访问 Runoob.com
+```
+
+
+
+```powershell
+常量是全局的：
+<?php
+define("GREETING", "欢迎访问 Runoob.com");
+ 
+function myTest() {
+    echo GREETING;
+}
+ 
+myTest();    // 输出 "欢迎访问 Runoob.com"
+?>
+```
+
+###10、PHP`合并`运算符
+
+```powershell
+ <?php
+$txt1="Hello world!";
+$txt2="What a nice day!";
+echo $txt1 . " " . $txt2;
+?> 
+
+输出：
+Hello world! What a nice day! 
+```
+
+### 11、库函数
+
+```powershell
+<?php
+	//strlen 函数不包含最后的`\n`
+	echo strlen("Hello world!"); //输出：12
+?> 
+
+<?php
+	echo strpos("Hello world!","world"); //输出：6
+?> 
+
+完整的 php 函数手册：
+	http://www.runoob.com/php/php-ref-string.html
+	
+
+```
+
+
+
+### 12、PHP 运算符
+
+```php
+<?php 
+	$x=10; 
+	$y=6;
+	echo ($x + $y); // 输出16
+	echo '<br>';  // 换行
+	 
+	echo ($x - $y); // 输出4
+	echo '<br>';  // 换行
+	 
+	echo ($x * $y); // 输出60
+	echo '<br>';  // 换行
+	 
+	echo ($x / $y); // 输出1.6666666666667
+	echo '<br>';  // 换行
+	 
+	echo ($x % $y); // 输出4
+	echo '<br>';  // 换行
+	 
+	echo -$x;     //输出：-10
+	
+	echo '<br>';
+	var_dump(intdiv(10, 3)); //输出： int(3) 
+?>
+```
+
+```powershell
+赋值运算：
+
+<?php 
+	$x=10; 
+	echo $x; // 输出10
+	echo '<br/>';
+	$y=20; 
+	$y += 100;
+	echo $y; // 输出120
+    echo '<br/>';
+	$z=50;
+	$z -= 25;
+	echo $z; // 输出25
+	echo '<br/>';
+	$i=5;
+	$i *= 6;
+	echo $i; // 输出30
+	echo '<br/>';
+	$j=10;
+	$j /= 5;
+	echo $j; // 输出2
+	echo '<br/>';
+	$k=15;
+	$k %= 4;
+	echo $k; // 输出3
+?>
+
+输出：
+10
+120
+25
+30
+2
+3
+```
+
+```powershell
+字符串连接并赋值：
+<?php
+	$a = "Hello";
+	$b = $a . " world!";
+	echo $b; // 输出Hello world! 
+	print '<br/>';
+	
+	$x="Hello";
+	$x .= " world!";
+	echo $x; // 输出Hello world! 
+?>
+
+输出：
+Hello world!
+Hello world!
+```
+
+```powershell
+自加自减操作：
+<?php
+	$x=10; 
+	echo ++$x; // 输出11
+	echo '<br/>';
+
+	$y=10; 
+	echo $y++; // 输出10
+	echo '<br/>';
+
+	$z=5;
+	echo --$z; // 输出4
+	echo '<br/>';
+
+	$i=5;
+	echo $i--; // 输出5
+	echo '<br/>';
+?>
+```
+
+
+
+###13、PHP 比较运算符
+
+| 运算符  | 名称       | 描述                                           | 实例               |
+| ------- | ---------- | ---------------------------------------------- | ------------------ |
+| x == y  | 等于       | 如果 x 等于 y，则返回 true                     | 5==8 返回 false    |
+| x === y | 绝对等于   | 如果 x 等于 y，且它们类型相同，则返回 true     | 5==="5" 返回 false |
+| x != y  | 不等于     | 如果 x 不等于 y，则返回 true                   | 5!=8 返回 true     |
+| x <> y  | 不等于     | 如果 x 不等于 y，则返回 true                   | 5<>8 返回 true     |
+| x !== y | 绝对不等于 | 如果 x 不等于 y，或它们类型不相同，则返回 true | 5!=="5" 返回 true  |
+| x > y   | 大于       | 如果 x 大于 y，则返回 true                     | 5>8 返回 false     |
+| x < y   | 小于       | 如果 x 小于 y，则返回 true                     | 5<8 返回 true      |
+| x >= y  | 大于等于   | 如果 x 大于或者等于 y，则返回 true             | 5>=8 返回 false    |
+| x <= y  | 小于等于   | 如果 x 小于或者等于 y，则返回 true             | 5<=8 返回 true     |
+
+```php
+<!DOCTYPE html>
+<html>
+	<body>
+	<?php
+		$x=100; 
+		$y="100";
+
+		var_dump($x == $y); // returns true because values are equal
+		echo "<br>";
+		var_dump($x === $y); // returns false because types are not equal
+		echo "<br>";
+		var_dump($x != $y); // returns false because values are equal
+		echo "<br>";
+		var_dump($x !== $y); // returns true because types are not equal
+		echo "<br>";
+
+		$a=50;
+		$b=90;
+
+		var_dump($a > $b);
+		echo "<br>";
+		var_dump($a <  $b);
+	?>  
+	</body>
+</html>
+        
+//输出：
+bool(true)
+bool(false)
+bool(false)
+bool(true)
+bool(false)
+bool(true) 
+```
+
+
+
+###14、PHP 逻辑运算符
+
+| 运算符   | 名称 | 描述                                         | 实例                                |
+| -------- | ---- | -------------------------------------------- | ----------------------------------- |
+| x and y  | 与   | 如果 x 和 y 都为 true，则返回 true           | x=6 y=3(x < 10 and y > 1) 返回 true |
+| x or y   | 或   | 如果 x 和 y 至少有一个为 true，则返回 true   | x=6 y=3(x==6 or y==5) 返回 true     |
+| x xor y  | 异或 | 如果 x 和 y 有且仅有一个为 true，则返回 true | x=6 y=3 (x==6 xor y==3) 返回 false  |
+| x && y   | 与   | 如果 x 和 y 都为 true，则返回 true           | x=6 y=3 (x < 10 && y > 1) 返回 true |
+| x \|\| y | 或   | 如果 x 和 y 至少有一个为 true，则返回 true   | x=6 y=3 (x==5 \|\| y==5) 返回 false |
+| ! x      | 非   | 如果 x 不为 true，则返回 true                | x=6 y=3 !(x==y) 返回 true           |
+
+### 15、三元运算符
+
+```powershell
+<?php
+	$test = '菜鸟教程';
+	// 普通写法
+	$username = isset($test) ? $test : 'nobody';
+	echo $username, PHP_EOL,"<br/>";
+
+	// PHP 5.3+ 版本写法
+	$username = $test ?: 'nobody';
+	echo $username, PHP_EOL;
+?>
+
+输出：
+菜鸟教程
+菜鸟教程
+```
+
+> 日期函数
+
+```powershell
+<?php
+	echo "今天是 " . date("Y/m/d") . "<br>";
+	echo "今天是 " . date("Y.m.d") . "<br>";
+	echo "今天是 " . date("Y-m-d") . "<br>";
+	echo "今天是 " . date("l");
+?>
+
+输出：
+今天是 2018/05/06
+今天是 2018.05.06
+今天是 2018-05-06
+今天是 Sunday
+```
+
+### 16、switch 语句
+
+```powershell
+<?php
+$favcolor="red";
+switch ($favcolor)
+{
+case "red":
+    echo "你喜欢的颜色是红色!";
+    break;
+case "blue":
+    echo "你喜欢的颜色是蓝色!";
+    break;
+case "green":
+    echo "你喜欢的颜色是绿色!";
+    break;
+default:
+    echo "你喜欢的颜色不是 红, 蓝, 或绿色!";
+}
+?>
+
+输出：
+你喜欢的颜色是红色!
+```
+
+### 17、数组
+
+```powershell
+<?php
+	$cars=array("Volvo","BMW","Toyota");
+	echo "I like " . $cars[0] . ", " . $cars[1] . " and " . $cars[2] . "."."<br/>";
+	echo "array size: " . count($cars);
+?>
+
+输出：
+I like Volvo, BMW and Toyota.
+array size: 3
+```
+
+> #### 遍历数组
+
+```powershell
+<?php
+	$cars=array("Volvo","BMW","Toyota");
+	$arrlength=count($cars);
+	 
+	for($x=0;$x<$arrlength;$x++)
+	{
+		echo $cars[$x];
+		echo "<br>";
+	}
+?>
+
+输出：
+Volvo
+BMW
+Toyota
+```
+
+> 关联数组
+
+```powershell
+<?php
+	$age=array("Peter"=>"35","Ben"=>"37","Joe"=>"43");
+	echo "Peter is " . $age['Peter'] . " years old.";
+?>
+输出：
+Peter is 35 years old.
+```
+
+> 关联数组2
+
+```powershell
+<?php
+	$age=array("Peter"=>"35","Ben"=>"37","Joe"=>"43");
+	
+	foreach($age as $x=>$x_value)
+	{
+		echo "Key=" . $x . ", Value=" . $x_value;
+		echo "<br>";
+	}
+?>
+
+输出：
+Peter is 35 years old.
+```
+
+### 18、排序
+
+```powershell
+<?php
+	$cars=array("Volvo","BMW","Toyota");
+	$arrlength=count($cars);
+	 
+	for($x=0;$x<$arrlength;$x++)
+	{
+		echo $cars[$x];
+		echo "<br>";
+	}
+	echo($cars);
+	echo("<br/>-----------------<br/>");
+	sort($cars);
+	
+	for($x=0;$x<$arrlength;$x++)
+	{
+		echo $cars[$x];
+		echo "<br>";
+	}
+	echo($cars);
+?> 
+输出：
+Volvo
+BMW
+Toyota
+Array
+-----------------
+BMW
+Toyota
+Volvo
+Array 
+```
+
+
+
+> 排序：一个数字数组的排序
+
+```powershell
+<?php
+	$numbers=array(4,6,2,22,11);
+	$arrlength=count($numbers);
+	for($x=0;$x<$arrlength;$x++)
+	{
+		echo $numbers[$x];
+		echo "<br>";
+	}
+	echo($numbers);
+	echo("<br/>-----------------<br/>");
+	sort($numbers);
+	
+	for($x=0;$x<$arrlength;$x++)
+	{
+		echo $numbers[$x];
+		echo "<br>";
+	}
+	echo($numbers);
+?> 
+
+输出：
+4
+6
+2
+22
+11
+Array
+-----------------
+2
+4
+6
+11
+22
+Array 
+```
+
+
+
+```powershell
+其它相关的排序函数：rsort / asort / ksort / arsort / krsort
+```
+
+```powershell
+php 写的冒泡排序：
+
+<?php
+	// 从大到小排序
+	$numArray = array(3,2,6,5,8,10);
+	$numCount = count($numArray);
+	for($i=$numCount-1;$i>=0;$i--){
+		for($j=0;$j<$i;$j++){
+			if($numArray[$j]< $numArray[$j+1]){
+				$aa = $numArray[$j+1];
+				$numArray[$j+1]=$numArray[$j];
+				$numArray[$j]=$aa;
+			}
+		}
+	}
+
+	print_r($numArray);
+?>
+
+输出：
+Array ( [0] => 10 [1] => 8 [2] => 6 [3] => 5 [4] => 3 [5] => 2 ) 
+```
+
+
+
+### 19、php 超全局变量，是 PHP系统自带的变量
+
+- $GLOBALS
+- $_SERVER
+- $_REQUEST
+- $_POST
+- $_GET
+- $_FILES
+- $_ENV
+- $_COOKIE
+- $_SESSION
+
+####A、$GLOBALS 是PHP的一个超级全局变量组，在PHP脚本的全部作用域中都可以访问。
+
+```powershell
+<?php 
+    $x = 75; 
+    $y = 25;
+
+    function addition() 
+    { 
+        $GLOBALS['z'] = $GLOBALS['x'] + $GLOBALS['y']; 
+    }
+
+    addition(); 
+    echo $z; 
+?>
+输出：
+100
+```
+
+####B、`_SERVER`
+
+```powershell
+$_SERVER 是一个包含了诸如头信息(header)、路径(path)、以及脚本位置(script locations)等等信息的数组。这个数组中的项目由 Web 服务器创建。不能保证每个服务器都提供全部项目；服务器可能会忽略一些，或者提供一些没有在这里列举出来的项目。 
+
+<?php 
+	echo $_SERVER['PHP_SELF'];
+	echo "<br>";
+	echo $_SERVER['SERVER_NAME'];
+	echo "<br>";
+	echo $_SERVER['HTTP_HOST'];
+	echo "<br>";
+	echo $_SERVER['HTTP_REFERER'];
+	echo "<br>";
+	echo $_SERVER['HTTP_USER_AGENT'];
+	echo "<br>";
+	echo $_SERVER['SCRIPT_NAME'];
+?>
+
+输出：
+/study/server.php
+127.0.0.1
+127.0.0.1
+
+Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0
+/study/server.php
+```
+
+
+
+
+
