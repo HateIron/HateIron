@@ -514,8 +514,6 @@ Hello world! What a nice day!
 
 完整的 php 函数手册：
 	http://www.runoob.com/php/php-ref-string.html
-	
-
 ```
 
 
@@ -953,31 +951,166 @@ Array ( [0] => 10 [1] => 8 [2] => 6 [3] => 5 [4] => 3 [5] => 2 )
 
 ####B、`_SERVER`
 
-```powershell
+```php
 $_SERVER 是一个包含了诸如头信息(header)、路径(path)、以及脚本位置(script locations)等等信息的数组。这个数组中的项目由 Web 服务器创建。不能保证每个服务器都提供全部项目；服务器可能会忽略一些，或者提供一些没有在这里列举出来的项目。 
 
 <?php 
-	echo $_SERVER['PHP_SELF'];
-	echo "<br>";
-	echo $_SERVER['SERVER_NAME'];
-	echo "<br>";
-	echo $_SERVER['HTTP_HOST'];
-	echo "<br>";
-	echo $_SERVER['HTTP_REFERER'];
-	echo "<br>";
-	echo $_SERVER['HTTP_USER_AGENT'];
-	echo "<br>";
-	echo $_SERVER['SCRIPT_NAME'];
+    echo "\$_SERVER['PHP_SELF'] --->>> ".$_SERVER['PHP_SELF'] . "<br/>";
+    echo "\$_SERVER['GATEWAY_INTERFACE']  --->>> ".$_SERVER['GATEWAY_INTERFACE'] . "<br/>";
+    echo "\$_SERVER['SERVER_ADDR'] --->>> ".$_SERVER['SERVER_ADDR'] . "<br/>";
+    echo "\$_SERVER['SERVER_NAME'] --->>> ".$_SERVER['SERVER_NAME'] . "<br/>";
+    echo "\$_SERVER['SERVER_SOFTWARE'] --->>> ".$_SERVER['SERVER_SOFTWARE'] . "<br/>";
+    echo "\$_SERVER['SERVER_PROTOCOL'] --->>> ".$_SERVER['SERVER_PROTOCOL'] . "<br/>";
+    echo "\$_SERVER['REQUEST_METHOD'] --->>> ".$_SERVER['REQUEST_METHOD'] . "<br/>";
+    echo "\$_SERVER['REQUEST_TIME'] --->>> ".$_SERVER['REQUEST_TIME'] . "<br/>";
+    echo "\$_SERVER['QUERY_STRING'] --->>> ".$_SERVER['QUERY_STRING'] . "<br/>"; 
+    echo "\$_SERVER['HTTP_ACCEPT'] --->>> ".$_SERVER['HTTP_ACCEPT'] . "<br/>";
+    echo "\$_SERVER['HTTP_ACCEPT_CHARSET']--->>> ".$_SERVER['HTTP_ACCEPT_CHARSET']  . "<br/>";
+    echo "\$_SERVER['HTTP_HOST'] --->>> ".$_SERVER['HTTP_HOST'] . "<br/>";
+    echo "\$_SERVER['HTTP_REFERER'] --->>> ".$_SERVER['HTTP_REFERER'] . "<br/>";
+    echo "\$_SERVER['HTTPS'] --->>> ".$_SERVER['HTTPS'] . "<br/>";
+    echo "\$_SERVER['REMOTE_ADDR'] --->>> ".$_SERVER['REMOTE_ADDR']."<br/>";
+    echo "\$_SERVER['REMOTE_HOST'] --->>> ".$_SERVER['REMOTE_HOST']."<br/>";
+    echo "\$_SERVER['REMOTE_PORT'] --->>> ".$_SERVER['REMOTE_PORT']."<br/>";
+    echo "\$_SERVER['SCRIPT_FILENAME'] --->>> ".$_SERVER['SCRIPT_FILENAME']. "<br/>";
+    echo "\$_SERVER['SERVER_ADMIN'] --->>> ".$_SERVER['SERVER_ADMIN']. "<br/>";
+    echo "\$_SERVER['SERVER_PORT'] --->>> ".$_SERVER['SERVER_PORT']."<br/>";
+    echo "\$_SERVER['SERVER_SIGNATURE'] --->>> ".$_SERVER['SERVER_SIGNATURE']."<br/>";
+    echo "\$_SERVER['PATH_TRANSLATED'] --->>> ".$_SERVER['PATH_TRANSLATED']."<br/>";
+    echo "\$_SERVER['SCRIPT_NAME'] --->>> ".$_SERVER['SCRIPT_NAME']."<br/>";
+    echo "\$_SERVER['SCRIPT_URI'] --->>> ".$_SERVER['SCRIPT_URI']."<br/>";
 ?>
 
 输出：
-/study/server.php
-127.0.0.1
-127.0.0.1
-
-Mozilla/5.0 (Windows NT 10.0; WOW64; rv:59.0) Gecko/20100101 Firefox/59.0
-/study/server.php
+$_SERVER['PHP_SELF'] --->>> /study/server.php
+$_SERVER['GATEWAY_INTERFACE'] --->>> CGI/1.1
+$_SERVER['SERVER_ADDR'] --->>> 127.0.0.1
+$_SERVER['SERVER_NAME'] --->>> 127.0.0.1
+$_SERVER['SERVER_SOFTWARE'] --->>> Apache/2.4.33 (Win64) PHP/7.2.4
+$_SERVER['SERVER_PROTOCOL'] --->>> HTTP/1.1
+$_SERVER['REQUEST_METHOD'] --->>> GET
+$_SERVER['REQUEST_TIME'] --->>> 1525787770
+$_SERVER['QUERY_STRING'] --->>>
+$_SERVER['HTTP_ACCEPT'] --->>> text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+$_SERVER['HTTP_ACCEPT_CHARSET']--->>>
+$_SERVER['HTTP_HOST'] --->>> 127.0.0.1
+$_SERVER['HTTP_REFERER'] --->>>
+$_SERVER['HTTPS'] --->>>
+$_SERVER['REMOTE_ADDR'] --->>> 127.0.0.1
+$_SERVER['REMOTE_HOST'] --->>>
+$_SERVER['REMOTE_PORT'] --->>> 55243
+$_SERVER['SCRIPT_FILENAME'] --->>> E:/phptools/ApacheServer/Apache/htdocs/study/server.php
+$_SERVER['SERVER_ADMIN'] --->>> admin@example.com
+$_SERVER['SERVER_PORT'] --->>> 80
+$_SERVER['SERVER_SIGNATURE'] --->>>
+$_SERVER['PATH_TRANSLATED'] --->>>
+$_SERVER['SCRIPT_NAME'] --->>> /study/server.php
+$_SERVER['SCRIPT_URI'] --->>> 
 ```
+
+
+
+| 元素/代码                       | 描述                                                         |
+| ------------------------------- | ------------------------------------------------------------ |
+| $_SERVER['PHP_SELF']            | 当前执行脚本的文件名，与 document root 有关。例如，在地址为 http://example.com/test.php/foo.bar 的脚本中使用 $_SERVER['PHP_SELF'] 将得到 /test.php/foo.bar。__FILE__ 常量包含当前(例如包含)文件的完整路径和文件名。 从 PHP 4.3.0 版本开始，如果 PHP 以命令行模式运行，这个变量将包含脚本名。之前的版本该变量不可用。 |
+| $_SERVER['GATEWAY_INTERFACE']   | 服务器使用的 CGI 规范的版本；例如，"CGI/1.1"。               |
+| $_SERVER['SERVER_ADDR']         | 当前运行脚本所在的服务器的 IP 地址。                         |
+| $_SERVER['SERVER_NAME']         | 当前运行脚本所在的服务器的主机名。如果脚本运行于虚拟主机中，该名称是由那个虚拟主机所设置的值决定。(如: www.runoob.com) |
+| $_SERVER['SERVER_SOFTWARE']     | 服务器标识字符串，在响应请求时的头信息中给出。 (如：Apache/2.2.24) |
+| $_SERVER['SERVER_PROTOCOL']     | 请求页面时通信协议的名称和版本。例如，"HTTP/1.0"。           |
+| $_SERVER['REQUEST_METHOD']      | 访问页面使用的请求方法；例如，"GET", "HEAD"，"POST"，"PUT"。 |
+| $_SERVER['REQUEST_TIME']        | 请求开始时的时间戳。从 PHP 5.1.0 起可用。 (如：1377687496)   |
+| $_SERVER['QUERY_STRING']        | query string（查询字符串），如果有的话，通过它进行页面访问。 |
+| $_SERVER['HTTP_ACCEPT']         | 当前请求头中 Accept: 项的内容，如果存在的话。                |
+| $_SERVER['HTTP_ACCEPT_CHARSET'] | 当前请求头中 Accept-Charset: 项的内容，如果存在的话。例如："iso-8859-1,*,utf-8"。 |
+| $_SERVER['HTTP_HOST']           | 当前请求头中 Host: 项的内容，如果存在的话。                  |
+| $_SERVER['HTTP_REFERER']        | 引导用户代理到当前页的前一页的地址（如果存在）。由 user agent 设置决定。并不是所有的用户代理都会设置该项，有的还提供了修改 HTTP_REFERER 的功能。简言之，该值并不可信。) |
+| $_SERVER['HTTPS']               | 如果脚本是通过 HTTPS 协议被访问，则被设为一个非空的值。      |
+| $_SERVER['REMOTE_ADDR']         | 浏览当前页面的用户的 IP 地址。                               |
+| $_SERVER['REMOTE_HOST']         | 浏览当前页面的用户的主机名。DNS 反向解析不依赖于用户的 REMOTE_ADDR。 |
+| $_SERVER['REMOTE_PORT']         | 用户机器上连接到 Web 服务器所使用的端口号。                  |
+| $_SERVER['SCRIPT_FILENAME']     | 当前执行脚本的绝对路径。                                     |
+| $_SERVER['SERVER_ADMIN']        | 该值指明了 Apache 服务器配置文件中的 SERVER_ADMIN 参数。如果脚本运行在一个虚拟主机上，则该值是那个虚拟主机的值。(如：someone@runoob.com) |
+| $_SERVER['SERVER_PORT']         | Web 服务器使用的端口。默认值为 "80"。如果使用 SSL 安全连接，则这个值为用户设置的 HTTP 端口。 |
+| $_SERVER['SERVER_SIGNATURE']    | 包含了服务器版本和虚拟主机名的字符串。                       |
+| $_SERVER['PATH_TRANSLATED']     | 当前脚本所在文件系统（非文档根目录）的基本路径。这是在服务器进行虚拟到真实路径的映像后的结果。 |
+| $_SERVER['SCRIPT_NAME']         | 包含当前脚本的路径。这在页面需要指向自己时非常有用。__FILE__ 常量包含当前脚本(例如包含文件)的完整路径和文件名。 |
+| $_SERVER['SCRIPT_URI']          | URI 用来指定要访问的页面。例如 "/index.html"。               |
+
+####C、`$_REQUEST`
+
+```powershell
+PHP $_REQUEST 用于收集HTML表单提交的数据。
+
+以下实例显示了一个输入字段（input）及提交按钮(submit)的表单(form)。 当用户通过点击 "Submit" 按钮提交表单数据时, 表单数据将发送至<form>标签中 action 属性中指定的脚本文件。 在这个实例中，我们指定文件来处理表单数据。如果你希望其他的PHP文件来处理该数据，你可以修改该指定的脚本文件名。 然后，我们可以使用超级全局变量 $_REQUEST 来收集表单中的 input 字段数据:
+```
+
+```powershell
+例1，如来自 runoob ：
+
+<html>
+	<body>
+		<!-- 这一句的作用，是指定按下‘提交’按钮后，发送给服务器的命令由谁来处理
+		     而 "<?php echo $_SERVER['PHP_SELF'];?>" 这条语句，则是输出了这个 html 文件的文件名。
+		     所以这条语句实际效果：
+		         form method="post" action="./自身文件名" 
+         -->
+		<form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+			Name: <input type="text" name="fname">
+			<input type="submit">
+		</form>
+
+         <!-- 
+              这是响应页面的后台脚本。
+              文本框内输入的内容，是一个名叫 'fname' 的变量，被提取到 $name 中去
+              然后再打印出来
+         -->
+		<?php
+			$name = $_REQUEST['fname'].' is here';
+			echo $name;
+		?>
+	</body>
+</html>
+```
+
+
+
+```powershell
+例2，对上例的改造，代码逻辑更加直观：
+
+<html>
+	<body>
+	    <!-- 按下‘提交’按钮后，指定处理此命令的脚本为 ./echo.php -->
+		<form method="post" action="./echo.php">
+			Name: <input type="text" name="fname">
+			<input type="submit">
+		</form>
+	</body>
+</html>
+
+相应的 ./echo.php 内容：
+<?php
+	$txt1="学习 PHP";
+	$txt2="RUNOOB.COM";
+	$cars=array("Volvo","BMW","Toyota");
+	 
+	print $txt1;
+	print "<br>";
+	print "在 $txt2 学习 PHP ";
+	print "<br>";
+	print "我车的品牌是 {$cars[0]}";
+?>
+```
+
+> 运行效果：
+
+![](./pictures/request_home.png)
+
+![](./pictures/request_proc.png)
+
+
+
+
 
 
 
