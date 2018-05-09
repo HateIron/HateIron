@@ -33,40 +33,39 @@
 
 ###方法/步骤3、配置PHP
 
-> * 首先将E:\phptools\php7.1\php.ini-production  复制一份，并重命名为php.ini；
+> * 首先将`E:\phptools\php7.1\php.ini-production`  复制一份，并重命名为php.ini；
 > * 将 
->   E:\phptools\php7.1和E:\phptools\php7.1\ext加入环境变量PATH中,选中计算机，右键属性-->高级系
->    统设置 -->环境变量-->系统变量，找到Path，编辑，在其后加上;E:\phptools\php7.1;E:\phptools
->    \php7.1\ext
+>   `E:\phptools\php7.1和E:\phptools\php7.1\ext`加入环境变量PATH中,选中计算机，右键属性-->高级系
+>    统设置 -->环境变量-->系统变量，找到Path，编辑，在其后加上`;E:\phptools\php7.1;E:\phptools
+>    \php7.1\ext`
 
 ### 方法/步骤4、配置Apache
 
 > * 用记事本打开E:\phptools\ApacheServer\Apache\conf
 >
->   查找ServerRoot，修改ServerRoot "C:/Apache24" => ServerRoot "E:/phptools/ApacheServer/Apache"（这里输入的是你解压apache安装包后放的位置）
+>   查找ServerRoot，修改ServerRoot `"C:/Apache24" => ServerRoot "E:/phptools/ApacheServer/Apache"`（这里输入的是你解压apache安装包后放的位置）
 >
 > * 查找#ServerName www.example.com:80 ，修改为 ServerName 
 >   localhost:80 (去掉前面的#)，如果你的电脑的80端口已经被占用了的话，这里我们就不能用80端口了，可以修改成其它的端口，比如90。当然我们还要搜索Listen，把80端口改成90，其它的就不用修改了，只需要修改这两个地方。
 >
 > * 查找DocumentRoot "c:/Apache24/htdocs" ， 修改为DocumentRoot "E:/phptools/ApacheServer/Apache/htdocs" 
 >
-> * 查找<Directory "c:/Apache24/htdocs"> ，修改为 <Directory " E:/phptools/ApacheServer/Apache/htdocs ">
+> * 查找`<Directory "c:/Apache24/htdocs"> `，修改为 `<Directory " E:/phptools/ApacheServer/Apache/htdocs ">`
 >
 > * 找到DirectoryIndex index.html ，修改为 DirectoryIndex index.html index.php index.htm (这里我们添加了index.php index.htm)
 >
 > * 查找ScriptAlias /cgi-bin/ "c:/Apache24/cgi-bin/"  ，修改为 ScriptAlias /cgi- bin/ "E:/phptools/ApacheServer/Apache/cgi-bin"
 >
-> * 查找<Directory "c:/Apache24/cgi-bin"> 修改为 <Directory "E:/phptools/ApacheServer/Apache/cgi-bin/">
+> * 查找`<Directory "c:/Apache24/cgi-bin"> `修改为 `<Directory "E:/phptools/ApacheServer/Apache/cgi-bin/">`
 >
 > * 最后在E:/phptools/ApacheServer/Apache/conf/httpd.conf最后一行加上
 >
+>   ````
 >   LoadModule php7_module "E:/phptools/php7.1/php7apache2_4.dll"
->
 >   AddHandler application/x-httpd-php .php .html .htm
->
 >   AddType application/x-http-php .php .html .htm
->
 >   PHPIniDir "E:/phptools/php7.1"
+>   ````
 
 ###方法/步骤5、然后将Apache安装到系统服务中
 
@@ -77,11 +76,11 @@
 
 > - 用记事本打开E:\phptools\php7.1\php.ini
 >
->   将; extension_dir = "ext"修改为 extension_dir = "ext" （去掉extension前面的分号）
+>   将`; extension_dir = "ext"`修改为` extension_dir = "ext" `（去掉extension前面的分号）
 >
->   将;extension=php_mbstring.dll 修改为 extension=php_mbstring.dll（去掉extension前面的分号,这是php多字节字符串扩展）
+>   将`;extension=php_mbstring.dll `修改为`extension=php_mbstring.dll`（去掉extension前面的分号,这是php多字节字符串扩展）
 >
->   将;extension=php_mysqli.dll 修改为 extension=php_mysqli.dll（去掉extension前面的分号） 
+>   将`;extension=php_mysqli.dll `修改为 `extension=php_mysqli.dll`（去掉extension前面的分号） 
 
 ### 方法/步骤7、MySQL的配置
 
@@ -1108,7 +1107,7 @@ PHP $_REQUEST 用于收集HTML表单提交的数据。
 
 ![](./pictures/request_proc.png)
 
-
+####D、`$_GET`
 
 
 
