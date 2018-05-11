@@ -2,7 +2,7 @@
 
 [TOC]
 
-## 一、基于win10搭建php环境
+##一、基于win10搭建php环境
 
 ```powershell
 这里是基于win10配置php-7.1.0+apache2.4.23+mysql-5.7.16的介绍
@@ -1139,6 +1139,8 @@ PHP $_POST 被广泛应用于收集表单数据，在HTML form标签的指定该
 ```POWERSHELL
 PHP $_GET 同样被广泛应用于收集表单数据，在HTML form标签的指定该属性："method="get"。
 $_GET 也可以收集URL中发送的数据
+
+HTTP GET 方法不适合大型的变量值。它的值是不能超过 2000 个字符的
 ```
 
 ```html
@@ -1161,9 +1163,7 @@ $_GET 也可以收集URL中发送的数据
 </html>
 ```
 
-
-
-### 五、语法
+##五、语法
 
 ####1、`while`循环
 
@@ -1234,7 +1234,7 @@ two
 three
 ```
 
-### 六、函数
+##六、函数
 
 #### 1、创建函数
 
@@ -1313,7 +1313,7 @@ My brother's name is Ståle Refsnes?
 1 + 16 = 17
 ```
 
-### 七、魔术变量8个
+##七、魔术变量8个
 
 ####1、`__LINE__`
 
@@ -1452,7 +1452,7 @@ Hello World!
 命名空间为："MyProject"
 ```
 
-### 八、命名空间`(namespace)`
+##八、命名空间`(namespace)`
 
 ####1、基础知识
 
@@ -1564,8 +1564,6 @@ Hello World!
 in function Foo\Bar\subnamespace\foo, const Foo\Bar\subnamespace\FOO=1
 Foo\Bar\subnamespace\foo->staticmethod() runs
 ```
-
-
 
 ```powershell
 <?php
@@ -1694,9 +1692,7 @@ c = Exception: error in E:\phptools\ApacheServer\Apache\htdocs\study\namespace_g
 ?>
 ```
 
-
-
-### 九、面向对象
+##九、面向对象
 
 #### 1、重要概念
 
@@ -1995,9 +1991,7 @@ PHP 5 新增了一个 final 关键字。
 如果一个类被声明为 final，则不能被继承。
 ```
 
-
-
-### 十、表单
+##十、表单
 
 ```powershell
 PHP 中的 $_GET 和 $_POST 变量用于检索表单中的信息，比如用户输入。
@@ -2264,7 +2258,10 @@ function test_input($data)
 
 <h2>PHP 表单验证实例</h2>
 <p><span class="error">* 必需字段。</span></p>
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> 
+
+<!--  这么麻烦，写这么长的代码，实际效果和 action=""一样 -->
+<!-- form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" --> 
+<form method="post" action="">
    名字:   <input type="text" name="name" value="<?php echo $name;?>">
            <span class="error">* <?php echo $nameErr;?></span>
            <br><br>
@@ -2301,11 +2298,254 @@ function test_input($data)
 </html>
 ```
 
+```powershell
+完美演示表单的正确用法：
+
+<!DOCTYPE HTML> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>菜鸟教程(runoob.com)</title>
+</head>
+<body> 
+
+<?php
+	// 定义变量并默认设置为空值
+	$name = $email = $gender = $comment = $website = "";
+
+	if ($_SERVER["REQUEST_METHOD"] == "POST")
+	{
+	   $name    = test_input($_POST["name"]);
+	   $email   = test_input($_POST["email"]);
+	   $website = test_input($_POST["website"]);
+	   $comment = test_input($_POST["comment"]);
+	   $gender  = test_input($_POST["gender"]);
+	}
+
+	function test_input($data)
+	{
+	   $data = trim($data);
+	   $data = stripslashes($data);
+	   $data = htmlspecialchars($data);
+	   return $data;
+	}
+?>
+
+<h2>PHP 表单验证实例</h2>
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> 
+   名字:   <input type="text" name="name">
+           <br><br>
+   E-mail: <input type="text" name="email">
+           <br><br>
+   网址:   <input type="text" name="website">
+           <br><br>
+   备注:   <textarea name="comment" rows="5" cols="40"></textarea>
+           <br><br>
+   性别:
+           <input type="radio" name="gender" value="female">女
+           <input type="radio" name="gender" value="male">男
+           <br><br>
+           <input type="submit" name="submit" value="Submit"> 
+</form>
+
+<?php
+	echo "<h2>您输入的内容是:</h2>";
+	echo $name;
+	echo "<br>";
+	echo $email;
+	echo "<br>";
+	echo $website;
+	echo "<br>";
+	echo $comment;
+	echo "<br>";
+	echo $gender;
+?>
+
+</body>
+</html>
+```
+
+#### 7、简单的正则表达式，验证字符串合法性
+
+```powershell
+检测 name 字段是否包含字母和空格，如果 name 字段值不合法，将输出错误信息
+
+$name = test_input($_POST["name"]);
+/*
+    ^ 表示除此之外
+    [a-zA-Z ]即大小写字母和空格
+    *$ 即以任意字符结尾
+*/
+if (!preg_match("/^[a-zA-Z ]*$/",$name)) {
+  $nameErr = "只允许字母和空格"; 
+}
+```
+
+```powershell
+检测 e-mail 地址是否合法。如果 e-mail 地址不合法，将输出错误信息
+
+$email = test_input($_POST["email"]);
+if (!preg_match("/([\w\-]+\@[\w\-]+\.[\w\-]+)/",$email)) {
+  $emailErr = "非法邮箱格式"; 
+}
+```
+
+```powershell
+ 验证 URL
+
+$website = test_input($_POST["website"]);
+if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",$website)) {
+  $websiteErr = "非法的 URL 的地址"; 
+}
+```
+
+```powershell
+完善的表单
+
+<!DOCTYPE HTML> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>菜鸟教程(runoob.com)</title>
+<style>
+.error {color: #FF0000;}
+</style>
+</head>
+<body> 
+
+<?php
+// 定义变量并默认设置为空值
+$nameErr = $emailErr = $genderErr = $websiteErr = "";
+$name = $email = $gender = $comment = $website = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST")
+{
+    if (empty($_POST["name"]))
+    {
+        $nameErr = "名字是必需的";
+    }
+    else
+    {
+        $name = test_input($_POST["name"]);
+        // 检测名字是否只包含字母跟空格
+        if (!preg_match("/^[a-zA-Z ]*$/",$name))
+        {
+            $nameErr = "只允许字母和空格"; 
+        }
+    }
+    
+    if (empty($_POST["email"]))
+    {
+      $emailErr = "邮箱是必需的";
+    }
+    else
+    {
+        $email = test_input($_POST["email"]);
+        // 检测邮箱是否合法
+        if (!preg_match("/([\w\-]+\@[\w\-]+\.[\w\-]+)/",$email))
+        {
+            $emailErr = "非法邮箱格式"; 
+        }
+    }
+    
+    if (empty($_POST["website"]))
+    {
+        $website = "";
+    }
+    else
+    {
+        $website = test_input($_POST["website"]);
+        // 检测 URL 地址是否合法
+        if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",$website))
+        {
+            $websiteErr = "非法的 URL 的地址"; 
+        }
+    }
+    
+    if (empty($_POST["comment"]))
+    {
+        $comment = "";
+    }
+    else
+    {
+        $comment = test_input($_POST["comment"]);
+    }
+    
+    if (empty($_POST["gender"]))
+    {
+        $genderErr = "性别是必需的";
+    }
+    else
+    {
+        $gender = test_input($_POST["gender"]);
+    }
+}
+
+function test_input($data)
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+?>
+
+<h2>PHP 表单验证实例</h2>
+<p><span class="error">* 必需字段。</span></p>
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> 
+   名字: <input type="text" name="name" value="<?php echo $name;?>">
+   <span class="error">* <?php echo $nameErr;?></span>
+   <br><br>
+   E-mail: <input type="text" name="email" value="<?php echo $email;?>">
+   <span class="error">* <?php echo $emailErr;?></span>
+   <br><br>
+   网址: <input type="text" name="website" value="<?php echo $website;?>">
+   <span class="error"><?php echo $websiteErr;?></span>
+   <br><br>
+   备注: <textarea name="comment" rows="5" cols="40"><?php echo $comment;?></textarea>
+   <br><br>
+   性别:
+   <input type="radio" name="gender" <?php if (isset($gender) && $gender=="female") echo "checked";?>  value="female">女
+   <input type="radio" name="gender" <?php if (isset($gender) && $gender=="male") echo "checked";?>  value="male">男
+   <span class="error">* <?php echo $genderErr;?></span>
+   <br><br>
+   <input type="submit" name="submit" value="Submit"> 
+</form>
+
+<?php
+echo "<h2>您输入的内容是:</h2>";
+echo $name;
+echo "<br>";
+echo $email;
+echo "<br>";
+echo $website;
+echo "<br>";
+echo $comment;
+echo "<br>";
+echo $gender;
+?>
+
+</body>
+</html>
+```
+
+##十一、include 和 require 语句
+
+```powershell
+include 和 require 除了处理错误的方式不同之外，在其他方面都是相同的：
+
+    require 生成一个致命错误（E_COMPILE_ERROR），在错误发生后脚本会停止执行。
+    include 生成一个警告（E_WARNING），在错误发生后脚本会继续执行。
+
+```
 
 
-### 十一、
 
-###十二、
+##十二、
+
+## 十三、
+
+## 十四、
 
 
 
