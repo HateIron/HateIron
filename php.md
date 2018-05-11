@@ -1167,3 +1167,1145 @@ $_GET 也可以收集URL中发送的数据
 
 ####1、`while`循环
 
+```php+HTML
+<html>
+	<body>
+		<?php
+			$i=1;
+			while($i<=5)
+			{
+				echo "The number is " . $i . "<br>";
+				$i++;
+			}
+		?>
+	</body>
+</html>
+
+浏览器输出：
+The number is 1
+The number is 2
+The number is 3
+The number is 4
+The number is 5
+```
+
+####2、`do_while`
+
+```php+HTML
+<html>
+    <body>
+        <?php
+            $i=1;
+            do
+            {
+                $i++;
+                echo "The number is " . $i . "<br>";
+            }
+            while ($i<=5);
+        ?>
+    </body>
+</html>
+```
+
+####3、`for`
+
+```php+HTML
+<?php
+	for ($i=1; $i<=5; $i++)
+	{
+		echo "The number is " . $i . "<br>";
+	}
+?>
+```
+
+####4、`foreach`
+
+```powershell
+<?php
+    $x=array("one","two","three");
+    foreach ($x as $value)
+    {
+        echo $value . "<br>";
+    }
+?>
+输出：
+one
+two
+three
+```
+
+### 六、函数
+
+#### 1、创建函数
+
+```powershell
+<?php
+	function writeName()
+	{
+		echo "Kai Jim Refsnes";
+	}
+	 
+	echo "My name is ";
+	writeName();
+?>
+浏览器输出：
+My name is Kai Jim Refsnes
+```
+
+#### 2、还参数的函数
+
+```powershell
+<?php
+	function writeName($fname)
+	{
+		echo $fname . " Refsnes.<br>";
+	}
+	 
+	echo "My name is ";
+	writeName("Kai Jim");
+	echo "My sister's name is ";
+	writeName("Hege");
+	echo "My brother's name is ";
+	writeName("Stale");
+?>
+浏览器输出：
+My name is Kai Jim Refsnes.
+My sister's name is Hege Refsnes.
+My brother's name is Stale Refsnes.
+```
+
+#### 3、带两个参数的函数
+
+```powershell
+<?php
+	function writeName($fname,$punctuation)
+	{
+		echo $fname . " Refsnes" . $punctuation . "<br>";
+	}
+	 
+	echo "My name is ";
+	writeName("Kai Jim",".");
+	echo "My sister's name is ";
+	writeName("Hege","!");
+	echo "My brother's name is ";
+	writeName("Ståle","?");
+?>
+浏览器输出：
+My name is Kai Jim Refsnes.
+My sister's name is Hege Refsnes!
+My brother's name is Ståle Refsnes?
+```
+
+#### 4、函数返回值
+
+```powershell
+<?php
+	function add($x,$y)
+	{
+		$total=$x+$y;
+		return $total;
+	}
+	 
+	echo "1 + 16 = " . add(1,16);
+?>
+
+浏览器输出：
+1 + 16 = 17
+```
+
+### 七、魔术变量8个
+
+####1、`__LINE__`
+
+```powershell
+<?php
+	echo '这是第 " '  . __LINE__ . ' " 行';
+?>
+浏览器输出：
+这是第 " 2 " 行
+```
+
+#### 2、`__FILE__`
+
+```powershell
+<?php
+	echo '该文件位于 " '  . __FILE__ . ' " ';
+?>
+浏览器输出：
+该文件位于 " E:\phptools\ApacheServer\Apache\htdocs\study\__FILE__.php " 
+```
+
+#### 3、`__DIR__`
+
+```powershell
+<?php
+	echo '该文件位于 " '  . __DIR__ . ' " ';
+?>
+浏览器输出了一个路径：
+该文件位于 " E:\phptools\ApacheServer\Apache\htdocs\study " 
+```
+
+
+
+#### 4、`__FUNCTION__`
+
+```powershell
+<?php
+	function test() {
+		echo  '函数名为：' . __FUNCTION__ ;
+	}
+	test();
+?>
+浏览器输出：
+函数名为：test
+```
+
+
+
+#### 5、`__CLASS__`
+
+```powershell
+类的名称（PHP 4.3.0 新加）。自 PHP 5 起本常量返回该类被定义时的名字（区分大小写）。
+在 PHP 4 中该值总是小写字母的。类名包括其被声明的作用区域（例如 Foo\Bar）。注意自 PHP 5.4 起 __CLASS__ 对 trait 也起作用。当用在 trait 方法中时，__CLASS__ 是调用 trait 方法的类的名字
+```
+
+
+
+```powershell
+<?php
+	class test {
+		function _print() {
+			echo '类名为：'  . __CLASS__ . "<br>";
+			echo  '函数名为：' . __FUNCTION__ ;
+		}
+	}
+	$t = new test();
+	$t->_print();
+?>
+浏览器输出：
+类名为：test
+函数名为：_print
+```
+
+
+
+#### 6、`__TRAIT__`（暂时明确看明白）
+
+```php
+<?php
+	class Base {
+		public function sayHello() {
+			echo 'Hello ';
+		}
+	}
+	 
+	trait SayWorld {
+		public function sayHello() {
+			parent::sayHello();
+			echo 'World!';
+		}
+	}
+	 
+	class MyHelloWorld extends Base {
+		use SayWorld;
+	}
+	 
+	$o = new MyHelloWorld();
+	$o->sayHello();
+?>
+
+浏览器输出：
+Hello World!
+```
+
+
+
+#### 7、`__METHOD__`
+
+```powershell
+<?php
+	function test() {
+		echo  '函数名为：' . __METHOD__ ;
+	}
+	test();
+?>
+浏览器输出：
+函数名为：test
+```
+
+
+
+####8、`__NAMESPACE__`
+
+```powershell
+当前命名空间的名称（区分大小写）。此常量是在编译时定义的（PHP 5.3.0 新增）。
+```
+
+
+
+```powershell
+<?php
+	namespace MyProject;
+	echo '命名空间为："', __NAMESPACE__, '"'; // 输出 "MyProject"
+?>
+浏览器输出：
+命名空间为："MyProject"
+```
+
+### 八、命名空间`(namespace)`
+
+####1、基础知识
+
+````powershell
+ PHP 命名空间可以解决以下两类问题：
+
+    用户编写的代码与PHP内部的类/函数/常量或第三方类/函数/常量之间的名字冲突。
+    为很长的标识符名称(通常是为了缓解第一类问题而定义的)创建一个别名（或简短）的名称，提高源代码的可读性。
+    
+默认情况下，所有常量、类和函数名都放在全局空间下，就和PHP支持命名空间之前一样。
+命名空间通过关键字namespace 来声明。如果一个文件中包含命名空间，它必须在其它所有代码之前声明命名空间。
+````
+
+```powershell
+推荐的 namespace 写法：
+<?php
+    namespace MyProject {
+        const CONNECT_OK = 1;
+        class Connection { /* ... */ }
+        function connect() { /* ... */  }
+    }
+
+    namespace AnotherProject {
+        const CONNECT_OK = 1;
+        class Connection { /* ... */ }
+        function connect() { /* ... */  }
+    }
+?>
+```
+
+
+
+```powershell
+将全局的非命名空间中的代码与命名空间中的代码组合在一起，只能使用大括号形式的语法。全局代码必须用一个不带名称的 namespace 语句加上大括号括起来，
+<?php
+    namespace MyProject {
+        const CONNECT_OK = 1;
+        class Connection { /* ... */ }
+        function connect() { /* ... */  }
+    }
+
+    namespace { // 全局代码
+        session_start();s
+        $a = MyProject\connect();
+        echo MyProject\Connection::start();
+    }
+?>
+```
+
+
+
+```powershell
+在声明命名空间之前唯一合法的代码是用于定义源文件编码方式的 declare 语句。所有非 PHP 代码包括空白符都不能出现在命名空间的声明之前。
+<?php
+    declare(encoding='UTF-8'); //定义多个命名空间和不包含在命名空间中的代码
+    namespace MyProject {
+        const CONNECT_OK = 1;
+        class Connection { /* ... */ }
+        function connect() { /* ... */  }
+    }
+
+    namespace { // 全局代码
+        session_start();
+        $a = MyProject\connect();
+        echo MyProject\Connection::start();
+    }
+?>
+```
+
+#### 2、子命名空间
+
+```powershell
+与目录和文件的关系很象，PHP 命名空间也允许指定层次化的命名空间的名称。因此，命名空间的名字可以使用分层次的方式定义： 
+
+<?php
+    namespace MyProject\Sub\Level;  //声明分层次的单个命名空间
+
+    const CONNECT_OK = 1;
+    class Connection { /* ... */ }
+    function Connect() { /* ... */  }
+?>
+
+例子创建了常量 MyProject\Sub\Level\CONNECT_OK，类 MyProject\Sub\Level\Connection 和函数 MyProject\Sub\Level\Connect。
+```
+
+#### 3、命名空间的使用
+
+```powershell
+文件名：namespace1.php
+<?php
+	namespace Foo\Bar\subnamespace; 
+
+	const FOO = 1;
+	function foo() { 
+		echo 'in function Foo\Bar\subnamespace\foo, const Foo\Bar\subnamespace\FOO='.FOO.'<br/>';
+	}
+	class foo
+	{
+		static function staticmethod() {
+			echo 'Foo\Bar\subnamespace\foo->staticmethod() runs<br/>';
+		}
+	}
+	
+	foo();
+	$o = new foo();
+	$o->staticmethod();
+?>
+浏览器输出：
+in function Foo\Bar\subnamespace\foo, const Foo\Bar\subnamespace\FOO=1
+Foo\Bar\subnamespace\foo->staticmethod() runs
+```
+
+
+
+```powershell
+<?php
+	namespace Foo\Bar;
+	//包含 namespace1.php，包含过程中， namespace1.php 中的函数已经执行了一遍
+	include 'namespace1.php';
+
+	const FOO = 2;
+	function foo()  { 
+		echo 'in function Foo\Bar\foo, const Foo\Bar\FOO='.FOO.'<br/>';
+	}
+	class foo
+	{
+		static function staticmethod() {
+			echo 'Foo\Bar\foo->staticmethod() runs<br/>';
+		}
+	}
+
+	/* 非限定名称 */
+	foo(); // 解析为当前的 foo 函数
+	foo::staticmethod(); // 解析为当前类 Foo\Bar\foo 的 staticmethod 
+	echo 'FOO = '. FOO .'<br/>'; // 解析为当前 FOO 值
+
+	/* 限定名称 */
+	subnamespace\foo(); // 解析为函数 Foo\Bar\subnamespace\foo
+	subnamespace\foo::staticmethod(); // 解析为类 Foo\Bar\subnamespace\foo, 以及类的方法 staticmethod
+	echo 'subnamespace\FOO = '.subnamespace\FOO.'<br/>'; // 解析为常量 Foo\Bar\subnamespace\FOO
+									  
+	/* 完全限定名称 */
+	\Foo\Bar\foo(); // 解析为函数 Foo\Bar\foo
+	\Foo\Bar\foo::staticmethod(); // 解析为类 Foo\Bar\foo, 以及类的方法 staticmethod
+	echo \Foo\Bar\FOO; // 解析为常量 Foo\Bar\FOO
+?>
+```
+
+```powershell
+注意访问任意全局类、函数或常量，都可以使用完全限定名称，例如 \strlen() 或 \Exception 或 \INI_ALL。
+在命名空间内部访问全局类、函数和常量：
+
+<?php
+	namespace Foo;
+
+	function strlen() {}
+	const INI_ALL = 3;
+	class Exception {}
+
+	$a = \strlen('hi'); // 调用全局函数strlen
+	$b = \INI_ALL; // 访问全局常量 INI_ALL
+	$c = new \Exception('error'); // 实例化全局类 Exception
+	echo 'a = '.$a.'<br/>';
+	echo 'b = '.$b.'<br/>';
+	echo 'c = '.$c.'<br/>';
+?>
+
+浏览器输出：
+a = 2
+b = 7
+c = Exception: error in E:\phptools\ApacheServer\Apache\htdocs\study\namespace_global.php:10 Stack trace: #0 {main}
+```
+
+####命名空间的顺序
+
+```powershell
+自从有了命名空间之后，最容易出错的该是使用类的时候，这个类的寻找路径是什么样的了。 
+```
+
+```powershell
+<?php
+    namespace A;
+    use B\D, C\E as F;
+
+    // 函数调用
+
+    foo();      // 首先尝试调用定义在命名空间"A"中的函数foo()
+                // 再尝试调用全局函数 "foo"
+
+    \foo();     // 调用全局空间函数 "foo" 
+
+    my\foo();   // 调用定义在命名空间"A\my"中函数 "foo" 
+
+    F();        // 首先尝试调用定义在命名空间"A"中的函数 "F" 
+                // 再尝试调用全局函数 "F"
+
+    // 类引用
+
+    new B();    // 创建命名空间 "A" 中定义的类 "B" 的一个对象
+                // 如果未找到，则尝试自动装载类 "A\B"
+
+    new D();    // 使用导入规则，创建命名空间 "B" 中定义的类 "D" 的一个对象
+                // 如果未找到，则尝试自动装载类 "B\D"
+
+    new F();    // 使用导入规则，创建命名空间 "C" 中定义的类 "E" 的一个对象
+                // 如果未找到，则尝试自动装载类 "C\E"
+
+    new \B();   // 创建定义在全局空间中的类 "B" 的一个对象
+                // 如果未发现，则尝试自动装载类 "B"
+
+    new \D();   // 创建定义在全局空间中的类 "D" 的一个对象
+                // 如果未发现，则尝试自动装载类 "D"
+
+    new \F();   // 创建定义在全局空间中的类 "F" 的一个对象
+                // 如果未发现，则尝试自动装载类 "F"
+
+    // 调用另一个命名空间中的静态方法或命名空间函数
+
+    B\foo();    // 调用命名空间 "A\B" 中函数 "foo"
+
+    B::foo();   // 调用命名空间 "A" 中定义的类 "B" 的 "foo" 方法
+                // 如果未找到类 "A\B" ，则尝试自动装载类 "A\B"
+
+    D::foo();   // 使用导入规则，调用命名空间 "B" 中定义的类 "D" 的 "foo" 方法
+                // 如果类 "B\D" 未找到，则尝试自动装载类 "B\D"
+
+    \B\foo();   // 调用命名空间 "B" 中的函数 "foo" 
+
+    \B::foo();  // 调用全局空间中的类 "B" 的 "foo" 方法
+                // 如果类 "B" 未找到，则尝试自动装载类 "B"
+
+    // 当前命名空间中的静态方法或函数
+
+    A\B::foo();   // 调用命名空间 "A\A" 中定义的类 "B" 的 "foo" 方法
+                  // 如果类 "A\A\B" 未找到，则尝试自动装载类 "A\A\B"
+
+    \A\B::foo();  // 调用命名空间 "A\B" 中定义的类 "B" 的 "foo" 方法
+                  // 如果类 "A\B" 未找到，则尝试自动装载类 "A\B"
+?>
+```
+
+
+
+### 九、面向对象
+
+#### 1、重要概念
+
+```powershell
+多态 − 多态性是指相同的函数或方法可作用于多种类型的对象上并获得不同的结果。不同的对象，收到同一消息可以产生不同的结果，这种现象称为多态性。
+
+重载 − 简单说，就是函数或者方法有同样的名称，但是参数列表不相同的情形，这样的同名不同参数的函数或者方法之间，互相称之为重载函数或者方法。
+```
+
+```powershell
+<?php
+class Site {
+	  /* 成员变量 */
+	  var $url;
+	  var $title;
+	  
+	  //构造函数，支持多个参数的构造函数
+      function  __construct()
+      { 
+          $num   = func_num_args();
+		  if($num>0) 
+		  {
+   		     $args=func_get_args();
+		  }	  
+          switch ($num)
+          {   
+              case 0:   
+                  echo "in func 0 para construct<br/>";
+                  break;   
+              case 1:
+                  echo "in func 1 para construct<br/>";
+                  break;   
+              case 2:     
+                  echo "in func 2 para construct<br/>";
+	              $this->url   = $args[0];
+	              $this->title = $args[1];
+                  break;   
+          }   
+      }
+	
+	  /* 成员函数 */
+	  function setUrl($par){
+		 $this->url = $par;
+	  }
+	  
+	  function getUrl(){
+		 echo $this->url . PHP_EOL . '<br/>';
+	  }
+	  
+	  function setTitle($par){
+		 $this->title = $par;
+	  }
+	  
+	  function getTitle(){
+		 echo $this->title . PHP_EOL . '<br/>';
+	  }
+	}
+
+	$obj = new Site;
+	var_dump($obj);
+	echo '<br/>';
+	$obj->setUrl("http://www.google.com");
+	$obj->setTitle("good man");
+	$obj->getUrl();
+	$obj->getTitle();
+	
+	$runoob = new Site('www.runoob.com', '菜鸟教程');
+	$taobao = new Site('www.taobao.com', '淘宝');
+	$google = new Site('www.google.com', 'Google 搜索'); 
+	
+	$runoob->getTitle();
+	$taobao->getTitle();
+	$google->getTitle();
+
+	$runoob->getUrl();
+	$taobao->getUrl();
+	$google->getUrl();
+?>
+//浏览器输出：
+in func 0 para construct
+object(Site)#1 (2) { ["url"]=> NULL ["title"]=> NULL }
+http://www.google.com
+good man
+in func 2 para construct
+in func 2 para construct
+in func 2 para construct
+菜鸟教程
+淘宝
+Google 搜索
+www.runoob.com
+www.taobao.com
+www.google.com
+```
+
+
+
+#### 2、类的继承与重写
+
+```powershell
+<?php
+/**
+ * Define MyClass
+ */
+class MyClass
+{
+    // 声明一个公有的构造函数
+    public function __construct() { echo '__construct()<br/>';}
+
+    // 声明一个公有的方法
+    public function MyPublic() { echo 'MyPublic()<br/>';}
+
+    // 声明一个受保护的方法
+    protected function MyProtected() { echo 'MyProtected()<br/>';}
+
+    // 声明一个私有的方法
+    private function MyPrivate() { echo 'MyPrivate()<br/>';}
+
+    // 此方法为公有
+    function Foo()
+    {
+		echo 'Foo()<br/>';
+        $this->MyPublic();
+        $this->MyProtected();
+        $this->MyPrivate();
+    }
+}
+
+$myclass = new MyClass;
+$myclass->MyPublic(); // 这行能被正常执行
+//$myclass->MyProtected(); // 这行会产生一个致命错误
+//$myclass->MyPrivate(); // 这行会产生一个致命错误
+$myclass->Foo(); // 公有，受保护，私有都可以执行
+
+
+echo '-------MyClass finish------<br/>';
+echo '-------MyClass2 begins------<br/>';
+/**
+ * Define MyClass2
+ */
+class MyClass2 extends MyClass
+{
+    // 此方法为公有
+    function Foo2()
+    {
+        $this->MyPublic();
+        $this->MyProtected();
+        //$this->MyPrivate(); // 这行会产生一个致命错误，无法被继承
+    }
+}
+
+$myclass2 = new MyClass2;
+$myclass2->MyPublic(); // 这行能被正常执行
+$myclass2->Foo2(); // 公有的和受保护的都可执行，但私有的不行
+
+echo '-------MyClass2 finish------<br/>';
+echo '-------class Bar begins------<br/>';
+
+class Bar 
+{
+    public function test() {
+        $this->testPrivate();
+        $this->testPublic();
+    }
+
+    public function testPublic() {
+        echo "Bar::testPublic<br/>";
+    }
+    
+    private function testPrivate() {
+        echo "Bar::testPrivate<br/>";
+    }
+}
+
+class Foo extends Bar 
+{
+    public function testPublic() {
+        echo "Foo::testPublic<br/>";
+    }
+    
+    private function testPrivate() {
+        echo "Foo::testPrivate<br/>";
+    }
+}
+
+$myFoo = new Foo();
+$myFoo->test(); // Bar::testPrivate 
+                // Foo::testPublic
+?>
+```
+
+#### 3、接口
+
+```powershell
+使用接口（interface），可以指定某个类必须实现哪些方法，但不需要定义这些方法的具体内容。
+
+接口是通过 interface 关键字来定义的，就像定义一个标准的类一样，但其中定义所有的方法都是空的。
+
+接口中定义的所有方法都必须是公有，这是接口的特性。
+
+要实现一个接口，使用 implements 操作符。
+```
+
+
+
+```powershell
+<?php
+
+// 这个例子具体什么意思，没有看懂
+
+// 声明一个'iTemplate'接口
+interface iTemplate
+{
+    public function setVariable($name, $var);
+    public function getHtml($template);
+}
+
+
+// 实现接口
+class Template implements iTemplate
+{
+    private $vars = array();
+  
+    public function setVariable($name, $var)
+    {
+        $this->vars[$name] = $var;
+    }
+  
+    public function getHtml($template)
+    {
+        foreach($this->vars as $name => $value) {
+            $template = str_replace('{' . $name . '}', $value, $template);
+        }
+ 
+        return $template;
+    }
+}
+?>
+```
+
+#### 4、抽象类
+
+```powershell
+<?php
+    abstract class AbstractClass
+    {
+     // 强制要求子类定义这些方法
+        abstract protected function getValue();
+        abstract protected function prefixValue($prefix);
+
+        // 普通方法（非抽象方法）
+        public function printOut() {
+            print $this->getValue() . PHP_EOL;
+        }
+    }
+
+    class ConcreteClass1 extends AbstractClass
+    {
+        protected function getValue() {
+            return "ConcreteClass1";
+        }
+
+        public function prefixValue($prefix) {
+            return "{$prefix}ConcreteClass1";
+        }
+    }
+
+    class ConcreteClass2 extends AbstractClass
+    {
+        public function getValue() {
+            return "ConcreteClass2";
+        }
+
+        public function prefixValue($prefix) {
+            return "{$prefix}ConcreteClass2";
+        }
+    }
+
+    $class1 = new ConcreteClass1;
+    $class1->printOut();
+    echo $class1->prefixValue('FOO_') . PHP_EOL.'<br/>';
+
+    $class2 = new ConcreteClass2;
+    $class2->printOut();
+    echo $class2->prefixValue('FOO_') . PHP_EOL.'<br/>';
+?>
+浏览器输出：
+ConcreteClass1 FOO_ConcreteClass1
+ConcreteClass2 FOO_ConcreteClass2 
+```
+
+#### 5、Final 关键字
+
+```powershell
+PHP 5 新增了一个 final 关键字。
+如果父类中的方法被声明为 final，则子类无法覆盖该方法。
+如果一个类被声明为 final，则不能被继承。
+```
+
+
+
+### 十、表单
+
+```powershell
+PHP 中的 $_GET 和 $_POST 变量用于检索表单中的信息，比如用户输入。
+当处理 HTML 表单时，PHP 能把来自 HTML 页面中的表单元素自动变成可供 PHP 脚本使用
+```
+
+#### 1、表单交给后台 php 处理
+
+```powershell
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>菜鸟教程(runoob.com)</title>
+	</head>
+	
+	<body>
+		<form action="welcome.php" method="post">
+			名字: <input type="text" name="fname">
+			年龄: <input type="text" name="age">
+			<input type="submit" value="提交">
+		</form>
+	</body>
+</html>
+
+相应的 welcome.php 后台处理脚本：
+欢迎<?php echo $_POST["fname"]; ?>!<br>
+你的年龄是 <?php echo $_POST["age"]; ?>  岁。
+
+浏览器输出：
+欢迎ad!
+你的年龄是 33 岁。 
+```
+
+#### 2、PHP 获取下拉菜单的数据
+
+```powershell
+<?php
+	$q = isset($_GET['q'])? htmlspecialchars($_GET['q']) : '';
+	if($q) {
+			if($q =='RUNOOB') {
+					echo '菜鸟教程<br>http://www.runoob.com';
+			} else if($q =='GOOGLE') {
+					echo 'Google 搜索<br>http://www.google.com';
+			} else if($q =='TAOBAO') {
+					echo '淘宝<br>http://www.taobao.com';
+			}
+	} else {
+?>
+
+	// action 属性为空，表示提交到当前文件进行事件处理
+	<form action="" method="get"> 
+		<select name="q">
+			<option value="">选择一个站点:</option>
+			<option value="RUNOOB">Runoob</option>
+			<option value="GOOGLE">Google</option>
+			<option value="TAOBAO">Taobao</option>
+		</select>
+		<input type="submit" value="提交" />
+	</form>
+	
+<?php
+}   //这里是神奇的写法，将完整的 php 分隔成两段，写在一起本来是没有问题的
+?>
+
+浏览器（随便选择一个下拉菜单，如RunoobRunoob），浏览器地址变为：http://127.0.0.1/study/form_select.php?q=RUNOOB，输出为：
+菜鸟教程
+http://www.runoob.com
+```
+
+![](./pictures/form_select.png)
+
+#### 3、处理多选菜单
+
+```php+HTML
+<form action="" method="post"> 
+    <select multiple="multiple" name="q[]">
+    <option value="">选择一个站点:</option>
+    <option value="RUNOOB">Runoob</option>
+    <option value="GOOGLE">Google</option>
+    <option value="TAOBAO">Taobao</option>
+    </select>
+    <input type="submit" value="提交">
+</form>
+
+<?php
+	$q = isset($_POST['q'])? $_POST['q'] : '';
+	if(is_array($q)) {
+		$sites = array(
+				'RUNOOB' => '菜鸟教程: http://www.runoob.com',
+				'GOOGLE' => 'Google 搜索: http://www.google.com',
+				'TAOBAO' => '淘宝: http://www.taobao.com',
+		);
+		foreach($q as $val) {
+			// PHP_EOL 为常量，用于换行
+			echo $sites[$val] . PHP_EOL.'<br/>';
+		}
+		  
+	} else {
+	}
+?>
+```
+
+![](pictures/select_multi1.png)
+
+![](pictures/select_multi2.png)
+
+#### 4、单选按钮表单
+
+```php+HTML
+<?php
+$q = isset($_GET['q'])? htmlspecialchars($_GET['q']) : '';
+if($q) {
+        if($q =='RUNOOB') {
+                echo '菜鸟教程<br>http://www.runoob.com';
+        } else if($q =='GOOGLE') {
+                echo 'Google 搜索<br>http://www.google.com';
+        } else if($q =='TAOBAO') {
+                echo '淘宝<br>http://www.taobao.com';
+        }
+} else {
+?>
+    <form action="" method="get"> 
+        <input type="radio" name="q" value="RUNOOB" />Runoob
+        <input type="radio" name="q" value="GOOGLE" />Google
+        <input type="radio" name="q" value="TAOBAO" />Taobao
+        <input type="submit" value="提交">
+    </form>
+<?php
+}
+?>
+```
+
+![](pictures/form_radio_1.png)
+
+![](pictures/form_radio_2.png)
+
+#### 5、复选框
+
+```php+HTML
+<?php
+$q = isset($_POST['q'])? $_POST['q'] : '';
+if(is_array($q)) {
+    $sites = array(
+            'RUNOOB' => '菜鸟教程: http://www.runoob.com',
+            'GOOGLE' => 'Google 搜索: http://www.google.com',
+            'TAOBAO' => '淘宝: http://www.taobao.com',
+    );
+    foreach($q as $val) {
+        // PHP_EOL 为常量，用于换行
+        echo $sites[$val] . PHP_EOL .'<br/>';
+    }
+      
+} else {
+?><form action="" method="post"> 
+    <input type="checkbox" name="q[]" value="RUNOOB"> Runoob<br> 
+    <input type="checkbox" name="q[]" value="GOOGLE"> Google<br> 
+    <input type="checkbox" name="q[]" value="TAOBAO"> Taobao<br>
+    <input type="submit" value="提交">
+</form>
+<?php
+}
+?>
+```
+
+![](./pictures/form_checkbox.png)
+
+![](./pictures/form_checkbox2.png)
+
+#### 6、表单验证
+
+```powershell
+php 脚本执行流程：当用户操作浏览器后，浏览器会发送数据到后台，由后台调用 php 脚本，并将前台的参数传给php
+```
+
+```powershell
+<!DOCTYPE HTML> 
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>菜鸟教程(runoob.com)</title>
+        <style>
+         //////////////////这里是一个类， error 类的颜色为红色
+       	 .error {color: #FF0000;}    
+        </style>
+    </head>
+    <body> 
+
+<?php
+// 定义变量并默认设置为空值
+$nameErr = $emailErr = $genderErr = $websiteErr = "";
+$name = $email = $gender = $comment = $website = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST")
+{
+    if (empty($_POST["name"]))
+    {
+        $nameErr = "名字是必需的";
+    }
+    else
+    {
+        $name = test_input($_POST["name"]);
+        // 检测名字是否只包含字母跟空格
+        if (!preg_match("/^[a-zA-Z ]*$/",$name))
+        {
+            $nameErr = "只允许字母和空格"; 
+        }
+    }
+    
+    if (empty($_POST["email"]))
+    {
+      $emailErr = "邮箱是必需的";
+    }
+    else
+    {
+        $email = test_input($_POST["email"]);
+        // 检测邮箱是否合法
+        if (!preg_match("/([\w\-]+\@[\w\-]+\.[\w\-]+)/",$email))
+        {
+            $emailErr = "非法邮箱格式"; 
+        }
+    }
+    
+    if (empty($_POST["website"]))
+    {
+        $website = "";
+    }
+    else
+    {
+        $website = test_input($_POST["website"]);
+        // 检测 URL 地址是否合法
+        if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",$website))
+        {
+            $websiteErr = "非法的 URL 的地址"; 
+        }
+    }
+    
+    if (empty($_POST["comment"]))
+    {
+        $comment = "";
+    }
+    else
+    {
+        $comment = test_input($_POST["comment"]);
+    }
+    
+    if (empty($_POST["gender"]))
+    {
+        $genderErr = "性别是必需的";
+    }
+    else
+    {
+        $gender = test_input($_POST["gender"]);
+    }
+}
+
+function test_input($data)
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+?>
+
+<h2>PHP 表单验证实例</h2>
+<p><span class="error">* 必需字段。</span></p>
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> 
+   名字:   <input type="text" name="name" value="<?php echo $name;?>">
+           <span class="error">* <?php echo $nameErr;?></span>
+           <br><br>
+   E-mail: <input type="text" name="email" value="<?php echo $email;?>">
+           <span class="error">* <?php echo $emailErr;?></span>
+           <br><br>
+   网址:   <input type="text" name="website" value="<?php echo $website;?>">
+           <span class="error"><?php echo $websiteErr;?></span>
+           <br><br>
+   备注:   <textarea name="comment" rows="5" cols="40"><?php echo $comment;?></textarea>
+           <br><br>
+   性别:
+           <input type="radio" name="gender" <?php if (isset($gender) && $gender=="female") echo "checked";?>  value="female">女
+           <input type="radio" name="gender" <?php if (isset($gender) && $gender=="male") echo "checked";?>  value="male">男
+           <span class="error">* <?php echo $genderErr;?></span>
+           <br><br>
+           <input type="submit" name="submit" value="Submit"> 
+</form>
+
+<?php
+	echo "<h2>您输入的内容是:</h2>";
+	echo $name;
+	echo "<br>";
+	echo $email;
+	echo "<br>";
+	echo $website;
+	echo "<br>";
+	echo $comment;
+	echo "<br>";
+	echo $gender;
+?>
+
+</body>
+</html>
+```
+
+
+
+### 十一、
+
+###十二、
+
+
+
