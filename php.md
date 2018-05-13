@@ -109,14 +109,12 @@ MySQL免安装版环境配置已有朋友写过相关经验，我就不赘述了
 
 <!DOCTYPE html>
 <html>
-<body>
-
-<?php
-echo "Hello World!<br/>";
-echo strlen("Hello world!\n"); 
-?>
-
-</body>
+    <body>
+    <?php
+        echo "Hello World!<br/>";
+        echo strlen("Hello world!\n"); 
+    ?>
+    </body>
 </html>
 ```
 
@@ -227,7 +225,7 @@ http://127.0.0.1/study/var.php
 ###3、变量作用域
 
 ```powershell
- <?php
+<?php
 $x=5; // 全局变量
 
 function myTest()
@@ -1252,7 +1250,7 @@ three
 My name is Kai Jim Refsnes
 ```
 
-#### 2、还参数的函数
+#### 2、带参数的函数
 
 ```powershell
 <?php
@@ -1389,7 +1387,7 @@ My brother's name is Ståle Refsnes?
 
 
 
-#### 6、`__TRAIT__`（暂时明确看明白）
+#### 6、`__TRAIT__`（暂时没有看明白）
 
 ```php
 <?php
@@ -1440,8 +1438,6 @@ Hello World!
 ```powershell
 当前命名空间的名称（区分大小写）。此常量是在编译时定义的（PHP 5.3.0 新增）。
 ```
-
-
 
 ```powershell
 <?php
@@ -1501,8 +1497,6 @@ Hello World!
     }
 ?>
 ```
-
-
 
 ```powershell
 在声明命名空间之前唯一合法的代码是用于定义源文件编码方式的 declare 语句。所有非 PHP 代码包括空白符都不能出现在命名空间的声明之前。
@@ -2541,11 +2535,1727 @@ include 和 require 除了处理错误的方式不同之外，在其他方面都
 
 
 
-##十二、
+##十二、`fopen / fclose`
 
-## 十三、
+###1、`fgets`
 
-## 十四、
+```powershell
+<?php
+    $file = fopen("welcome.txt", "r") or exit("无法打开文件!");
+    // 读取文件每一行，直到文件结尾
+    while(!feof($file))
+    {
+        echo fgets($file). "<br>";
+    }
+    fclose($file);
+?> 
+```
+
+```powershell
+welcome.txt内容为：
+aaaaa
+bbbbbbbbbbb
+cccccccccc
+xxxxxxxxxxx
+```
+
+浏览器输出：
+
+![](./pictures/fopen1.png)
+
+###2、`fgetc`
+
+```powershell
+<?php
+    $file=fopen("welcome.txt","r") or exit("无法打开文件!");
+    while (!feof($file))
+    {
+        echo fgetc($file);
+    }
+    fclose($file);
+?> 
+文本文件内容：
+aaaaa
+bbbbbbbbbbb
+cccccccccc
+xxxxxxxxxxx
+
+浏览器输出:
+aaaaa bbbbbbbbbbb cccccccccc xxxxxxxxxxx 
+```
+
+## 十三、PHP 文件上传
+
+### 1、首先建立一个  ./upload目录，用于上传文件
+
+### 2、编写前端界面，让用户选择要上传的文件
+
+```php+HTML
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>菜鸟教程(runoob.com)</title>
+	</head>
+	
+	<body>
+		<form action="upload_file.php" method="post" enctype="multipart/form-data">
+			<label for="file">文件名：</label>
+			<input type="file" name="file" id="file"><br>
+			<input type="submit" name="submit" value="提交">
+		</form>
+	</body>
+</html>
+```
+
+### 3、编写指定的，处理上传文件的 php 脚本
+
+````powershell
+<?php
+// 允许上传的图片后缀
+$allowedExts = array("gif", "jpeg", "jpg", "png");
+$temp = explode(".", $_FILES["file"]["name"]);
+echo '要上传的文件大小：'.'$_FILES["file"]["size"].'<br/>';
+$extension = end($temp);     // 获取文件后缀名
+if ((($_FILES["file"]["type"] == "image/gif")
+    || ($_FILES["file"]["type"] == "image/jpeg")
+    || ($_FILES["file"]["type"] == "image/jpg")
+    || ($_FILES["file"]["type"] == "image/pjpeg")
+    || ($_FILES["file"]["type"] == "image/x-png")
+    || ($_FILES["file"]["type"] == "image/png"))
+    && ($_FILES["file"]["size"] < 204800)   // 小于 200 kb
+    && in_array($extension, $allowedExts))
+{
+	if ($_FILES["file"]["error"] > 0)
+	{
+		echo "错误：: " . $_FILES["file"]["error"] . "<br>";
+	}
+	else
+	{
+		echo "上传文件名: " . $_FILES["file"]["name"] . "<br>";
+		echo "文件类型: " . $_FILES["file"]["type"] . "<br>";
+		echo "文件大小: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
+		echo "文件临时存储的位置: " . $_FILES["file"]["tmp_name"] . "<br>";
+		
+		// 判断当期目录下的 upload 目录是否存在该文件
+		// 如果没有 upload 目录，你需要创建它，upload 目录权限为 777
+		if (file_exists("upload/" . $_FILES["file"]["name"]))
+		{
+			echo $_FILES["file"]["name"] . " 文件已经存在。 ";
+		}
+		else
+		{
+			// 如果 upload 目录不存在该文件则将文件上传到 upload 目录下
+			move_uploaded_file($_FILES["file"]["tmp_name"], "upload/" . $_FILES["file"]["name"]);
+			echo "文件存储在: " . "upload/" . $_FILES["file"]["name"];
+		}
+	}
+}
+else
+{
+	echo "非法的文件格式";
+}
+?>
+````
+
+![](./pictures/file_upload.png)
+
+##十四、`Cookie`
+
+```powershell
+cookie 常用于识别用户。
+cookie 是一种服务器留在用户计算机上的小文件。每当同一台计算机通过浏览器请求页面时，这台计算机将会发送 cookie。通过 PHP，您能够创建并取回 cookie 的值。
+
+setcookie() 函数用于设置 cookie。
+注释：setcookie() 函数必须位于 <html> 标签之前
+```
+
+
+
+###1、设置`cookie`
+
+```php+HTML
+<?php
+	setcookie("user", "runoob", time()+3600); //同时设置了 cookie 失效时间。
+?>
+
+<html>
+</html>
+```
+
+
+
+###2、取回 cookie
+
+```powershell
+<?php
+    // 输出 cookie 值
+    echo $_COOKIE["user"];
+
+    // 查看所有 cookie
+    print_r($_COOKIE);
+?>
+
+浏览器输出：
+runoobArray ( [user] => runoob ) 
+```
+
+
+
+### 3、判断 `cookie`是否设置
+
+> is_cookie_set.php文件内容：
+
+```powershell
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>菜鸟教程(runoob.com)</title>
+	</head>
+	
+	<body>
+		<?php
+			if (isset($_COOKIE["user"]))
+				echo "欢迎 " . $_COOKIE["user"] . "!<br>";
+			else
+				echo "普通访客!<br>";
+		?>
+	</body>
+</html>
+
+浏览器输出：
+欢迎 runoob!
+```
+
+###4、删除 `cookie`
+
+```powershell
+当删除 cookie 时，您应当使过期日期变更为过去的时间点。
+删除的实例：
+
+<?php
+    // 设置 cookie 过期时间为过去 1 小时
+    setcookie("user", "", time()-3600);
+?>
+
+浏览器输入 http://127.0.0.1/study/remove_cookie.php 执行此脚本后。
+再次执行上一个用例，http://127.0.0.1/study/is_cookie_set.php浏览器输出变为：
+普通访客!
+```
+
+### 5、如果浏览器不支持 cookie 怎么办
+
+```powershell
+那只能采用表单等其它办法
+```
+
+## 十五、`session`
+
+```powershell
+您在计算机上操作某个应用程序时，您打开它，做些更改，然后关闭它。这很像一次对话（Session）。计算机知道您是谁。它清楚您在何时打开和关闭应用程序。然而，在因特网上问题出现了：由于 HTTP 地址无法保持状态，Web 服务器并不知道您是谁以及您做了什么。
+
+PHP session 解决了这个问题，它通过在服务器上存储用户信息以便随后使用（比如用户名称、购买商品等）。然而，会话信息是临时的，在用户离开网站后将被删除。如果您需要永久存储信息，可以把数据存储在数据库中。
+
+Session 的工作机制是：为每个访客创建一个唯一的 id (UID)，并基于这个 UID 来存储变量。UID 存储在 cookie 中，或者通过 URL 进行传导。
+```
+
+###1、开始`session`
+
+```powershell
+<?php session_start(); ?>
+
+<html>
+    <body>
+    </body>
+</html>
+
+session_start() 函数必须位于 <html> 标签之前，上面的代码会向服务器注册用户的会话，以便您可以开始保存用户信息，同时会为用户会话分配一个 UID
+```
+
+###2、存储 Session 变量
+
+> 创建并操作 session 的脚本：session.php
+
+````powershell
+存储和取回 session 变量的正确方法是使用 PHP $_SESSION 变量
+
+<?php
+	session_start();
+
+	if(isset($_SESSION['views']))
+	{
+		$_SESSION['views']=$_SESSION['views']+1;
+	}
+	else
+	{
+		$_SESSION['views']=1;
+	}
+	echo "浏览量：". $_SESSION['views'];
+?>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>菜鸟教程(runoob.com)</title>
+	</head>
+	
+	<body>
+	</body>
+</html>
+
+浏览器输出（每刷新一次，浏览量增加一）：
+浏览量：2 
+````
+
+###3、销毁 Session
+
+```powershell
+如果您希望删除某些 session 数据，可以使用 unset() 或 session_destroy() 函数。
+unset() 函数用于释放指定的 session 变量。
+也可以通过调用 session_destroy() 函数彻底销毁 session。
+```
+
+```powershell
+unset_session.php 脚本内容如下
+
+<?php
+    session_start();
+    if(isset($_SESSION['views']))
+    {
+        unset($_SESSION['views']);
+    }
+?>
+
+浏览器输入http://127.0.0.1/study/unset_session.php并回车，然后再执行 http://127.0.0.1/study/session.php，发现输出又变回了1。
+```
+
+```powershell
+销毁全部 session 的脚本： destroy_session.php
+
+<?php
+	session_start(); //这一句必须加上，否则无法销毁 session
+	session_destroy();
+?>
+
+浏览器输入http://127.0.0.1/study/destroy_session.php并回车，然后再执行 http://127.0.0.1/study/session.php，发现输出又变回了1。
+```
+
+## 十六、PHP 发送电子邮件
+
+```powershell
+PHP 运行邮件函数需要一个已安装且正在运行的邮件系统(如：sendmail、postfix、qmail等)。所用的程序通过在 php.ini 文件中的配置设置进行定义。请在我们的 PHP Mail 参考手册 阅读更多内容。
+```
+
+**语法**
+
+  mail(to,subject,message,headers,parameters) 
+
+| 参数       | 描述                                                         |
+| ---------- | ------------------------------------------------------------ |
+| to         | 必需。规定 email 接收者。                                    |
+| subject    | 必需。规定 email 的主题。**注释：**该参数不能包含任何新行字符。 |
+| message    | 必需。定义要发送的消息。应使用 LF (\n) 来分隔各行。每行应该限制在 70 个字符内。 |
+| headers    | 可选。规定附加的标题，比如 From、Cc 和 Bcc。应当使用 CRLF (\r\n) 分隔附加的标题。 |
+| parameters | 可选。对邮件发送程序规定额外的参数。                         |
+
+```powershell
+发邮件代，实际测试未成功，因为本地 outlook 账号设置较为麻烦。
+而发邮件依赖的是本地邮件程序：
+
+<?php
+    $to = "someone@example.com";         // 邮件接收者
+    $subject = "参数邮件";                // 邮件标题
+    $message = "Hello! 这是邮件的内容。";  // 邮件正文
+    $from = "someonelse@example.com";   // 邮件发送者
+    $headers = "From:" . $from;         // 头部信息设置
+    mail($to,$subject,$message,$headers);
+    echo "邮件已发送";
+?>
+```
+
+
+
+## 十七、出错处理
+
+###1、die 函数打印错误提示
+
+```powershell
+<?php
+	if(!file_exists("welcome2.txt"))
+	{
+		die("文件不存在<br/>");
+	}
+	else
+	{
+		echo "文件存在，准备打开<br/>";
+		$file=fopen("welcome.txt","r");
+		echo "文件存在，准备成功打开<br/>";
+		fclose($file);
+		echo "文件成功关闭<br/>";
+	}
+?>
+```
+
+### 2、创建自定义出错处理函数，自动触发
+
+```powershell
+由 set_error_handler 设置自定义报错函数。
+当 echo 一个未定义的变量时，触发报错。
+
+<?php
+    // 错误处理函数
+    function customError($errno, $errstr)
+    {
+        echo "<b>Error:</b> [$errno] $errstr";
+    }
+
+    // 设置错误处理函数
+    set_error_handler("customError");
+
+    // 触发错误
+    echo($test);
+?>
+```
+
+### 3、手动触发，自定义的错误处理函数
+
+```powershell
+<?php
+	// 错误处理函数
+	function customError($errno, $errstr)
+	{
+		echo "<b>Error:</b> [$errno] $errstr<br/>";
+		echo "脚本结束";
+		die();
+	}
+
+	// 设置错误处理函数
+	set_error_handler("customError", E_USER_WARNING);
+
+	// 触发错误
+	$test=2;
+	if ($test>1)
+	{
+		trigger_error("变量值必须小于等于 1", E_USER_WARNING);
+	}
+?>
+```
+
+###4、错误记录，error_log
+
+```powershell
+在默认的情况下，根据在 php.ini 中的 error_log 配置，PHP 向服务器的记录系统或文件发送错误记录。通过使用 error_log() 函数，您可以向指定的文件或远程目的地发送错误记录。
+
+通过电子邮件向您自己发送错误消息，是一种获得指定错误的通知的好办法。
+```
+
+```powershell
+//将错误通过邮件发送给自己
+
+<?php
+// 错误处理函数
+function customError($errno, $errstr)
+{
+    echo "<b>Error:</b> [$errno] $errstr<br>";
+    echo "已通知网站管理员";
+    error_log("Error: [$errno] $errstr",1,
+    "someone@example.com","From: webmaster@example.com");
+}
+
+// 设置错误处理函数
+set_error_handler("customError",E_USER_WARNING);
+
+// 触发错误
+$test=2;
+if ($test>1)
+{
+    trigger_error("变量值必须小于等于 1",E_USER_WARNING);
+}
+?>
+```
+
+##十八、PHP 异常处理
+
+```powershell
+当异常被抛出时，其后的代码不会继续执行，PHP 会尝试查找匹配的 "catch" 代码块。
+
+如果异常没有被捕获，而且又没用使用 set_exception_handler() 作相应的处理的话，那么将发生一个严重的错误（致命错误），并且输出 "Uncaught Exception" （未捕获异常）的错误消息。
+```
+
+### 1、抛出一个异常，同时不去捕捉它
+
+```powershell
+<?php
+	echo "throw_exception.php is called 1<br/>";
+	// 创建一个有异常处理的函数
+	function checkNum($number)
+	{
+		echo "throw_exception.php is called 3 <br/>";
+		echo "number = ". $number ."<br/>";
+		if($number>1)
+		{
+			echo "throw exception here!<br/>";
+			throw new Exception("Value must be 1 or below");
+			echo "throw exception finished here!<br/>";
+		}
+		return true;
+	}
+	echo "throw_exception.php is called 2<br/>";
+	// 触发异常
+	checkNum(2);
+?>
+
+通过 echo 一步一步跟踪，发现 throw new Exception 这一句确实执行了，而且后面一句"throw exception finished here!<br/>"没有打印出来。表明确实出错
+```
+
+###2、Try、throw 和 catch
+
+```powershell
+<?php
+	// 创建一个有异常处理的函数
+	function checkNum($number)
+	{
+		if($number>1)
+		{
+			throw new Exception("变量值必须小于等于 1");
+		}
+		return true;
+	}
+		
+	// 在 try 块 触发异常
+	try
+	{
+		checkNum(2);
+		// 如果抛出异常，以下文本不会输出
+		echo '如果输出该内容，说明 $number 变量';
+	}
+	// 捕获异常
+	catch(Exception $e)
+	{
+		echo 'Message: ' .$e->getMessage();
+	}
+?>
+
+浏览器输出：
+Message: 变量值必须小于等于 1
+```
+
+###3、创建一个自定义的 Exception 类
+
+```powershell
+创建自定义的异常处理程序非常简单。我们简单地创建了一个专门的类，当 PHP 中发生异常时，可调用其函数。该类必须是 exception 类的一个扩展。
+
+这个自定义的 customException 类继承了 PHP 的 exception 类的所有属性，您可向其添加自定义的函数。
+```
+
+```powershell
+<?php
+	class customException extends Exception
+	{
+		public function errorMessage()
+		{
+			// 错误信息
+			$errorMsg = '错误行号 '.$this->getLine().' in '.$this->getFile()
+			.': <b>'.$this->getMessage().'</b> 不是一个合法的 E-Mail 地址';
+			return $errorMsg;
+		}
+	}
+
+	$email = "someone@example...com";
+	 
+	try
+	{
+		// 检测邮箱
+		if(filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE)
+		{
+			// 如果是个不合法的邮箱地址，抛出异常
+			throw new customException($email);
+		}
+	}
+	 
+	catch (customException $e)
+	{
+		//display custom message
+		echo $e->errorMessage();
+	}
+?>
+
+浏览器输出：
+错误行号 23 in E:\phptools\ApacheServer\Apache\htdocs\study\custo_Exception.php: someone@example...com 不是一个合法的 E-Mail 地址
+```
+
+###4、多个异常
+
+```powershell
+可以为一段脚本使用多个异常，来检测多种情况。
+
+可以使用多个 if..else 代码块，或一个 switch 代码块，或者嵌套多个异常。这些异常能够使用不同的 exception 类，并返回不同的错误消息
+```
+
+```powershell
+<?php
+class customException extends Exception
+{
+    public function errorMessage()
+    {
+        // 错误信息
+        $errorMsg = '错误行号 '.$this->getLine().' in '.$this->getFile()
+        .': <b>'.$this->getMessage().'</b> 不是一个合法的 E-Mail 地址';
+        return $errorMsg;
+    }
+}
+ 
+$email = "someone@example.com";
+ 
+try
+{
+    // 检测邮箱
+    if(filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE)
+    {
+        // 如果是个不合法的邮箱地址，抛出异常
+        throw new customException($email);
+    }
+    // 检测 "example" 是否在邮箱地址中
+    if(strpos($email, "example") !== FALSE)
+    {
+        throw new Exception("$email 是 example 邮箱");
+    }
+}
+catch (customException $e)
+{
+    echo $e->errorMessage();
+}
+catch(Exception $e)
+{
+    echo $e->getMessage();
+}
+?>
+
+浏览器输出：
+someone@example.com 是 example 邮箱
+```
+
+### 5、重新抛出异常
+
+```powershell
+<?php
+class customException extends Exception
+{
+    public function errorMessage()
+    {
+        // 错误信息
+        $errorMsg = $this->getMessage().' 不是一个合法的 E-Mail 地址。';
+        return $errorMsg;
+    }
+}
+ 
+$email = "someone@example.com";
+ 
+try
+{
+    try
+    {
+        // 检测 "example" 是否在邮箱地址中
+        if(strpos($email, "example") !== FALSE)
+        {
+            // 如果是个不合法的邮箱地址，抛出异常.-----第一次抛出异常
+            throw new Exception($email);
+        }
+    }
+    catch(Exception $e)
+    {
+        // 重新抛出异常，第二次抛出异常
+        throw new customException($email);
+    }
+}
+catch (customException $e)
+{
+    // 显示自定义信息，最终捕捉异常，并调用自定义的异常处理函数，打印错误消息
+    echo $e->errorMessage();
+}
+?>
+```
+
+###6、设置顶层异常处理器
+
+```powershell
+set_exception_handler() 函数可设置处理所有未捕获异常的用户定义函数
+```
+
+```powershell
+<?php
+	function myException($exception)
+	{
+		echo "<b>Exception:</b> " , $exception->getMessage();
+	}
+	 
+	set_exception_handler('myException');
+	 
+	throw new Exception('Uncaught Exception occurred');
+?>
+浏览器输出：
+Exception: Uncaught Exception occurred
+```
+
+## 十九、PHP 过滤器
+
+```powershell
+PHP 过滤器用于验证和过滤来自非安全来源的数据，比如用户的输入。
+测试、验证和过滤用户输入或自定义数据是任何 Web 应用程序的重要组成部分。
+PHP 的过滤器扩展的设计目的是使数据过滤更轻松快捷
+```
+
+```powershell
+过滤器函数：
+    filter_var() ------------ 通过一个指定的过滤器来过滤单一的变量
+    filter_var_array() ------ 通过相同的或不同的过滤器来过滤多个变量
+    filter_input ------------ 获取一个输入变量，并对它进行过滤
+    filter_input_array ------ 获取多个输入变量，并通过相同的或不同的过滤器对它们进行过滤
+```
+
+### 1、验证一个整数
+
+```powershell
+<?php
+    $int = 123;
+	$int2 = 123.4;
+
+    if (!filter_var($int, FILTER_VALIDATE_INT))
+    {
+        echo("$int 不是一个合法的整数<br/>");
+    }
+    else
+    {
+        echo("$int 是个合法的整数<br/>");
+    }
+	
+    if (!filter_var($int2, FILTER_VALIDATE_INT))
+    {
+        echo("$int2 不是一个合法的整数<br/>");
+    }
+    else
+    {
+        echo("$int2 是个合法的整数<br/>");
+    }
+?>
+浏览器输出：
+123 是个合法的整数
+123.4 不是一个合法的整数
+```
+
+### 2、验证变量的选项
+
+> 验证300是不是 (0,256)之间的一个整数
+
+```powershell
+<?php
+	$var=300;
+	 
+	$int_options = array(
+		"options"=>array
+		(
+			"min_range"=>0,
+			"max_range"=>256
+		)
+	);
+	 
+	if(!filter_var($var, FILTER_VALIDATE_INT, $int_options))
+	{
+		echo("不是一个合法的整数");
+	}
+	else
+	{
+		echo("是个合法的整数");
+	}
+?>
+
+浏览器输出：
+不是一个合法的整数
+```
+
+###3、验证来自表单的输入 
+
+```powershell
+<?php
+	if(!filter_has_var(INPUT_GET, "email"))
+	{
+		echo("没有 email 参数");
+	}
+	else
+	{
+		if (!filter_input(INPUT_GET, "email", FILTER_VALIDATE_EMAIL))
+		{
+			echo "不是一个合法的 E-Mail";
+		}
+		else
+		{
+			echo "是一个合法的 E-Mail";
+		}
+	}
+?>
+
+场景一：浏览器输入：http://127.0.0.1/study/filter_input.php 回车，得到输出：
+没有 email 参数
+
+场景二：浏览器输出：http://127.0.0.1/study/filter_input.php?email=test@runoob.com 回车，得到输出：
+是一个合法的 E-Mail
+```
+
+### 4、净化输入
+
+```powershell
+<?php
+	if(!filter_has_var(INPUT_GET, "url"))
+	{
+		echo("没有 url 参数");
+	}
+	else
+	{
+		$url = filter_input(INPUT_GET, "url", FILTER_SANITIZE_URL);
+		echo $url;
+	}
+?>
+浏览器输入：
+http://127.0.0.1/study/pure_input.php?url=http://www.ru%C3%A5%C3%A5no%C3%B8%C3%B8ob.com/
+
+输出：http://www.runoob.com/
+即 filter_input 函数把 http://www.ru%C3%A5%C3%A5no%C3%B8%C3%B8ob.com/ 中的非法字符清除掉了
+```
+
+###5、过滤多个输入
+
+```powershell
+同时对年龄和 email 进行过滤：
+<?php
+$filters = array
+(
+    "name" => array
+    (
+    	//过滤姓名中的非法字符
+        "filter"=>FILTER_SANITIZE_STRING
+    ),
+    "age" => array
+    (
+    	//对年龄进行合法性过滤
+        "filter"=>FILTER_VALIDATE_INT,
+        "options"=>array
+        (
+            "min_range"=>1,
+            "max_range"=>120
+        )
+    ),
+    //对邮件地址进行合法性过滤
+    "email"=> FILTER_VALIDATE_EMAIL
+);
+ 
+$result = filter_input_array(INPUT_GET, $filters);
+ 
+if (!$result["age"])
+{
+    echo("年龄必须在 1 到 120 之间。<br>");
+}
+elseif(!$result["email"])
+{
+    echo("E-Mail 不合法<br>");
+}
+else
+{
+    echo("输入正确");
+}
+?>
+
+浏览器输入：http://127.0.0.1/study/filter_input_array.php?email=ab@b.com&age=92
+浏览器输出：
+输入正确
+```
+
+### 6、使用自定义过滤器
+
+```powershell
+通过使用 FILTER_CALLBACK 过滤器，可以调用自定义的函数，把它作为一个过滤器来使用。这样，我们就拥有了数据过滤的完全控制权。
+
+您可以创建自己的自定义函数，也可以使用已存在的 PHP 函数。
+将您准备用到的过滤器的函数，按指定选项的规定方法进行规定。在关联数组中，带有名称 "options"。
+```
+
+```powershell
+<?php
+	function convertSpace($string)
+	{
+		return str_replace("_", ".", $string);
+	}
+	 
+	$string = "www_runoob_com!";
+	 
+	echo filter_var($string, FILTER_CALLBACK, array("options"=>"convertSpace"));
+?>
+
+浏览器输入：http://127.0.0.1/study/FILTER_CALLBACK.php
+浏览器输出：
+www.runoob.com! 
+```
+
+##二十、PHP 高级过滤器
+
+###1、检测一个数字是否在一个范围内
+
+```powershell
+<?php
+$int = 122;
+$min = 1;
+$max = 200;
+
+if (filter_var($int, FILTER_VALIDATE_INT, array("options" => array("min_range"=>$min, "max_range"=>$max))) === false) {
+    echo("变量值不在合法范围内");
+} else {
+    echo("变量值在合法范围内");
+}
+?> 
+浏览器输出：
+变量值在合法范围内 
+```
+
+### 2、检测 ipv6 地址
+
+```powershell
+<?php
+	$ip = "2001:0db8:85a3:08d3:1319:8a2e:0370:7334";
+
+	if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false) {
+		echo("$ip 是一个 IPv6 地址");
+	} else {
+		echo("$ip 不是一个 IPv6 地址");
+	}
+?> 
+浏览器输出：
+2001:0db8:85a3:08d3:1319:8a2e:0370:7334 是一个 IPv6 地址 
+```
+
+### 3、检测 url 是否否包含 query_string
+
+```powershell
+<?php
+	$url = "http://www.runoob.com";
+	$url2 = "http://www.runoob.com?query_string=good";
+
+	if (!filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_QUERY_REQUIRED) === false) {
+		echo("$url 是一个合法的 URL<br/>");
+	} else {
+		echo("$url 不是一个合法的 URL<br/>");
+	}
+	if (!filter_var($url2, FILTER_VALIDATE_URL, FILTER_FLAG_QUERY_REQUIRED) === false) {
+		echo("$url2 是一个合法的 URL<br/>");
+	} else {
+		echo("$url2 不是一个合法的 URL<br/>");
+	}
+?> 
+
+浏览器输出：
+http://www.runoob.com 不是一个合法的 URL
+http://www.runoob.com?query_string=good 是一个合法的 URL
+```
+
+###4、移除 ASCII 值大于 127 的字符
+
+```powershell
+<?php
+	$str = "<h1>Hello WorldÆØÅ!</h1>";
+
+	$newstr = filter_var($str, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+	echo $newstr;
+?>
+
+浏览器输出：
+Hello World!
+```
+
+## 二十一、PHP JSON#
+
+###1、JSON 函数
+
+| 函数            | 描述                                          |
+| --------------- | --------------------------------------------- |
+| json_encode     | 对变量进行 JSON 编码                          |
+| json_decode     | 对 JSON 格式的字符串进行解码，转换为 PHP 变量 |
+| json_last_error | 返回最后发生的错误                            |
+
+### 2、将 PHP 数组转换为 JSON 格式数据 
+
+```powershell
+<?php
+   $arr = array('a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5);
+   echo json_encode($arr);
+?>
+ 
+浏览器输出：
+{"a":1,"b":2,"c":3,"d":4,"e":5}
+```
+
+###3、将 PHP 对象转换为 JSON 格式数据 
+
+```powershell
+<?php
+   class Emp {
+       public $name = "";
+       public $hobbies  = "";
+       public $birthdate = "";
+   }
+   $e = new Emp();
+   $e->name = "sachin";
+   $e->hobbies  = "sports";
+   //$e->birthdate = date('m/d/Y h:i:s a', "8/5/1974 12:20:03 p");
+   $e->birthdate = date('m/d/Y h:i:s a', strtotime("8/5/1974 12:20:03"));
+
+   echo json_encode($e);
+?>
+
+浏览器输出：
+{"name":"sachin","hobbies":"sports","birthdate":"08\/05\/1974 12:20:03 pm"}
+```
+
+### 4、将 json 数据转化为 php 类型
+
+```powershell
+<?php
+   $json = '{"a":1,"b":2,"c":3,"d":4,"e":5}';
+
+   var_dump(json_decode($json));
+   echo '<br/>'.'<br/>';
+   var_dump(json_decode($json, true));
+?>
+浏览器输出：
+object(stdClass)#1 (5) { ["a"]=> int(1) ["b"]=> int(2) ["c"]=> int(3) ["d"]=> int(4) ["e"]=> int(5) }
+
+array(5) { ["a"]=> int(1) ["b"]=> int(2) ["c"]=> int(3) ["d"]=> int(4) ["e"]=> int(5) } 
+```
+
+## 二十二、PHP MySQL
+
+###1、连接 MySQL(mysqli接口)
+
+```powershell
+<?php
+	$servername = "localhost";
+	$username = "admin";
+	$password = "123456";
+	 
+	// 创建连接
+	$conn = new mysqli($servername, $username, $password);
+	 
+	// 检测连接
+	if ($conn->connect_error) {
+		die("连接失败: " . $conn->connect_error);
+	} 
+	echo "连接成功";
+	$conn->close();
+	echo "断开数据库连接";
+?>
+
+浏览器输出：
+连接成功
+断开数据库连接
+```
+
+### 2、连接 MySQL(PDO 接口)
+
+```powershell
+<?php
+	$servername = "localhost";
+	$username = "admin";
+	$password = "123456";
+	 
+	try {
+		$conn = new PDO("mysql:host=$servername;dbname=myDB", $username, $password);
+		echo "连接成功"; 
+	}
+	catch(PDOException $e)
+	{
+		echo $e->getMessage();
+	}
+?>
+
+浏览器输出：
+could not find driver 
+
+因为需要安装驱动程序：http://php.net/manual/en/pdo.installation.php，但是本机没有安装
+```
+
+### 3、创建 MySql 数据库
+
+```powershell
+<?php
+	$servername = "localhost";
+	$username   = "admin";
+	$password   = "123456";
+
+	// 创建连接
+	$conn = new mysqli($servername, $username, $password);
+	// 检测连接
+	if ($conn->connect_error) {
+		die("连接失败: " . $conn->connect_error);
+	}
+
+	// 创建数据库
+	$sql = "CREATE DATABASE myDB";
+	if ($conn->query($sql) === TRUE) {
+		echo "数据库创建成功";
+	} else {
+		echo "Error creating database: " . $conn->error;
+	}
+
+	$conn->close();
+?> 
+
+浏览器输出：
+数据库创建成功 
+```
+
+```powershell
+相应的 PDO 创建数据库代码如下，未验证：
+<?php
+$servername = "localhost";
+$username = "username";
+$password = "password";
+
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=myDB", $username, $password);
+
+    // 设置 PDO 错误模式为异常
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $sql = "CREATE DATABASE myDBPDO";
+
+    // 使用 exec() ，因为没有结果返回
+    $conn->exec($sql);
+
+    echo "数据库创建成功<br>";
+}
+catch(PDOException $e)
+{
+    echo $sql . "<br>" . $e->getMessage();
+}
+
+$conn = null;
+?> 
+```
+
+
+
+###4、PHP 创建 MySQL 表
+
+```powershell
+mysqli 实现的代码：
+<?php
+$servername = "localhost";
+$username = "username";
+$password = "password";
+$dbname = "myDB";
+
+// 创建连接
+$conn = new mysqli($servername, $username, $password, $dbname);
+// 检测连接
+if ($conn->connect_error) {
+    die("连接失败: " . $conn->connect_error);
+}
+
+// 使用 sql 创建数据表
+$sql = "CREATE TABLE MyGuests (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+firstname VARCHAR(30) NOT NULL,
+lastname VARCHAR(30) NOT NULL,
+email VARCHAR(50),
+reg_date TIMESTAMP
+)";
+
+if ($conn->query($sql) === TRUE) {
+    echo "Table MyGuests created successfully";
+} else {
+    echo "创建数据表错误: " . $conn->error;
+}
+
+$conn->close();
+?>
+```
+
+> 浏览器输出：
+
+![](./pictures/create_table.png)
+
+> 相应的数据库查询
+>
+> ![](./pictures/show_tables.png)
+
+
+
+```php
+未经验证码的PDO代码：
+
+<?php
+$servername = "localhost";
+$username = "username";
+$password = "password";
+$dbname = "myDBPDO";
+
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    // 设置 PDO 错误模式，用于抛出异常
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // 使用 sql 创建数据表
+    $sql = "CREATE TABLE MyGuests (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    firstname VARCHAR(30) NOT NULL,
+    lastname VARCHAR(30) NOT NULL,
+    email VARCHAR(50),
+    reg_date TIMESTAMP
+    )";
+
+    // 使用 exec() ，没有结果返回
+    $conn->exec($sql);
+    echo "数据表 MyGuests 创建成功";
+}
+catch(PDOException $e)
+{
+    echo $sql . "<br>" . $e->getMessage();
+}
+
+$conn = null;
+?> 
+```
+
+### 5、向表 table 插入记录
+
+```powershell
+<?php
+	$servername = "localhost";
+	$username   = "admin";
+	$password   = "123456";
+	$dbname     = "myDB";
+
+	// 创建连接
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	// 检测连接
+	if ($conn->connect_error) {
+		die("连接失败: " . $conn->connect_error);
+	}
+
+	$sql = "INSERT INTO MyGuests (firstname, lastname, email)
+	VALUES ('John', 'Doe', 'john@example.com')";
+
+	if ($conn->query($sql) === TRUE) {
+		echo "新记录插入成功";
+	} else {
+		echo "Error: " . $sql . "<br>" . $conn->error;
+	}
+
+	$conn->close();
+?> 
+
+浏览器输出：
+新记录插入成功 
+```
+
+```powershell
+PDO接口实现，未测试：
+<?php
+    $servername = "localhost";
+    $username = "username";
+    $password = "password";
+    $dbname = "myDBPDO";
+
+    try {
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        // 设置 PDO 错误模式，用于抛出异常
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "INSERT INTO MyGuests (firstname, lastname, email)
+        VALUES ('John', 'Doe', 'john@example.com')";
+        // 使用 exec() ，没有结果返回
+        $conn->exec($sql);
+        echo "新记录插入成功";
+    }
+    catch(PDOException $e)
+    {
+        echo $sql . "<br>" . $e->getMessage();
+    }
+
+    $conn = null;
+?> 
+```
+
+### 6、插入多条记录
+
+```powershell
+<?php
+	$servername = "localhost";
+	$username   = "admin";
+	$password   = "123456";
+	$dbname     = "myDB";
+
+	// 创建链接
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	// 检查链接
+	if ($conn->connect_error) {
+		die("连接失败: " . $conn->connect_error);
+	} 
+	 
+	$sql = "INSERT INTO MyGuests (firstname, lastname, email)
+	        VALUES ('John', 'Doe', 'john@example.com');";
+	$sql .= "INSERT INTO MyGuests (firstname, lastname, email)
+	        VALUES ('Mary', 'Moe', 'mary@example.com');";
+	$sql .= "INSERT INTO MyGuests (firstname, lastname, email)
+	        VALUES ('Julie', 'Dooley', 'julie@example.com')";
+	 
+	if ($conn->multi_query($sql) === TRUE) {
+		echo "新记录插入成功";
+	} else {
+		echo "Error: " . $sql . "<br>" . $conn->error;
+	}
+	 
+	$conn->close();
+?>
+
+浏览器输出：
+新记录插入成功
+
+查询 mysql 数据库：
+mysql> select * from myguests;
++----+-----------+----------+-------------------+---------------------+
+| id | firstname | lastname | email             | reg_date            |
++----+-----------+----------+-------------------+---------------------+
+|  1 | John      | Doe      | john@example.com  | 2018-05-13 19:00:25 |
+|  2 | John      | Doe      | john@example.com  | 2018-05-13 19:07:14 |
+|  3 | Mary      | Moe      | mary@example.com  | 2018-05-13 19:07:14 |
+|  4 | Julie     | Dooley   | julie@example.com | 2018-05-13 19:07:14 |
++----+-----------+----------+-------------------+---------------------+
+4 rows in set (0.00 sec)
+```
+
+### 7、MySQLi 使用预处理语句
+
+```powershell
+<?php
+$servername = "localhost";
+$username   = "admin";
+$password   = "123456";
+$dbname     = "myDB";
+ 
+// 创建连接
+$conn = new mysqli($servername, $username, $password, $dbname);
+// 检测连接
+if ($conn->connect_error) {
+    die("连接失败: " . $conn->connect_error);
+} 
+else {
+	echo "连接成功.<br/>";
+    $sql = "INSERT INTO MyGuests(firstname, lastname, email)  VALUES(?, ?, ?)";
+ 
+    // 为 mysqli_stmt_prepare() 初始化 statement 对象
+    $stmt = mysqli_stmt_init($conn);
+ 
+    //预处理语句
+    if (mysqli_stmt_prepare($stmt, $sql)) {
+		echo "绑定参数.<br/>";
+        // 绑定参数
+        mysqli_stmt_bind_param($stmt, 'sss', $firstname, $lastname, $email);
+ 
+        // 设置参数并执行
+        $firstname = 'John';
+        $lastname = 'Doe';
+        $email = 'john@example.com';
+        mysqli_stmt_execute($stmt);
+ 
+        $firstname = 'Mary';
+        $lastname = 'Moe';
+        $email = 'mary@example.com';
+        mysqli_stmt_execute($stmt);
+ 
+        $firstname = 'Julie';
+        $lastname = 'Dooley';
+        $email = 'julie@example.com';
+        mysqli_stmt_execute($stmt);
+    }
+	$conn->close();
+}
+?>
+
+浏览器输出：
+连接成功.
+绑定参数.
+```
+
+```powershell
+<?php
+	$servername = "localhost";
+	$username   = "admin";
+	$password   = "123456";
+	$dbname     = "myDB";
+	 
+	// 创建连接
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	 
+	// 检测连接
+	if ($conn->connect_error) {
+		die("连接失败: " . $conn->connect_error);
+	}
+	echo "数据库连接成功<br/>";
+	// 预处理及绑定
+	$stmt = $conn->prepare("INSERT INTO MyGuests (firstname, lastname, email) VALUES (?, ?, ?)");
+	
+	//"sss" 表示处理的三个参数类型均为字符串。s 表示数据类型为字符串
+	//i - integer（整型） // d - double（双精度浮点型）
+	//b - BLOB（binary large object:二进制大对象）  //s - string（字符串）
+	$stmt->bind_param("sss", $firstname, $lastname, $email);
+	 
+	// 设置参数并执行
+	$firstname = "John";
+	$lastname = "Doe";
+	$email = "john@example.com";
+	$stmt->execute();
+	 
+	$firstname = "Mary";
+	$lastname = "Moe";
+	$email = "mary@example.com";
+	$stmt->execute();
+	 
+	$firstname = "Julie";
+	$lastname = "Dooley";
+	$email = "julie@example.com";
+	$stmt->execute();
+
+	echo "新记录插入成功";
+
+	$stmt->close();
+	$conn->close();
+?>
+
+浏览器输出：
+新记录插入成功
+```
+
+### 8、从 MySQL 数据库读取数据
+
+```powershell
+<?php
+	$servername = "localhost";
+	$username   = "admin";
+	$password   = "123456";
+	$dbname     = "myDB";
+	 
+	// 创建连接
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	// Check connection
+	if ($conn->connect_error) {
+		die("连接失败: " . $conn->connect_error);
+	} 
+	 
+	$sql = "SELECT id, firstname, lastname FROM MyGuests";
+	$result = $conn->query($sql);
+	 
+	if ($result->num_rows > 0) {
+		// 输出数据
+		while($row = $result->fetch_assoc()) {
+			echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
+		}
+	} else {
+		echo "0 结果";
+	}
+	$conn->close();
+?>
+
+浏览器输出：
+id: 1 - Name: John Doe
+id: 2 - Name: John Doe
+id: 3 - Name: Mary Moe
+id: 4 - Name: Julie Dooley
+id: 5 - Name: John Doe
+id: 6 - Name: Mary Moe
+id: 7 - Name: Julie Dooley
+id: 8 - Name: John Doe
+id: 9 - Name: Mary Moe
+```
+
+### 9、MySQL Where 子句
+
+```powershell
+<?php
+	$con=mysqli_connect("127.0.0.1","admin","123456","myDB");
+	// 检测连接
+	if (mysqli_connect_errno())
+	{
+		echo "连接失败: " . mysqli_connect_error();
+	}
+	
+	echo "连接成功.<br/>";
+
+	$result = mysqli_query($con,"select * from myguests where firstname='Mary'");
+	echo "数据库查询完毕.<br/>";
+	print_r($result) ;
+	echo '<br/>';
+	while($row = mysqli_fetch_array($result))
+	{
+		//这里大小写第三。与 SQL 命令行效果不同
+		echo $row['firstname'] . " " . $row['lastname']."<br>";
+	}
+	$con->close();
+?>
+
+浏览器输出：
+连接成功.
+数据库查询完毕.
+mysqli_result Object ( [current_field] => 0 [field_count] => 5 [lengths] => [num_rows] => 7 [type] => 0 )
+Mary Moe
+Mary Moe
+Mary Moe
+Mary Moe
+Mary Moe
+Mary Moe
+Mary Moe
+```
+
+### 10、MySQL Order By 关键词
+
+```powershell
+<?php
+	$con=mysqli_connect("127.0.0.1","admin","123456","mydb");
+	
+	// 检测连接
+	if (mysqli_connect_errno())
+	{
+		echo "连接失败: " . mysqli_connect_error();
+	}
+
+	echo '数据库连接成功 <br/>';
+	
+	$result = mysqli_query($con,"select * from myguests order by lastname");
+
+	echo 'var_dump ' . var_dump($result) .'<br/>';
+	
+	while($row = mysqli_fetch_array($result))
+	{
+		echo $row['firstname'];
+		echo " " . $row['lastname'];
+		echo " " . $row['id'];
+		echo "<br>";
+	}
+
+	mysqli_close($con);
+?>
+
+浏览器输出：
+数据库连接成功
+object(mysqli_result)#2 (5) { ["current_field"]=> int(0) ["field_count"]=> int(5) ["lengths"]=> NULL ["num_rows"]=> int(22) ["type"]=> int(0) } var_dump
+John Doe 1
+John Doe 2
+John Doe 5
+John Doe 8
+John Doe 11
+John Doe 14
+John Doe 17
+John Doe 20
+Julie Dooley 4
+Julie Dooley 7
+Julie Dooley 10
+Julie Dooley 13
+Julie Dooley 16
+Julie Dooley 19
+Julie Dooley 22
+Mary Moe 3
+Mary Moe 6
+Mary Moe 9
+Mary Moe 12
+Mary Moe 15
+Mary Moe 18
+Mary Moe 21
+```
+
+### 11、MySQL Update
+
+```powershell
+<?php
+	$con=mysqli_connect("localhost","admin","123456","mydb");
+	// 检测连接
+	if (mysqli_connect_errno())
+	{
+		echo "连接失败: " . mysqli_connect_error();
+	}
+
+	mysqli_query($con,"UPDATE myguests SET email='zhou@139.com' WHERE FirstName='John'");
+
+	mysqli_close($con);
+?>
+
+执行之后，查询数据库：
+mysql> select * from myguests;
++----+-----------+----------+-------------------+---------------------+
+| id | firstname | lastname | email             | reg_date            |
++----+-----------+----------+-------------------+---------------------+
+|  1 | John      | Doe      | zhou@139.com      | 2018-05-13 20:36:17 |
+|  2 | John      | Doe      | zhou@139.com      | 2018-05-13 20:36:17 |
+|  3 | Mary      | Moe      | mary@example.com  | 2018-05-13 19:07:14 |
+|  4 | Julie     | Dooley   | julie@example.com | 2018-05-13 19:07:14 |
+|  5 | John      | Doe      | zhou@139.com      | 2018-05-13 20:36:17 |
+|  6 | Mary      | Moe      | mary@example.com  | 2018-05-13 19:13:29 |
+|  7 | Julie     | Dooley   | julie@example.com | 2018-05-13 19:13:29 |
+|  8 | John      | Doe      | zhou@139.com      | 2018-05-13 20:36:17 |
+|  9 | Mary      | Moe      | mary@example.com  | 2018-05-13 19:14:11 |
+| 10 | Julie     | Dooley   | julie@example.com | 2018-05-13 19:14:11 |
+| 11 | John      | Doe      | zhou@139.com      | 2018-05-13 20:36:17 |
+| 12 | Mary      | Moe      | mary@example.com  | 2018-05-13 19:15:12 |
+| 13 | Julie     | Dooley   | julie@example.com | 2018-05-13 19:15:12 |
+| 14 | John      | Doe      | zhou@139.com      | 2018-05-13 20:36:17 |
+| 15 | Mary      | Moe      | mary@example.com  | 2018-05-13 19:15:32 |
+| 16 | Julie     | Dooley   | julie@example.com | 2018-05-13 19:15:32 |
+| 17 | John      | Doe      | zhou@139.com      | 2018-05-13 20:36:17 |
+| 18 | Mary      | Moe      | mary@example.com  | 2018-05-13 19:16:49 |
+| 19 | Julie     | Dooley   | julie@example.com | 2018-05-13 19:16:49 |
+| 20 | John      | Doe      | zhou@139.com      | 2018-05-13 20:36:17 |
+| 21 | Mary      | Moe      | mary@example.com  | 2018-05-13 19:45:30 |
+| 22 | Julie     | Dooley   | julie@example.com | 2018-05-13 19:45:30 |
++----+-----------+----------+-------------------+---------------------+
+22 rows in set (0.00 sec)
+```
+
+###12、MySQL Delete
+
+```powershell
+<?php
+	$con=mysqli_connect("127.0.0.1","admin","123456","mydb");
+	// 检测连接
+	if (mysqli_connect_errno())
+	{
+		echo "连接失败: " . mysqli_connect_error();
+	}
+	mysqli_query($con,"DELETE FROM myguests WHERE firstname='John'");
+	mysqli_close($con);
+?>
+
+查询数据库：
+mysql> select * from myguests;
++----+-----------+----------+-------------------+---------------------+
+| id | firstname | lastname | email             | reg_date            |
++----+-----------+----------+-------------------+---------------------+
+|  3 | Mary      | Moe      | mary@example.com  | 2018-05-13 19:07:14 |
+|  4 | Julie     | Dooley   | julie@example.com | 2018-05-13 19:07:14 |
+|  6 | Mary      | Moe      | mary@example.com  | 2018-05-13 19:13:29 |
+|  7 | Julie     | Dooley   | julie@example.com | 2018-05-13 19:13:29 |
+|  9 | Mary      | Moe      | mary@example.com  | 2018-05-13 19:14:11 |
+| 10 | Julie     | Dooley   | julie@example.com | 2018-05-13 19:14:11 |
+| 12 | Mary      | Moe      | mary@example.com  | 2018-05-13 19:15:12 |
+| 13 | Julie     | Dooley   | julie@example.com | 2018-05-13 19:15:12 |
+| 15 | Mary      | Moe      | mary@example.com  | 2018-05-13 19:15:32 |
+| 16 | Julie     | Dooley   | julie@example.com | 2018-05-13 19:15:32 |
+| 18 | Mary      | Moe      | mary@example.com  | 2018-05-13 19:16:49 |
+| 19 | Julie     | Dooley   | julie@example.com | 2018-05-13 19:16:49 |
+| 21 | Mary      | Moe      | mary@example.com  | 2018-05-13 19:45:30 |
+| 22 | Julie     | Dooley   | julie@example.com | 2018-05-13 19:45:30 |
++----+-----------+----------+-------------------+---------------------+
+14 rows in set (0.00 sec)
+```
+
+## 二十三、PHP 数据库 ODBC
+
+###1、创建 ODBC 连接
+
+```powershell
+通过一个 ODBC 连接，您可以连接到您的网络中的任何计算机上的任何数据库，只要 ODBC 连接是可用的。
+
+这是创建到达 MS Access 数据库的 ODBC 连接的方法：
+   在控制面板中打开管理工具图标。
+   双击其中的数据源(ODBC)图标。
+   选择系统 DSN 选项卡。
+   点击系统 DSN 选项卡中的添加。
+   选择Microsoft Access Driver。点击完成。
+   在下一个界面，点击选择来定位数据库。
+   为数据库起一个数据源名(DSN)。
+   点击确定。
+
+win10 查找管理工具很困难，需要运用搜索工具才行,点开之后，进入 控制面板\系统和安全\管理工具\，再选中``
+```
+
+![](./pictures/mysql_odbc_cfg.png)
+
+![](./pictures/mysql_odbc_cfg_test.png)
+
+
+
+###2、ODBC 实例
+
+```powershell
+展示了如何首先创建一个数据库连接，接着创建一个结果集，然后在 HTML 表格中显示数据。
+但是多次尝试，都没有成功。这个问题至少挡住我半个小时。先跳过之
+```
+
+```
+<html>
+	<body>
+
+	<?php
+		echo 'odbc 连接 mysql 数据库进入测试!<br/>';
+		try {
+			echo 'trying...<br/>';
+			$conn = odbc_connect('test_odbc2', '', '','');
+			echo 'try finished...<br/>';
+		}
+		
+		catch (Exception $e)
+		{
+			echo 'Message: ' .$e->getMessage();
+		}
+		
+		echo 'odbc 连接 mysql 数据库，结果等待打印<br/>';
+		if (!$conn)
+		{
+			//exit("连接失败: " . $conn);
+			echo "连接失败.<br/>";
+		}
+		else
+		{
+			echo "连接成功.<br/>";
+		}
+		
+		echo 'odbc 连接 mysql 数据库成功<br/>';
+		
+		$sql="SELECT * FROM myguests";
+		$rs=odbc_exec($conn,$sql);
+
+		if (!$rs)
+		{
+			exit("SQL 语句错误");
+		}
+		echo "<table><tr>";
+		echo "<th>firstname</th>";
+		echo "<th>email</th></tr>";
+
+		while (odbc_fetch_row($rs))
+		{
+			$firstname = odbc_result($rs,"firstname");
+			$email     = odbc_result($rs,"email");
+			echo "<tr><td>$firstname</td>";
+			echo "<td>$email</td></tr>";
+		}
+		odbc_close($conn);
+		echo "</table>";
+	?>
+
+	</body>
+</html>
+```
+
+## 二十四、PHP XML Expat 解析器
+
+```
+
+```
+
+
+
+## 二十五、
+
+
+
+## 二十六、
+
+
+
+## 二十七、
 
 
 
