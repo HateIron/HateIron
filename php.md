@@ -4241,21 +4241,904 @@ win10 查找管理工具很困难，需要运用搜索工具才行,点开之后�
 
 ## 二十四、PHP XML Expat 解析器
 
+```powershell
+xml 文件内容如下：
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<note>
+	<to>Tove</to>
+	<from>Jani</from>
+	<heading>Reminder</heading>
+	<body>Don't forget me this weekend!</body>
+</note> 
 ```
 
+```powershell
+<?php
+	//Initialize the XML parser
+	$parser=xml_parser_create();
+
+	//Function to use at the start of an element
+	function start($parser,$element_name,$element_attrs)
+	{
+		switch($element_name)
+		{
+		case "NOTE":
+			echo "-- Note --<br>";
+			break;
+		case "TO":
+			echo "To: ";
+			break;
+		case "FROM":
+			echo "From: ";
+			break;
+		case "HEADING":
+			echo "Heading: ";
+			break;
+		case "BODY":
+			echo "Message: ";	
+		}
+	}
+
+	//Function to use at the end of an element
+	function stop($parser,$element_name)
+	{
+		echo "<br>";
+	}
+
+	//Function to use when finding character data
+	function char($parser,$data)
+	{
+		echo $data;
+	}
+
+	//Specify element handler
+	xml_set_element_handler($parser,"start","stop");
+
+	//Specify data handler
+	xml_set_character_data_handler($parser,"char");
+
+	//Open XML file
+	$fp=fopen("test.xml","r");
+
+	//Read data
+	while ($data=fread($fp,4096))
+	{
+		xml_parse($parser,$data,feof($fp)) or
+		die (sprintf("XML Error: %s at line %d",
+		xml_error_string(xml_get_error_code($parser)),
+		xml_get_current_line_number($parser)));
+	}
+
+	//Free the XML parser
+	xml_parser_free($parser);
+	fclose($fp);
+?> 
+
+浏览器输出：
+-- Note --
+To: Tove
+From: Jani
+Heading: Reminder
+Message: Don't forget me this weekend!
 ```
 
+## 二十五、PHP XML DOM
 
+```powershell
+W3C DOM 被分为不同的部分（Core, XML 和 HTML）和不同的级别（DOM Level 1/2/3）
 
-## 二十五、
+* Core DOM - 为任何结构化文档定义标准的对象集
+* XML DOM - 为 XML 文档定义标准的对象集
+* HTML DOM - 为 HTML 文档定义标准的对象集
 
+DOM 解析器是基于树的解析器。
+如：
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<from>Jani</from> 
 
+XML DOM 把上面的 XML 视为一个树形结构：
+    Level 1: XML 文档
+    Level 2: 根元素： <from>
+    Level 3: 文本元素： "Jani"
+```
 
-## 二十六、
+### 1、安装
 
+```powershell
+DOM XML 解析器函数是 PHP 核心的组成部分。无需安装就可以使用这些函数
+```
 
+### 2、例子
 
-## 二十七、
+```php
+//testDom.xml
 
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<note>
+	<to>Tove</to>
+	<from>Jani</from>
+	<heading>Reminder</heading>
+	<body>Don't forget me this weekend!</body>
+</note> 
+```
 
+```powershell
+<?php
+	$xmlDoc = new DOMDocument();
+	$xmlDoc->load("testDom.xml");
+	
+	//saveXML() 函数把内部 XML 文档放入一个字符串，这样我们就可以输出它
+	print $xmlDoc->saveXML();
+?> 
+
+浏览器输出：
+Tove Jani Reminder Don't forget me this weekend! 
+```
+
+```powershell
+//dom 遍历 xml 文件
+<?php
+    $xmlDoc = new DOMDocument();
+    $xmlDoc->load("testDom.xml");
+
+    $x = $xmlDoc->documentElement;
+    foreach ($x->childNodes AS $item)
+    {
+    	print $item->nodeName . " = " . $item->nodeValue . "<br>";
+    }
+?> 
+
+浏览器输出：
+#text =
+to = Tove
+#text =
+from = Jani
+#text =
+heading = Reminder
+#text =
+body = Don't forget me this weekend!
+#text = 
+```
+
+## 二十六、PHP SimpleXML
+
+### 1、实例
+
+```powershell
+// testDom.xml 在前面，搜索即得
+<?php
+    $xml=simplexml_load_file("testDom.xml");
+    print_r($xml);
+?>
+浏览器输出：
+SimpleXMLElement Object ( [to] => Tove [from] => Jani [heading] => Reminder [body] => Don't forget me this weekend! ) 
+```
+
+### 2、实例2，输出每个元素的值
+
+```powershell
+<?php
+	$xml=simplexml_load_file("testDom.xml");
+	echo $xml->to . "<br>";
+	echo $xml->from . "<br>";
+	echo $xml->heading . "<br>";
+	echo $xml->body;
+?>
+
+浏览器输出：
+Tove
+Jani
+Reminder
+Don't forget me this weekend!
+```
+
+###3、实例3，输出每个子节点的元素名称和数据：
+
+```powershell
+<?php
+	$xml=simplexml_load_file("testDom.xml");
+	echo $xml->getName() . "<br>";
+	 
+	foreach($xml->children() as $child)
+	{
+		echo $child->getName() . ": " . $child . "<br>";
+	}
+?>
+
+浏览器输出：
+note
+to: Tove
+from: Jani
+heading: Reminder
+body: Don't forget me this weekend!
+```
+
+### 4、simpleXML 手册
+
+```http
+http://www.runoob.com/php/php-ref-simplexml.html
+```
+
+## 二十七、AJAX 与 PHP
+
+> html 代码：
+
+```powershell
+<html>
+<head>
+<script>
+function showHint(str)
+{
+    if (str.length==0)
+    { 
+        document.getElementById("txtHint").innerHTML="";
+        return;
+    }
+    if (window.XMLHttpRequest)
+    {
+        // IE7+, Firefox, Chrome, Opera, Safari 浏览器执行的代码
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {    
+        //IE6, IE5 浏览器执行的代码
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+            document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
+        }
+    }
+    xmlhttp.open("GET","gethint.php?q="+str,true);
+    xmlhttp.send();
+}
+</script>
+</head>
+<body>
+
+<p><b>在输入框中输入一个姓名:</b></p>
+<form> 
+姓名: <input type="text" onkeyup="showHint(this.value)">
+</form>
+<p>返回值: <span id="txtHint"></span></p>
+
+</body>
+</html>
+```
+
+> 相应的  gethint.php：
+
+```powershell
+<?php
+// 将姓名填充到数组中
+$a[]="Anna";
+$a[]="Brittany";
+$a[]="Cinderella";
+$a[]="Diana";
+$a[]="Eva";
+$a[]="Fiona";
+$a[]="Gunda";
+$a[]="Hege";
+$a[]="Inga";
+$a[]="Johanna";
+$a[]="Kitty";
+$a[]="Linda";
+$a[]="Nina";
+$a[]="Ophelia";
+$a[]="Petunia";
+$a[]="Amanda";
+$a[]="Raquel";
+$a[]="Cindy";
+$a[]="Doris";
+$a[]="Eve";
+$a[]="Evita";
+$a[]="Sunniva";
+$a[]="Tove";
+$a[]="Unni";
+$a[]="Violet";
+$a[]="Liza";
+$a[]="Elizabeth";
+$a[]="Ellen";
+$a[]="Wenche";
+$a[]="Vicky";
+
+//从请求URL地址中获取 q 参数
+$q=$_GET["q"];
+
+//查找是否由匹配值， 如果 q>0
+if (strlen($q) > 0)
+{
+    $hint="";
+    for($i=0; $i<count($a); $i++)
+    {
+        if (strtolower($q)==strtolower(substr($a[$i],0,strlen($q))))
+        {
+            if ($hint=="")
+            {
+                $hint=$a[$i];
+            }
+            else
+            {
+                $hint=$hint." , ".$a[$i];
+            }
+        }
+    }
+}
+
+// 如果没有匹配值设置输出为 "no suggestion" 
+if ($hint == "")
+{
+    $response="no suggestion";
+}
+else
+{
+    $response=$hint;
+}
+
+//输出返回值
+echo $response;
+?>
+```
+
+> 实际效果：
+
+![](./pictures/ajax_php.png)
+
+## 二十八、AJAX 与 MySQL
+
+> mysql 源文件 websites.sql ：
+
+```sql
+/*
+ Navicat MySQL Data Transfer
+
+ Source Server         : 127.0.0.1
+ Source Server Version : 50621
+ Source Host           : localhost
+ Source Database       : RUNOOB
+
+ Target Server Version : 50621
+ File Encoding         : utf-8
+
+ Date: 05/18/2016 11:44:07 AM
+*/
+
+SET NAMES utf8;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+--  Table structure for `websites`
+-- ----------------------------
+DROP TABLE IF EXISTS `websites`;
+CREATE TABLE `websites` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` char(20) NOT NULL DEFAULT '' COMMENT '站点名称',
+  `url` varchar(255) NOT NULL DEFAULT '',
+  `alexa` int(11) NOT NULL DEFAULT '0' COMMENT 'Alexa 排名',
+  `country` char(10) NOT NULL DEFAULT '' COMMENT '国家',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `websites`
+-- ----------------------------
+BEGIN;
+INSERT INTO `websites` VALUES ('1', 'Google', 'https://www.google.cm/', '1', 'USA'), ('2', '淘宝', 'https://www.taobao.com/', '13', 'CN'), ('3', '菜鸟教程', 'http://www.runoob.com/', '4689', 'CN'), ('4', '微博', 'http://weibo.com/', '20', 'CN'), ('5', 'Facebook', 'https://www.facebook.com/', '3', 'USA');
+COMMIT;
+
+SET FOREIGN_KEY_CHECKS = 1;
+```
+
+> 导入数据库：
+
+```powershell
+C:\Users\15900>mysql -h 127.0.0.1 -u admin -p
+Enter password: ******
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| my_abc             |
+| my_database_test   |
+| mydb               |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+9 rows in set (0.01 sec)
+
+mysql> use mydb;
+Database changed
+mysql> show tables;
++----------------+
+| Tables_in_mydb |
++----------------+
+| myguests       |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> source E:\phptools\ApacheServer\Apache\htdocs\study\websites.sql
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> show tables;
++----------------+
+| Tables_in_mydb |
++----------------+
+| myguests       |
+| websites       |
++----------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from websites;
++----+--------------+---------------------------+-------+---------+
+| id | name         | url                       | alexa | country |
++----+--------------+---------------------------+-------+---------+
+|  1 | Google       | https://www.google.cm/    |     1 | USA     |
+|  2 | 娣樺疂       | https://www.taobao.com/   |    13 | CN      |
+|  3 | 鑿滈笩鏁欑▼ | http://www.runoob.com/    |  4689 | CN      |
+|  4 | 寰?崥       | http://weibo.com/         |    20 | CN      |
+|  5 | Facebook     | https://www.facebook.com/ |     3 | USA     |
++----+--------------+---------------------------+-------+---------+
+5 rows in set (0.00 sec)
+
+mysql>
+```
+
+> 前端代码 ajax_php_mysql.html：
+
+```powershell
+<!DOCTYPE html> 
+<html> 
+<head> 
+<meta charset="utf-8"> 
+<title>菜鸟教程(runoob.com)</title> 
+<script>
+function showSite(str)
+{
+    if (str=="")
+    {
+        document.getElementById("txtHint").innerHTML="";
+        return;
+    } 
+    if (window.XMLHttpRequest)
+    {
+        // IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {
+        // IE6, IE5 浏览器执行代码
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+            document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
+        }
+    }
+    xmlhttp.open("GET","getsite_mysql.php?q="+str,true);
+    xmlhttp.send();
+}
+</script>
+</head>
+
+<body>
+	<form>
+		<select name="users" onchange="showSite(this.value)">
+			<option value="">选择一个网站:</option>
+			<option value="1">Google</option>
+			<option value="2">淘宝</option>
+			<option value="3">菜鸟教程</option>
+			<option value="4">微博</option>
+			<option value="5">Facebook</option>
+		</select>
+	</form>
+	<br>
+	<div id="txtHint"><b>网站信息显示在这里……</b></div>
+</body>
+</html>
+```
+
+> 后台代码 getsite_mysql.php：
+
+```php+HTML
+<?php
+	$q = isset($_GET["q"]) ? intval($_GET["q"]) : '';
+	 
+	if(empty($q)) {
+		echo '请选择一个网站';
+		exit;
+	}
+	 
+	$con = mysqli_connect('127.0.0.1','admin','123456');
+	if (!$con)
+	{
+		die('Could not connect: ' . mysqli_error($con));
+	}
+	// 选择数据库
+	mysqli_select_db($con,"mydb");
+	// 设置编码，防止中文乱码
+	mysqli_set_charset($con, "utf8");
+	 
+	$sql="SELECT * FROM Websites WHERE id = '".$q."'";
+	 
+	$result = mysqli_query($con,$sql);
+	 
+	echo "<table border='1'>
+		<tr>
+		<th>ID</th>
+		<th>网站名</th>
+		<th>网站 URL</th>
+		<th>Alexa 排名</th>
+		<th>国家</th>
+		</tr>";
+	 
+	while($row = mysqli_fetch_array($result))
+	{
+		echo "<tr>";
+		echo "<td>" . $row['id'] . "</td>";
+		echo "<td>" . $row['name'] . "</td>";
+		echo "<td>" . $row['url'] . "</td>";
+		echo "<td>" . $row['alexa'] . "</td>";
+		echo "<td>" . $row['country'] . "</td>";
+		echo "</tr>";
+	}
+	echo "</table>";
+	 
+	mysqli_close($con);
+?>
+```
+
+> 运行效果：
+
+![](./pictures/ajax_php_mysql.png)
+
+## 二十九、PHP 实例 - AJAX 与 XML
+
+> 用于实验的 cd_catalog.xml ：
+
+```xml
+<!-- Edited by XMLSpy® --><CATALOG><CD><TITLE>Empire Burlesque</TITLE><ARTIST>Bob Dylan</ARTIST><COUNTRY>USA</COUNTRY><COMPANY>Columbia</COMPANY><PRICE>10.90</PRICE><YEAR>1985</YEAR></CD><CD><TITLE>Hide your heart</TITLE><ARTIST>Bonnie Tyler</ARTIST><COUNTRY>UK</COUNTRY><COMPANY>CBS Records</COMPANY><PRICE>9.90</PRICE><YEAR>1988</YEAR></CD><CD><TITLE>Greatest Hits</TITLE><ARTIST>Dolly Parton</ARTIST><COUNTRY>USA</COUNTRY><COMPANY>RCA</COMPANY><PRICE>9.90</PRICE><YEAR>1982</YEAR></CD><CD><TITLE>Still got the blues</TITLE><ARTIST>Gary Moore</ARTIST><COUNTRY>UK</COUNTRY><COMPANY>Virgin records</COMPANY><PRICE>10.20</PRICE><YEAR>1990</YEAR></CD><CD><TITLE>Eros</TITLE><ARTIST>Eros Ramazzotti</ARTIST><COUNTRY>EU</COUNTRY><COMPANY>BMG</COMPANY><PRICE>9.90</PRICE><YEAR>1997</YEAR></CD><CD><TITLE>One night only</TITLE><ARTIST>Bee Gees</ARTIST><COUNTRY>UK</COUNTRY><COMPANY>Polydor</COMPANY><PRICE>10.90</PRICE><YEAR>1998</YEAR></CD><CD><TITLE>Sylvias Mother</TITLE><ARTIST>Dr.Hook</ARTIST><COUNTRY>UK</COUNTRY><COMPANY>CBS</COMPANY><PRICE>8.10</PRICE><YEAR>1973</YEAR></CD><CD><TITLE>Maggie May</TITLE><ARTIST>Rod Stewart</ARTIST><COUNTRY>UK</COUNTRY><COMPANY>Pickwick</COMPANY><PRICE>8.50</PRICE><YEAR>1990</YEAR></CD><CD><TITLE>Romanza</TITLE><ARTIST>Andrea Bocelli</ARTIST><COUNTRY>EU</COUNTRY><COMPANY>Polydor</COMPANY><PRICE>10.80</PRICE><YEAR>1996</YEAR></CD><CD><TITLE>When a man loves a woman</TITLE><ARTIST>Percy Sledge</ARTIST><COUNTRY>USA</COUNTRY><COMPANY>Atlantic</COMPANY><PRICE>8.70</PRICE><YEAR>1987</YEAR></CD><CD><TITLE>Black angel</TITLE><ARTIST>Savage Rose</ARTIST><COUNTRY>EU</COUNTRY><COMPANY>Mega</COMPANY><PRICE>10.90</PRICE><YEAR>1995</YEAR></CD><CD><TITLE>1999 Grammy Nominees</TITLE><ARTIST>Many</ARTIST><COUNTRY>USA</COUNTRY><COMPANY>Grammy</COMPANY><PRICE>10.20</PRICE><YEAR>1999</YEAR></CD><CD><TITLE>For the good times</TITLE><ARTIST>Kenny Rogers</ARTIST><COUNTRY>UK</COUNTRY><COMPANY>Mucik Master</COMPANY><PRICE>8.70</PRICE><YEAR>1995</YEAR></CD><CD><TITLE>Big Willie style</TITLE><ARTIST>Will Smith</ARTIST><COUNTRY>USA</COUNTRY><COMPANY>Columbia</COMPANY><PRICE>9.90</PRICE><YEAR>1997</YEAR></CD><CD><TITLE>Tupelo Honey</TITLE><ARTIST>Van Morrison</ARTIST><COUNTRY>UK</COUNTRY><COMPANY>Polydor</COMPANY><PRICE>8.20</PRICE><YEAR>1971</YEAR></CD><CD><TITLE>Soulsville</TITLE><ARTIST>Jorn Hoel</ARTIST><COUNTRY>Norway</COUNTRY><COMPANY>WEA</COMPANY><PRICE>7.90</PRICE><YEAR>1996</YEAR></CD><CD><TITLE>The very best of</TITLE><ARTIST>Cat Stevens</ARTIST><COUNTRY>UK</COUNTRY><COMPANY>Island</COMPANY><PRICE>8.90</PRICE><YEAR>1990</YEAR></CD><CD><TITLE>Stop</TITLE><ARTIST>Sam Brown</ARTIST><COUNTRY>UK</COUNTRY><COMPANY>A and M</COMPANY><PRICE>8.90</PRICE><YEAR>1988</YEAR></CD><CD><TITLE>Bridge of Spies</TITLE><ARTIST>T'Pau</ARTIST><COUNTRY>UK</COUNTRY><COMPANY>Siren</COMPANY><PRICE>7.90</PRICE><YEAR>1987</YEAR></CD><CD><TITLE>Private Dancer</TITLE><ARTIST>Tina Turner</ARTIST><COUNTRY>UK</COUNTRY><COMPANY>Capitol</COMPANY><PRICE>8.90</PRICE><YEAR>1983</YEAR></CD><CD><TITLE>Midt om natten</TITLE><ARTIST>Kim Larsen</ARTIST><COUNTRY>EU</COUNTRY><COMPANY>Medley</COMPANY><PRICE>7.80</PRICE><YEAR>1983</YEAR></CD><CD><TITLE>Pavarotti Gala Concert</TITLE><ARTIST>Luciano Pavarotti</ARTIST><COUNTRY>UK</COUNTRY><COMPANY>DECCA</COMPANY><PRICE>9.90</PRICE><YEAR>1991</YEAR></CD><CD><TITLE>The dock of the bay</TITLE><ARTIST>Otis Redding</ARTIST><COUNTRY>USA</COUNTRY><COMPANY>Atlantic</COMPANY><PRICE>7.90</PRICE><YEAR>1987</YEAR></CD><CD><TITLE>Picture book</TITLE><ARTIST>Simply Red</ARTIST><COUNTRY>EU</COUNTRY><COMPANY>Elektra</COMPANY><PRICE>7.20</PRICE><YEAR>1985</YEAR></CD><CD><TITLE>Red</TITLE><ARTIST>The Communards</ARTIST><COUNTRY>UK</COUNTRY><COMPANY>London</COMPANY><PRICE>7.80</PRICE><YEAR>1987</YEAR></CD><CD><TITLE>Unchain my heart</TITLE><ARTIST>Joe Cocker</ARTIST><COUNTRY>USA</COUNTRY><COMPANY>EMI</COMPANY><PRICE>8.20</PRICE><YEAR>1987</YEAR></CD></CATALOG>
+```
+
+前端代码：
+
+```powershell
+<html>
+<head>
+<script>
+function showCD(str)
+{
+    if (str=="")
+    {
+        document.getElementById("txtHint").innerHTML="";
+        return;
+    } 
+    if (window.XMLHttpRequest)
+    {
+        // IE7+, Firefox, Chrome, Opera, Safari 浏览器执行
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {
+        // IE6, IE5 浏览器执行
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+            document.getElementById("txtHint").innerHTML=xmlhttp.responseText;
+        }
+    }
+    xmlhttp.open("GET","getcd.php?q="+str,true);
+    xmlhttp.send();
+}
+</script>
+</head>
+<body>
+
+<form>
+Select a CD:
+<select name="cds" onchange="showCD(this.value)">
+<option value="">Select a CD:</option>
+<option value="Bob Dylan">Bob Dylan</option>
+<option value="Bonnie Tyler">Bonnie Tyler</option>
+<option value="Dolly Parton">Dolly Parton</option>
+</select>
+</form>
+<div id="txtHint"><b>CD info will be listed here...</b></div>
+
+</body>
+</html>
+```
+
+相应的 php 代码：
+
+```powershell
+<?php
+$q=$_GET["q"];
+
+$xmlDoc = new DOMDocument();
+$xmlDoc->load("cd_catalog.xml");
+
+$x=$xmlDoc->getElementsByTagName('ARTIST');
+
+for ($i=0; $i<=$x->length-1; $i++)
+{
+    // 处理元素节点
+    if ($x->item($i)->nodeType==1)
+    {
+        if ($x->item($i)->childNodes->item(0)->nodeValue == $q)
+        {
+            $y=($x->item($i)->parentNode);
+        }
+    }
+}
+
+$cd=($y->childNodes);
+
+for ($i=0;$i<$cd->length;$i++)
+{ 
+    // 处理元素节点
+    if ($cd->item($i)->nodeType==1)
+    {
+        echo("<b>" . $cd->item($i)->nodeName . ":</b> ");
+        echo($cd->item($i)->childNodes->item(0)->nodeValue);
+        echo("<br>");
+    }
+}
+?>
+```
+
+实际运行效果：
+
+![](./pictures/php_ajax_xml.png)
+
+## 三十、 AJAX 实时搜索
+
+```powershell
+ XML 文件（links.xml）中进行查找. XML 文件内容如下：
+```
+
+```html
+<pages><link><title>HTML a 标签</title><url>http://www.runoob.com/tags/tag-a.html</url></link><link><title>HTML br 标签</title><url>http://www.runoob.com/tags/tag-br.html</url></link><link><title>CSS background 属性</title><url>http://www.runoob.com/cssref/css3-pr-background.html</url></link><link><title>CSS border 属性</title><url>http://www.runoob.com/cssref/pr-border.html</url></link><link><title>JavaScript Date 对象</title><url>http://www.runoob.com/jsref/jsref-obj-date.html</url></link><link><title>JavaScript Array 对象</title><url>http://www.runoob.com/jsref/jsref-obj-array.html</url></link></pages>
+```
+
+html 代码如下：
+
+```html
+<html>
+    <head>
+        <script>
+        function showResult(str)
+        {
+            if (str.length==0)
+            { 
+                document.getElementById("livesearch").innerHTML="";
+                document.getElementById("livesearch").style.border="0px";
+                return;
+            }
+            if (window.XMLHttpRequest)
+            {// IE7+, Firefox, Chrome, Opera, Safari 浏览器执行
+                xmlhttp=new XMLHttpRequest();
+            }
+            else
+            {// IE6, IE5 浏览器执行
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange=function()
+            {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    document.getElementById("livesearch").innerHTML=xmlhttp.responseText;
+                    document.getElementById("livesearch").style.border="1px solid #A5ACB2";
+                }
+            }
+            xmlhttp.open("GET","livesearch.php?q="+str,true);
+            xmlhttp.send();
+        }
+        </script>
+    </head>
+    <body>
+
+        <form>
+        <input type="text" size="30" onkeyup="showResult(this.value)">
+        <div id="livesearch"></div>
+        </form>
+
+    </body>
+</html>
+```
+
+后台代码 livesearch.php ：
+
+```powershell
+<?php
+$xmlDoc=new DOMDocument();
+$xmlDoc->load("ajax_xml_search.xml");
+
+$x=$xmlDoc->getElementsByTagName('link');
+
+// 从 URL 中获取参数 q 的值
+$q=$_GET["q"];
+
+// 如果 q 参数存在则从 xml 文件中查找数据
+if (strlen($q)>0)
+{
+    $hint="";
+    for($i=0; $i<($x->length); $i++)
+    {
+        $y=$x->item($i)->getElementsByTagName('title');
+        $z=$x->item($i)->getElementsByTagName('url');
+        if ($y->item(0)->nodeType==1)
+        {
+            // 找到匹配搜索的链接
+            if (stristr($y->item(0)->childNodes->item(0)->nodeValue,$q))
+            {
+                if ($hint=="")
+                {
+                    $hint="<a href='" . 
+                    $z->item(0)->childNodes->item(0)->nodeValue . 
+                    "' target='_blank'>" . 
+                    $y->item(0)->childNodes->item(0)->nodeValue . "</a>";
+                }
+                else
+                {
+                    $hint=$hint . "<br /><a href='" . 
+                    $z->item(0)->childNodes->item(0)->nodeValue . 
+                    "' target='_blank'>" . 
+                    $y->item(0)->childNodes->item(0)->nodeValue . "</a>";
+                }
+            }
+        }
+    }
+}
+
+// 如果没找到则返回 "no suggestion"
+if ($hint=="")
+{
+    $response="no suggestion";
+}
+else
+{
+    $response=$hint;
+}
+
+// 输出结果
+echo $response;
+?>
+```
+
+运行效果：
+
+![](./pictures/ajax_xml_search.png)
+
+##三十一、php ajax 投票
+
+### 1、间端代码 **poll.html** 
+
+```powershell
+<html>
+<head>
+<meta charset="utf-8">
+<title>菜鸟教程(runoob.com)</title>
+<script>
+function getVote(int) {
+  if (window.XMLHttpRequest) {
+    // IE7+, Firefox, Chrome, Opera, Safari 执行代码
+    xmlhttp=new XMLHttpRequest();
+  } else {
+    // IE6, IE5 执行代码
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xmlhttp.onreadystatechange=function() {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+      document.getElementById("poll").innerHTML=xmlhttp.responseText;
+    }
+  }
+  xmlhttp.open("GET","poll_vote.php?vote="+int,true);
+  xmlhttp.send();
+}
+</script>
+</head>
+<body>
+
+<div id="poll">
+<h3>你喜欢 PHP 和 AJAX 吗?</h3>
+<form>
+是:
+<input type="radio" name="vote" value="0" onclick="getVote(this.value)">
+<br>否:
+<input type="radio" name="vote" value="1" onclick="getVote(this.value)">
+</form>
+</div>
+
+</body>
+</html>
+```
+
+### 2、后台 php 代码
+
+```powershell
+<?php
+$vote = htmlspecialchars($_REQUEST['vote']);
+
+// 获取文件中存储的数据
+$filename = "poll_result.txt";
+$content = file($filename);
+
+// 将数据分割到数组中
+$array = explode("||", $content[0]);
+$yes = $array[0];
+$no = $array[1];
+
+if ($vote == 0)
+{
+  $yes = $yes + 1;
+}
+
+if ($vote == 1)
+{
+  $no = $no + 1;
+}
+
+// 插入投票数据
+$insertvote = $yes."||".$no;
+$fp = fopen($filename,"w");
+fputs($fp,$insertvote);
+fclose($fp);
+?>
+
+<h2>结果:</h2>
+<table>
+  <tr>
+  <td>是:</td>
+  <td>
+  <span style="display: inline-block; background-color:green;
+      width:<?php echo(100*round($yes/($no+$yes),2)); ?>px;
+      height:20px;" ></span>
+  <?php echo(100*round($yes/($no+$yes),2)); ?>%
+  </td>
+  </tr>
+  <tr>
+  <td>否:</td>
+  <td>
+  <span style="display: inline-block; background-color:red;
+      width:<?php echo(100*round($no/($no+$yes),2)); ?>px;
+      height:20px;"></span>
+  <?php echo(100*round($no/($no+$yes),2)); ?>%
+  </td>
+  </tr>
+</table>
+```
+
+代码原来如此简单，效果却十分漂亮：
+
+![](./pictures/php_ajax_poll_1.png)
+
+![](./pictures/php_ajax_poll_2.png)
 
