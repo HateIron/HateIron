@@ -5142,3 +5142,312 @@ fclose($fp);
 
 ![](./pictures/php_ajax_poll_2.png)
 
+## 三十二、html5 + css 实现一个个人主页
+
+###1、css 内容如下：
+
+```css
+*{
+    margin:0px;
+    padding:0px;
+}
+
+body{
+    background:#e5e6d0;
+}
+
+#header,#menu,#banner,#main,#footer{
+    margin:0px auto;
+    width:1200px;
+}
+#header{
+    height:100px;
+    background:#F0FFFF;
+}
+#header h1{
+    float:left;
+    margin-top:20px;
+}
+#header h1 a{
+    /*margin:0px auto;可以使元素居中显示*/
+    width:600px;
+    height:100px;
+    display:block;
+    color:#996600;
+    text-align:center;
+    text-decoration:none;
+}
+#header ul{
+    float:left;
+    padding:50px 0px 0px 300px;
+    list-style:none;
+}
+#header ul li{
+    float:left;
+    padding:0px 20px;
+}
+#header ul li a{
+    color:#ff6600;
+    text-decoration:none;
+    font-size:20px;
+}
+#header ul li a:hover{
+    color:#000;
+    text-decoration:underline;
+}
+/* 万能的清除*/
+.clear{
+    clear:both;
+}
+#menu{
+    padding-top:3px;
+}
+#menu ul{
+    list-style:none;
+}
+#menu ul li{
+    float:left;
+}
+#menu ul li a{
+    color:#660066;
+    text-decoration:none;
+    text-align:center;
+    display:block;/*这句使center起作用*/
+    width:135px;
+    height:56px;
+    line-height:56px;
+    font-size:25px;
+}
+#menu ul li a:hover{
+    background:#177cb7;
+}
+#menu ul li ul{
+    display:none;
+    width:135px;
+    position:absolute;
+    background:#C0c0c0;
+}
+#menu ul li:hover ul{
+    display:block;
+}
+#menu ul li ul li{
+    width:135px;
+}
+#menu ul li ul li a{
+    width:135px;
+}
+#menu ul li ul li a:hover{
+    background:#BBFFFF;
+}
+
+#main{
+    padding:10px 10px;
+}
+#main .container{
+    width:900px;
+    float:left;
+}
+#main .container dl{
+    width:430px;
+    float:left;
+}
+#main .container dl h5,#main .product h5{
+    border-bottom:1px solid #000;
+    margin-bottom:15px;
+    font-size:25px;
+}
+#main .container dl h5 a{
+    margin:0 auto;
+    text-decoration:none;
+}
+#main .container dl dt{
+    float:left;
+    width:150px;
+}
+#main .container dl dt img{
+    border:1px solid #ccc;
+    width:150px;
+    height:250px;
+}
+#main .container dl.xuexiao{
+    margin-right:40px;
+}
+#main .container dl.xuexiao dd{
+    font-size:16px;
+    margin-left:25px;
+    float:left;
+    width:240px;
+    text-indent:2em;/*首行缩进*/
+}
+#main .container  dl.xinwen dd{
+    height:22px;
+    line-height:22px;
+    background:none;
+}
+#main .container dl.xinwen dd a{
+    color:#000000;
+    text-decoration:none;
+    padding-left:10px;
+}
+#main .container dl.xinwen dd span{
+    padding-left:10px;
+}
+#main .product{
+    padding-top:20px;
+}
+#main .product h5 a{
+    margin:0px auto;
+    text-decoration:none;
+}
+#main .product ul li{
+    float:left;
+    padding-left:10px;
+    list-style:none;
+}
+#main .product ul li a{
+    text-decoration:none;
+}
+#main .subMenu{
+    width:300px;
+    float:left;
+    margin:10px 0px;
+}
+#main .subMenu h5{
+    background:#19577c;
+    height:39px;
+    text-align:center;
+    color:#fff;
+    line-height:39px;
+}
+#main .subMenu ul li{
+    border-bottom:1px solid #d4d4d4;
+    background:#f1f1f1;
+    list-style:none;
+}
+#main .subMenu ul li a{
+    display:block;
+    text-align:center;
+    color:#000;
+    text-decoration:none;
+    background:none;
+    height:50px;
+    line-height:50px;
+    font-size:28px;
+}
+#main .subMenu ul li a:hover{
+    color:#177cb7;
+    background:none;
+}
+#footer{
+    background:#d1dce3;
+    height:50px;
+    line-height:50px;
+    font-size:25px;
+    text-align:center;
+}
+```
+
+### 2、html 代码如下：
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>博客首页</title>
+<link rel="stylesheet" type="text/css" href="mycss.css"> 
+</head>
+<body>
+    <div id="header">
+        <h1><a href="#">Xingzhui-###的博客</a></h1>
+        <ul>
+            <li><a href="#">设为首页</a></li>
+            <li><a href="#">加入收藏</a></li>
+        </ul>
+    </div>
+    <div id="menu" class="clear">
+        <ul>
+        <li><a href="#">一级菜单</a></li>
+        <li><a href="#">一级菜单</a>
+            <ul>
+                <li><a href="#">二级菜单1</a></li>
+                <li><a href="#">二级菜单2</a></li>
+                <li><a href="#">二级菜单3</a></li>
+                <li><a href="#">二级菜单4</a></li>
+            </ul>
+        </li>
+        <li><a href="#">一级菜单</a>
+            <ul>
+                <li><a href="#">二级菜单1</a></li>
+                <li><a href="#">二级菜单2</a></li>
+                <li><a href="#">二级菜单3</a></li>
+                <li><a href="#">二级菜单4</a></li>
+            </ul>
+        </li>
+        <li><a href="#">一级菜单</a></li>
+    </ul>
+    </div>
+    <div id="main" class="clear">
+        <div class="container">
+            <div class="news">
+                <dl class="xuexiao">
+                    <h5><a href="#">个人简介</a></h5>
+                    <dt><img src="mypic.jpg" alt="图片"></dt>
+                    <dd>各位领导同事好，我是来自###的###，
+                    十分荣幸来参加这次见面会。我毕业于###，
+                    获得硕士学位。我的家乡在###，一个具有悠久历史的城市
+                    我平时喜欢看看小说，浏览新闻，也喜欢四处去旅游，
+                    开阔自己的视野。运动方面，我喜欢打篮球，以前也擅长乒乓球，
+                    但是有段时间没有练习了。非常高兴能够和各位同事一起工作，
+                    请大家多多指教，更好的完成工作。</dd>
+                </dl>
+                <dl class="xinwen">
+                    <h5><a href="#">最新动态</a></h5>
+                    <dd>
+                        <a href="#">我也不知道在说什么你妹的！</a><span>2015-10-12</span>
+                    </dd>
+                    <dd>
+                        <a href="#">我也不知道在说什么你妹的！</a><span>2015-10-12</span>
+                    </dd>
+                    <dd>
+                        <a href="#">我也不知道在说什么你妹的！</a><span>2015-10-12</span>
+                    </dd>
+                    <dd>
+                        <a href="#">我也不知道在说什么你妹的！</a><span>2015-10-12</span>
+                    </dd>
+                </dl>
+            </div>
+            <div class="product clear">
+                <h5><a href="#">精彩教程</a></h5>
+                <ul>
+                <li><a href="#">这里要设置连接！</a></li>
+                <li><a href="#">这里要设置连接！</a></li>
+                <li><a href="#">这里要设置连接！</a></li>
+                <li><a href="#">这里要设置连接！</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="subMenu">
+            <h5>友情链接</h5>
+            <ul>
+                <li><a href="http://www.baidu.com" target="_blank">百度首页</a></li>
+                <li><a href="http://www.jd.com">京东首页</a></li>
+                <li><a href="http://www.runoob.com/">菜鸟教程</a></li>
+                <li><a href="http://mail.163.com">163邮箱</a></li>
+                <li><a href="http://www.cnblogs.com/xingzhui/">我的cnblog</a></li>
+                <li><a href="#">子菜单子菜单</a></li>
+                <li><a href="#">子菜单子菜单</a></li>
+                <li><a href="#">子菜单子菜单</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="footer" class="clear">
+        <p>联系我：<a href="#">mhzhang1989@163.com</a></p>
+    </div>
+</body>
+</html>
+```
+
+### 3、实际运行效果
+
+![](./pictures/html_css.png)
