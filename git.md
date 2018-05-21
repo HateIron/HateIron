@@ -381,6 +381,30 @@ ServerAdmin root@localhost
 
 ![](./pictures/browse_gitweb.png)
 
+## 六、真正的公司级 `git`项目管理工具[`GitLab`](https://git-scm.com/book/zh/v2/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-GitLab)
+
+### 1、简介
+
+```powershell
+虽然 GitWeb 相当简单。 但如果你正在寻找一个更现代，功能更全的 Git 服务器，这里有几个开源的解决方案可供你选择安装。 因为 GitLab 是其中最出名的一个，我们将它作为示例并讨论它的安装和使用。 这比 GitWeb 要复杂的多并且需要更多的维护，但它的确是一个功能更全的选择。
+```
+
+### 2、
+
+
+
+### 3、
+
+
+
+### 4、
+
+
+
+### 5、
+
+## 七、[`gerrit`搭建](https://blog.csdn.net/u012769691/article/details/50214825)
+
 
 
 
