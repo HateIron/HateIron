@@ -557,3 +557,89 @@
 
 
 
+## 二、[apache 官网讲解](https://wiki.archlinux.org/index.php/Apache_HTTP_Server_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#AH00534:_httpd:_Configuration_error:_No_MPM_loaded.)
+
+### 1、介绍
+
+```powershell
+Apache，是非常流行的Web服务器软件。通常和脚本语言比如 PHP，数据库 MySQL 一起工作，合称为 LAMP 栈(Linux, Apache, MySQL, PHP). 
+```
+
+### 2、配置
+
+Apache 配置文件位于 `/etc/httpd/conf`，主要的配置文件是 `/etc/httpd/conf/httpd.conf`, 此文件会引用其它文件。 
+
+用默认配置可以启动一个简单的服务，有用户访问时会提供目录 `/srv/http` 下的内容。 
+
+启动 `httpd.service` [systemd 服务](https://wiki.archlinux.org/index.php/Systemd#Using_units)，Apache 就会启动，从浏览器中访问 <http://localhost/> 会显示一个简单的索引页面。 
+
+```powershell
+启动 apache 服务器：
+[root@localhost] /usr/bin/systemctl start httpd.service
+
+本机访问：
+curl 127.0.0.1
+
+其它电脑访问此 apache WEB 服务，报错。
+关闭防火墙：
+[root@localhost wishcell]# setenforce 0
+[root@localhost wishcell]# systemctl stop firewalld.service
+
+再次访问，成功
+```
+
+
+
+### 3、高级选项
+
+请参考 [Apache 完整 directives 配置选项](https://httpd.apache.org/docs/trunk/mod/directives.html) 和 [directive 快速参考](https://httpd.apache.org/docs/trunk/mod/quickreference.htm). 
+
+请关注一下 `/etc/httpd/conf/httpd.conf` 中的下面选项: 
+
+```powershell
+User http
+    出于安全原因，Apache以root用户身份启动(直接的或者通过启动脚本)后将立即切换为 					/etc/httpd/conf/httpd.conf中指定的 UID，默认配置是 http, 安装时会自动创建此用户。
+```
+
+```powershell
+Listen 80
+    Apache 监听的端口，要被外网访问，请在路由器开放此端口。
+    如果是本地调试用，可以用下面命令设置为仅供本地访问 Listen 127.0.0.1:80
+```
+
+```powershell
+ServerAdmin you@example.com
+	管理员的电子邮件，在错误页面会展示给用户
+```
+
+```powershell
+DocumentRoot "/srv/http"
+	网页的目录.
+    如果需要可以修改这个目录，请记得同步修改 <Directory "/srv/http"> 和DocumentRoot,否则访问新位置时可能出现 403 Error (缺少权限)问题。不要忘记修改 Require all denied 行到 Require all granted，否则会出现 403 Error. DocumentRoot 目录及其父目录必须有可执行权限，这样再能被服务器进程使用的用户访问到(用 chmod o+x /path/to/DocumentRoot 设置)，否则会出现 403 Error.
+```
+
+```powershell
+AllowOverride None
+	在 <Directory> 段落中的这个设置会让 Apache 完全忽略 .htaccess 文件。
+	从 Apache 2.4，这个设置已经是默认的，所以如果要使用 .htaccess，亲允许Overide. 如果要在 .htaccess 中使用 mod_rewrite 或其它设置, 可以指定哪些目录允许覆盖服务器配置。更多信息请访问 Apache 文档.
+```
+
+```powershell
+可以用 apachectl configtest 检查配置文件是否存在问题。
+如：
+[wishcell@localhost ~]$ apachectl configtest
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using localhost.localdomain. Set the 'ServerName' directive globally to suppress this message
+Syntax OK
+[wishcell@localhost ~]$
+```
+
+### 
+
+## 三、`apache`配置多个虚拟机
+
+```powershell
+多番尝试未果，被阻一天，状态不佳
+https://wiki.archlinux.org/index.php/Apache_HTTP_Server_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#AH00534:_httpd:_Configuration_error:_No_MPM_loaded.
+虽然文档很官方正式，但是质量仍然不行，说的不明不白
+```
+
