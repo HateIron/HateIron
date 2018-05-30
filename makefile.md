@@ -480,3 +480,220 @@ find ./ -type f | xargs touch
 
 ## 十二、 'patsubst'讲解
 
+
+
+##十三、`Makefile`级联
+
+```makefile
+CurrDir=$(shell pwd)
+IndependentModuleDir=$(CurrDir)
+
+SUBDIRS=${IndependentModuleDir}/prj1  \
+        ${IndependentModuleDir}/prj2  \
+        ${IndependentModuleDir}/prj3  \
+        ${IndependentModuleDir}/prj4
+ 
+ LibDir = ${IndependentModuleDir}/../libs
+ 
+ all:
+ 	@list='$(SUBDIRS);' \
+ 	for subdir in $$list; do \
+ 		echo "Clean before make in $$subdir"; \
+ 		(cd $$subdir && rm Debug rf);
+ 	done; \
+ 	for subdir in $$list; do \
+ 		echo "now is making $$subdir"; \
+ 		(cd $$subdir && mkdir Debug && make -j4); \
+ 		done;
+
+.PHONY: clean
+clean:
+	@list='$(SUBDIR)'; \
+	for subdir in $$list; do \
+		echo "clean in $$subdir"; \
+		(cd $$subdir && rm Debug -rf); \
+	done; \
+	cd ${LibDir} && rm *.a -rf
+```
+
+## 十四、项目中使用独立模块
+
+```powershell
+目录结构：
+PrjDir
+|
+|---source
+|     |---file_1.c
+|     |---file_2.c
+|     |---file_3.c
+|
+|---include
+|     |---file_1.h
+|     |---file_2.h
+|     |---file_3.h
+|
+|---unittest
+|     |---case
+|     |    |---case1.cpp
+|     |    |---case2.cpp
+|     |    |---case3.cpp
+|     |
+|     |---stub
+|     |    |---source
+|     |    |     |---stub.c
+|     |    |     |---main.c
+|     |    |
+|     |    |---include
+|     |          |---stub.h
+|     | 
+|     |---stub
+|          |---source
+|                |---stub.c
+|                |---main.c
+| 
+| ---independModule
+      |---libs
+           |---module_1.a
+           |---module_2.a
+
+还有独立提供的模块 include 目录
+```
+
+
+
+```makefile
+GTEST_DIR = ./independentModule/gtest_1.7.0
+CXX = gcc
+LD  = g++
+
+CXXFLAGS += -g3
+
+#ifdef AAA
+	CXXFLAGS += -D_INSTALL_AAA_MACRO
+#endif
+
+#ifdef BBB
+	CXXFLAGS += -D_INSTALL_BBB_MACRO
+#endif
+
+CXXFLAGS += -D_INSTALL_SOME_MACRO
+CXXFLAGS += -fprofile-arcs -ftest-coverage #支持 gcov 
+CXXFLAGS += -gdwarf-2 -Bdynami -lgcc_s
+
+OS_NAME = $(shell uname -o)
+
+Local_OS_Name = $(shell echo $(OS_NAME) | tr '[A-Z]' '[a-z]')
+SED_TOOL = 
+RM_TOOL  = 
+RM_CMD   =
+
+# find keyword "linux"
+ifeq ($(findstring gnu/linux, $(Local_OS_Name)), gnu/linux)
+	SED_TOOL = sed
+	RM_TOOL  = rm
+	RM_CMD   = rm -rf
+elif ($(findstring cygwin, $(Local_OS_Name)), cygwin)
+	SED_TOOL = sed
+	RM_TOOL  = rm
+	RM_CMD   = rm -rf
+else
+	SED_TOOL = c:/MINGW/msys/10/bin/sed
+	RM_TOOL  = c:/MINGW/msys/10/bin/rm
+    RM_CMD   = del /q/f
+endif
+
+LDFLAGS = -o
+OBJ_DIR = ./Debug
+LIT_DIR = ./libs
+LIBS    = -lgcov -lpthread
+LIBS   += -ftest-coverage
+PrjDir  = ..
+
+INCS    = -I./stub/include  \
+		 -I./independentModule/module_1/include \
+		 -I./independentModule/module_2/include \
+		 -I./independentModule/module_3/include \
+		 ...
+		 -I./independentModule/module_n/include \
+		 -I$(GTEST_DIR)/include                 \
+		 -I$(GTEST_DIR)/include/gtest           \
+		 -I$(GTEST_DIR)/include/gtest/internal  \
+		 -I$(PrjDir)/include
+		 
+vpath  %.c    $(PrjDir)/unittest/stub/source
+vpath  %.c    $(PrjDir)/source
+vpath  %.cpp  $(PrjDir)/unittest/stub/source
+vpath  %.cpp  $(PrjDir)/unittest/case
+
+#生成目标文件，即可执行文件
+EXE_NAME = ut
+
+SRC = $(notdir $(wildcard $(PrjDir)/source/file_1.c))    \
+	  $(notdir $(wildcard $(PrjDir)/source/file_2.c))    \
+	  $(notdir $(wildcard $(PrjDir)/source/file_3.c))    \
+	  ......
+	  $(notdir $(wildcard $(PrjDir)/source/file_n.c))    \
+	  $(notdir $(wildcard $(PrjDir)/unittest/stub/source/*.c)) 
+SRCC =$(notdir $(wildcard  $(PrjDir)/unittest/stub/source/*.cpp))  \
+	  $(notdir $(wildcard  $(PrjDir)/unittest/case/*.cpp))
+
+# 将全部 .c 替换得到 .o
+OBJS = $(patsubst %.c,$(OBJ_DIR)/%.o, $(SRC)) \
+	   $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SRCC))
+#等同写法如下：
+# OBJS = $(SRC:%.c=$(OBJ_DIR)/%.O) $(SRCC:%.cpp=$(OBJ_DIR)/%.O)
+
+DEPENDENT := $(SRC:%.C=$(OBJ_DIR)/%.c.d) \
+			$(SRCC:%.cpp=$(OBJ_DIR)/%.cpp.d)
+# 此段同样可采用 $(patsubst) 来实现
+A_Modules = $(wildcard $(LIB_DIR)/%.a)
+
+all: ${EXE_NAME}
+
+${EXE_NAME}: {OBJS}
+	${LD} ${LD_FLAGS} $@ ${OBJS} ${A_Modules} ${LIBS}
+	
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
+$(OBJ_DIR)/%.o : %.cpp | $(OBJ_DIR)
+	${LD} -c ${CXXFLAGS} ${INCS} $< -o $@
+
+$(OBJ_DIR)/%.o : %c | $(OBJ_DIR)
+	${LD} -c ${CXXFLAGS} ${INCS} $< -o $@
+
+#注释：这一段代码极难理解，主要是不常接触
+# 一、 $(CXX) -MM ${CXXFLAGS} ${INCS} $< > $@.$$$$; 
+#	  这行的作用，-MM把编译时包含的头文件细节保存到 $@.$$$$ 中，即 aa.c.d.1234 中，$@表示目标文件，即文件名 .c.d, .$$$$表示四个数字，这是个临时文件
+# 二、  $(SED_TOOL) 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; 
+#     这一行更难理解。首先，把 $@.$$$$  的内容，通过重管道读到内存，然后通过 sed 工具，对其内容进行正则表达式处理，将文本中的 （等验证）等内容变成 "a.cd : " 字样
+# 三、$(RM_TOOL) -f $@.$$$$ 删除中间文件
+$(OBJ_DIR)/%.c.d : %c | $(OBJ_DIR)
+	$(CXX) -MM ${CXXFLAGS} ${INCS} $< > $@.$$$$;  \
+	$(SED_TOOL) 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@;  \
+	$(RM_TOOL) -f $@.$$$$
+	
+$(OBJ_DIR)/%.cpp.d : %cpp | $(OBJ_DIR)
+	$(CXX) -MM ${CXXFLAGS} ${INCS} $< > $@.$$$$;  \
+	$(SED_TOOL) 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@;  \
+	$(RM_TOOL) -f $@.$$$$
+	
+ifneq "$(MAKECMDGOALS)" "clean"
+sinclude ${DEPEND}
+endif
+
+.PHONY: clean
+	@$(RM_CMD) $(OBJ_DIR)/* -rf
+	
+.PHONY: show_os
+	echo $(findstring gnu/linux $(Local_OS_Name))
+```
+
+
+
+
+
+
+
+
+

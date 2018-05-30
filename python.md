@@ -187,5 +187,13 @@ cardname(      lo) address:127.0.0.1
 cardname(  virbr0) address:192.168.122.1
 ```
 
+##十一、python 一键生成目录框架
+
+```python
+# --*-- coding: utf-8 --*--
+import os
+html = 
+```
+
 
 

@@ -53,13 +53,13 @@ AppML 是应用模式语言（ Application Modeling Language）。
 任何人都可以下载 <AppML> ，下载后可以修改基本来创建我们自己的专业web应用。 
 ```
 
-| 文件名                       | 描述               |
-| ---------------------------- | ------------------ |
-| appml.php (或者.htmlx)       | <AppML> 服务端脚本 |
-| appml.css                    | <AppML>样式文件    |
-| appml.js                     | <AppML> 浏览器脚本 |
-| appml_config.php (or .htmlx) | <AppML> 本地配置   |
-| Images (文件夹)              | <AppLM> 图片样式   |
+| 文件名                       | 描述                 |
+| ---------------------------- | -------------------- |
+| appml.php (或者.htmlx)       | `<AppML> `服务端脚本 |
+| appml.css                    | `<AppML>`样式文件    |
+| appml.js                     | `<AppML>` 浏览器脚本 |
+| appml_config.php (or .htmlx) | `<AppML>` 本地配置   |
+| Images (文件夹)              | `<AppLM>` 图片样式   |
 
 ### 2、解压使用之
 

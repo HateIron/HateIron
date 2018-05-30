@@ -468,5 +468,24 @@ sed -i 's/^M//g' filename
 #^M 可用 /r 代替
 ```
 
+## 7、vim 打开文件后，指定行范围替换
+
+```powershell
+将101~130行中的 "../source" 替换成 "$(PrjDir)".
+103s后面的s表示替换，最后的 g 表示全部范围内
+:101,130s/..\/source/$(PrjDir)/g
+```
+
+## 8、vim 打开二进制文件后，以二进制方式查看
+
+```powershell
+此关键字可以在windows gvim 的菜单中快捷查看 
+:%!xxd
+```
+
+
+
+
+
 
 
