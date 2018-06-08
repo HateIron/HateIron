@@ -98,31 +98,15 @@ Note that the leading “`origin/`” was omitted from the branch name given to 
 
 The repository is now ready to be used just the same as though it had been cloned directly from a fetch URL.
 
-## 二、从官网获取源码包，很小，只有620多K，但是为何家中无法下载
 
-> ### http://download.savannah.gnu.org/releases/tinycc/
->
-> ```shell
-> Index of /releases/tinycc/
->
-> File Name  ↓ 	File Size  ↓ 	Date  ↓ 
-> Parent directory/	-	-
-> tcc-0.9.24-win32-bin.zip	274K	31-Mar-2008 20:54
-> tcc-0.9.24.tar.bz2	356K	31-Mar-2008 20:52
-> tcc-0.9.25-win32-bin.zip	280K	18-May-2009 13:14
-> tcc-0.9.25.tar.bz2	374K	18-May-2009 13:27
-> tcc-0.9.26-win32-bin.zip	386K	15-Feb-2013 15:22
-> tcc-0.9.26-win64-bin.zip	389K	15-Feb-2013 15:24
-> tcc-0.9.26.tar.bz2	514K	15-Feb-2013 15:11
-> tcc-0.9.26.tar.bz2.checksums	158	16-Feb-2013 10:46
-> tcc-0.9.26.tar.bz2.sig	543	16-Feb-2013 10:45
-> tcc-0.9.27-win32-bin.zip	472K	17-Dec-2017 08:27
-> tcc-0.9.27-win64-bin.zip	478K	17-Dec-2017 08:27
-> tcc-0.9.27.tar.bz2	620K	17-Dec-2017 08:27
-> Downloads will redirect to your
-> ```
->
-> 
+
+## 二、路径
+
+```powershell
+一、玩客云 > 分区1 > onecloud > tools > tcc-0.9.27.tar.bz2
+二、http://download.savannah.gnu.org/releases/tinycc/
+三、http://ftp.twaren.net/Unix/NonGNU/tinycc/
+```
 
 
 
