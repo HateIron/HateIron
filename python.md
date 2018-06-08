@@ -191,9 +191,185 @@ cardname(  virbr0) address:192.168.122.1
 
 ```python
 # --*-- coding: utf-8 --*--
-import os
-html = 
+import os,sys
+
+html = ('<!DOCTYPE html>\n' 
+        '\n' 
+        '<html>\n'
+        '{navigation}\n'
+        '</html>\n')
+
+details_header = (
+        '<details class="menu" close>\n'
+		'<summary>{content}</summary>\n'
+		'<ul>\n'
+		'\n')
+
+details_footer = (
+        '<ul>\n'
+		'</details>\n')
+		
+li =  '<li><a href="{link}" target="showframe"> {content} </a></li>\n'
+        		
+print(html)
+print(details_header)
+print(details_footer)
+print(li)
+
+def file_scan(path):
+    content = ''
+    files   = os.listdir(path)
+    for file in files:
+        file_path = os.path.join(path, file)
+        if os.path.isdir(file_path):
+            content += str(details_header).format(content=file)
+            content += file_scan(file_path)
+            content += str(details_footer)
+        else:
+             content += str(li).format(link=file_path,content=file)       
+    print ('-------------------------------------------')
+    print (path)
+    print (content)
+    return content    
+    
+#if __name__='__main__':
+content = str(details_header).format(content='root')    
+content+= file_scan('root')
+content+= str(details_footer)
+text    = str(html).format(navigation = content)
+with open('navigation.html', 'w') as f:
+    f.writelines(text)    
 ```
+
+
+
+## 十二、python 数据模块
+
+### 1、python 数字 log10 方法，返回 x(x>0)基数为10的对数
+
+```python
+import math
+math.log10(x)
+```
+
+## 十三、python 二进制、整数相互转化模块
+
+### 1、整数转二进制
+
+```python
+如 bin(10)果返回字符中 '0b1010'
+只留下 0、1，将 '0b'去除：
+	bin(number).replace('0b','')
+或者：
+    bin(number)[2:]
+    
+>>>bin(10)
+'0b1010'
+```
+
+### 2、二进制转整数
+
+```python
+>>>int(t[2:],2)
+10
+```
+
+### 3、使用 struct 模块处理二进制(pack 和 unpack 用法)
+
+```powershell
+在 十四 的例子中
+```
+
+
+
+##十四、python 图形显示
+
+```python
+import numpy as np
+import matplotlib.pylot as plt
+import os,xdrlib,sys,shutil
+import struct,socket,math
+
+file_name = argv[1]
+print "file_name is " + file_name
+
+# shutil.copy("src","dest")
+
+num         = 0
+keyword_pos = 84
+
+f = open(file_name,'rb')
+# 从文件头开始定位游标位置
+f.seek(keyword_pos, 0)
+
+#读取关键字，但是此时的关键字是以二进制方式存储在文件中的，但是对于 python 来说，只有字符串
+len_bin = f.read(4)
+# 1、struct.unpack 返回的是一个结构体，所以num 后面的','不能缺少
+# 2、unpack 中的 ‘I’ 表示解析成无符号整数，'i'表示有符号整数
+# 3、unpack 中的第一个参数为"FMT"格式化字符吕，也可以为'5s6s3I'这样子，从后面的字符串中解析相应内容
+num,=struct.unpack('I',len_bin)
+
+# 由于文件中的数字与本机存在大小端口问题，需要转换
+num = socket.ntohl(num)
+
+x_arr = range(0, num)
+y_arr = range(0, num)
+
+# 这里的 i 的范围必须是 range(1,num-1),否则越界。
+# 因为 range(i,j)返回的数组是 [i,i+1,i+2,....(num-1)-1]
+for i in range(0, num-1)
+    # 从文件中继续提取数据，以4字节为单位
+    data_bin = f.read(4)s
+    data,    = struct.unapck('I', data_bin)
+    y_arr[i] = socket.ntohl(data)
+
+# 对橫坐标数据进行单位转化
+for i in range(0, num-1)
+    x_arr[i] = i*3.1415926;
+
+# 将显示画布划分成 2行 1列，当前选中的为第一行，进行相应设置
+plt.subplot(211)
+
+# 在第一个画布内，设置两个曲线数据，并指定不同颜色
+# plt.plot(x_arr, y_arr, 'b-', x_arr2, y_arr2, 'g-')
+
+#在第一个画布中指定一条数据曲线，并指定颜色
+plt.plot(x_arr, y_arr, 'b-')
+
+#指定横坐标范围
+plt.xlim(0, x_arr[i])
+
+#指定横轴代表的意义，加上一行字符串
+plt.xlabel('distance')
+
+# 指定纵轴的意义，加上一行字符串
+plt.ylabel('height')
+
+# 显示网格
+plt.grid(True)
+
+# 将显示画布划分成 2行 1列，当前选中的为第 2 行，进行相应设置
+plt.subplot(212)
+# 其它设置都与 第一行相似
+
+#最后显示曲线
+plt.show()
+```
+
+## 十五、十六进制打印数字
+
+```python
+# 一、十六进制打印数字
+num = 10
+print('%#x'%num)
+
+# 二、打印字符串中的 16 进制
+arr = '123456'
+for i in arr:
+    print('%#x'%ord(i))
+```
+
+
 
 
 
