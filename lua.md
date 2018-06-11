@@ -37,6 +37,19 @@ make linux ; make install
 二、指定依赖包 ncurses 和 readline 的头文件。以及 lib 路径
 ```
 
+### 3、交叉编译中出现意外，支队 `-Wl -E`参数即可
+
+```powershell
+Makefile 中明明带上了 -static 选项，明确要求编译成静太库。但是实际编译出来的却是动态的。
+
+通过 file 命令查看，如：
+[root@localhost bin]# file mesg
+mesg: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.32, BuildID[sha1]=2bb790035ffda6d6875fcfb271af8dc18e3e0535, stripped
+
+最后将 Makefile 中 -Wl -E 两个参数删除，竟然意外的好了。
+此问题在 ppc 的交叉编译环境上没有表现出来，面在 arm 上表现出来了
+```
+
 
 
 ##四、Lua 文件是怎样接收参数的
