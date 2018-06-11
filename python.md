@@ -2,6 +2,14 @@
 
 [TOC]
 
+## 0、python 安装
+
+```shell
+[root@localhost wishcell]# yum install python
+```
+
+
+
 ## 一、python 发邮件
 
 ## 二、python jenkins 模块
@@ -367,6 +375,23 @@ print('%#x'%num)
 arr = '123456'
 for i in arr:
     print('%#x'%ord(i))
+```
+
+##十六、python 2  和 python 3 共存问题
+
+### 1、改名字
+
+```powershell
+将 python 改名为 python2 和 python3
+```
+
+### 2、更好的方法
+
+```powershell
+当需要python2的pip时，只需
+	py -2 -m pip install xxx
+当需要python3的pip时，只需
+	py -3 -m pip install xxx
 ```
 
 
