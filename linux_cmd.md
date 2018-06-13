@@ -96,17 +96,83 @@ rtt min/avg/max/mdev = 35.697/41.031/50.561/6.758 ms
 [root@localhost wishcell]#
 ```
 
-# 二、
+# 二、查看串口的命令
+
+##1、linux 下怎样查看串口使用情况
+
+```powershell
+[WishCell@localhost root]$ dmesg | grep ttyS*
+console [tty0] enabled
+serial8250: ttyS0 at I/O 0x3f8 (irq = 4) is a 16550A
+00:05: ttyS0 at I/O 0x3f8 (irq = 4) is a 16550A
+0000:03:03.0: ttyS1 at I/O 0xe400 (irq = 21) is a 16550A
+0000:03:03.0: ttyS2 at I/O 0xe000 (irq = 21) is a 16550A
+[WishCell@localhost root]$
+```
+
+## 2、查看串口名称使用
+
+```powershell
+一般情况下串口的名称全部在dev下面，
+如果你没有外插串口卡的话默认是dev下的ttyS*,
+一般ttyS0对应com1，ttyS1对应com2，当然也不一定是必然的；
+[WishCell@localhost root]$ ls -l /dev/ttyS*
+crw-rw----. 1 root dialout 4, 64 9月 26 09:22 /dev/ttyS0
+crw-rw----. 1 root dialout 4, 65 9月 26 09:22 /dev/ttyS1
+crw-rw----. 1 root dialout 4, 66 9月 26 09:23 /dev/ttyS2
+crw-rw----. 1 root dialout 4, 67 9月 25 07:26 /dev/ttyS3
+[WishCell@localhost root]$
+```
+
+##3、查看串口驱动，PC上的串口一般是ttyS，板子上Linux的串口一般叫做ttySAC
+
+```powershell
+[root@localhost ~]# cat /proc/tty/driver/serial
+serinfo:1.0 driver revision:
+0: uart:16550A port:000003F8 irq:4 tx:59 rx:0 RTS|DTR
+1: uart:16550A port:0000E400 irq:21 tx:62 rx:0 RTS|DTR
+2: uart:16550A port:0000E000 irq:21 tx:57 rx:0 RTS|DTR
+3: uart:unknown port:000002E8 irq:3
+```
 
 
 
+# 三、查看端口占用，进程情况
+
+## 1、查看端口被哪个进程占用
+
+```powershell
+[root@ unittest]#netstat -apn | grep 8080
+tcp        0      0 0.0.0.0:8080            0.0.0.0:*               LISTEN      154123/./tt     
+tcp        0      0 20.63.180.95:8080       10.63.180.91:51133      TIME_WAIT   -
+tcp        0      0 20.63.180.95:8080       10.63.180.91:51130      TIME_WAIT   -
+tcp        0      0 20.63.180.95:8080       10.63.180.91:51132      TIME_WAIT   -
+tcp        0      0 20.63.180.95:8080       10.63.180.91:51129      TIME_WAIT   -
+tcp        0      0 20.63.180.95:8080       10.63.180.91:51135      TIME_WAIT   -
+tcp        0      0 20.63.180.95:8080       10.63.180.91:51131      TIME_WAIT   -
+tcp        0      0 20.63.180.95:8080       10.63.180.91:51128      TIME_WAIT   -
+tcp        0      0 20.63.180.95:8080       10.63.180.91:51136      TIME_WAIT   -
+tcp        0      0 20.63.180.95:8080       10.63.180.91:51127      TIME_WAIT   -
+tcp        0      0 20.63.180.95:8080       10.63.180.91:51134      TIME_WAIT   -
+[root@ unittest]#pkill tt
+[root@ unittest]#netstat -apn | grep 8080
+[root@ unittest]#
+[root@ unittest]#netstat -apn | grep 80
+tcp    0    0 0.0.0.0:80        0.0.0.0:*           LISTEN      3630/nginx: master  
+tcp    0    0 10.63.180.95:22   10.63.180.93:1797   ESTABLISHED 129612/sshd: server
+```
 
 
-# 三、
+
+# 四、让程序在后台运行的方法
+
+## 1、setsid
+
+```powershell
+[root@localhost ngrok]# setsid ./bin/ngrokd -tlsKey="assets/server/tls/snakeoil.key" -tlsCrt="assets/server/tls/snakeoil.crt" -domain="myngrok"  -httpAddr=":80" -httpsAddr=":8082" -tunnelAddr=":8083"
+```
 
 
-
-# 四、
 
 
 

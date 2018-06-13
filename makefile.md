@@ -689,7 +689,25 @@ endif
 	echo $(findstring gnu/linux $(Local_OS_Name))
 ```
 
+## 十五、Makefile中创建多个文件夹，可能存在父子关系,调试未成功
 
+```makefile
+out/foo.o :foo.c |out
+out/foo.o :foo.c |out/out_1
+MKDIRS += out
+MKDIRS += out/out_1
+MKDIRS := $(sort $(MKDIRS))
+define SAFE_MKDIR
+    CHILD := $(firstword $(filter $(1)/%,$(MKDIRS)))
+    ifeq ($$(strip $$(CHILD)),)
+    $(1) :
+        $(MKDIR) $$(call pathname,$$@)
+    else
+        $(1) : | $$(CHILD)
+    endif
+endef
+$(foreach dir, $(MKDIRS), $(eval $(call SAFE_MKDIR, $(dir)))) dir $@) && touch $@
+```
 
 
 

@@ -2,7 +2,7 @@
 
 [TOC]
 
-##一、 项目编译中遇到奇怪问题，gdb 无法跟踪代码，问题解决
+#一、 项目编译中遇到奇怪问题，gdb 无法跟踪代码，问题解决
 
 ```powershell
 (gdb)l
@@ -26,15 +26,13 @@ Line number 2 outof range
 >
 > 只是不知为什么 `dos2unix`工具为什么在这时候失灵
 
-
-
-## 二、 gdb 中代码跟踪时，宏无法打印问题
+#二、 gdb 中代码跟踪时，宏无法打印问题
 
 ```powershell
 在 Makefile 中加入参数 -g3 和 --gdwarf-2 ，这样就可以在 gdb 中打印宏了
 ```
 
-## 三、gdb 中如何查看内存
+#三、gdb 中如何查看内存
 
 ![](./pictures/gdb_examine_mem.png)
 
@@ -77,7 +75,7 @@ child process 22295 In: main                                                    
 (gdb)
 ```
 
-## 四、快捷键
+#四、快捷键
 
 ```powershell
 layout：用于分割窗口，可以一边查看代码，一边测试。主要有以下几种用法：
@@ -94,3 +92,10 @@ Ctrl + x，再按2：双窗口模式，显示两个窗口
 Ctrl + x，再按a：回到传统模式，即退出layout，回到执行layout之前的调试窗口。
 ```
 
+# 五、常用配置命令
+
+##1、设置打印内容的长度
+
+```powershell
+set print element 1000
+```

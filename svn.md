@@ -2,7 +2,7 @@
 
 [TOC]
 
-##一、[SVN1.9.4  新版安装教程](./2018-01/linux_subversion-1.9.4_包含依赖插件和说明文档.zip)（因基本可用，自己未整理）
+# 一、[SVN1.9.4  新版安装教程](./2018-01/linux_subversion-1.9.4_包含依赖插件和说明文档.zip)（因基本可用，自己未整理）
 
 >### 1、 下载 svn 软件包和依赖包
 >
@@ -235,7 +235,7 @@
 >
 >
 
-##二、[2018-02-11 7:38] svn 客户端进行`svn log`时报错怎么办
+#二、[2018-02-11 7:38] svn 客户端进行`svn log`时报错怎么办
 
 > #### 进行 svn log 操作时，老是提示 offline，然后无法查看 log。
 >
@@ -249,7 +249,11 @@
 >
 > 然后将 anon-access=none。 这一句配好。它的默认值是 anon-access=read，要改掉
 
+# 三、 `svn`入库
 
-
-s
+```powershell
+# svn status ./
+# svn add ./ --force
+# svn ci
+```
 
