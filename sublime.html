@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
-<title>index</title><link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; }
+<title>sublime</title><link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; }
 html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; }
 a.url { word-break: break-all; }
@@ -140,6 +140,89 @@ a.md-print-anchor { border-width: initial !important; border-style: none !import
 table tr th { border-bottom: 0px; }
 
 
+.CodeMirror { height: auto; }
+.CodeMirror.cm-s-inner { background: inherit; }
+.CodeMirror-scroll { overflow-y: hidden; overflow-x: auto; z-index: 3; }
+.CodeMirror-lines { padding: 4px 0px; }
+.CodeMirror-gutter-filler, .CodeMirror-scrollbar-filler { background-color: rgb(255, 255, 255); }
+.CodeMirror-gutters { border-right: 1px solid rgb(221, 221, 221); background: inherit; white-space: nowrap; }
+.CodeMirror-linenumber { padding: 0px 3px 0px 5px; text-align: right; color: rgb(153, 153, 153); }
+.cm-s-inner .cm-keyword { color: rgb(119, 0, 136); }
+.cm-s-inner .cm-atom, .cm-s-inner.cm-atom { color: rgb(34, 17, 153); }
+.cm-s-inner .cm-number { color: rgb(17, 102, 68); }
+.cm-s-inner .cm-def { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-variable { color: rgb(0, 0, 0); }
+.cm-s-inner .cm-variable-2 { color: rgb(0, 85, 170); }
+.cm-s-inner .cm-variable-3 { color: rgb(0, 136, 85); }
+.cm-s-inner .cm-string { color: rgb(170, 17, 17); }
+.cm-s-inner .cm-property { color: rgb(0, 0, 0); }
+.cm-s-inner .cm-operator { color: rgb(152, 26, 26); }
+.cm-s-inner .cm-comment, .cm-s-inner.cm-comment { color: rgb(170, 85, 0); }
+.cm-s-inner .cm-string-2 { color: rgb(255, 85, 0); }
+.cm-s-inner .cm-meta { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-qualifier { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-builtin { color: rgb(51, 0, 170); }
+.cm-s-inner .cm-bracket { color: rgb(153, 153, 119); }
+.cm-s-inner .cm-tag { color: rgb(17, 119, 0); }
+.cm-s-inner .cm-attribute { color: rgb(0, 0, 204); }
+.cm-s-inner .cm-header, .cm-s-inner.cm-header { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-quote, .cm-s-inner.cm-quote { color: rgb(0, 153, 0); }
+.cm-s-inner .cm-hr, .cm-s-inner.cm-hr { color: rgb(153, 153, 153); }
+.cm-s-inner .cm-link, .cm-s-inner.cm-link { color: rgb(0, 0, 204); }
+.cm-negative { color: rgb(221, 68, 68); }
+.cm-positive { color: rgb(34, 153, 34); }
+.cm-header, .cm-strong { font-weight: 700; }
+.cm-del { text-decoration: line-through; }
+.cm-em { font-style: italic; }
+.cm-link { text-decoration: underline; }
+.cm-error { color: red; }
+.cm-invalidchar { color: red; }
+.cm-constant { color: rgb(38, 139, 210); }
+.cm-defined { color: rgb(181, 137, 0); }
+div.CodeMirror span.CodeMirror-matchingbracket { color: rgb(0, 255, 0); }
+div.CodeMirror span.CodeMirror-nonmatchingbracket { color: rgb(255, 34, 34); }
+.cm-s-inner .CodeMirror-activeline-background { background: inherit; }
+.CodeMirror { position: relative; overflow: hidden; }
+.CodeMirror-scroll { margin-bottom: -30px; padding-bottom: 30px; height: 100%; outline: 0px; position: relative; box-sizing: content-box; background: inherit; }
+.CodeMirror-sizer { position: relative; }
+.CodeMirror-gutter-filler, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-vscrollbar { position: absolute; z-index: 6; display: none; }
+.CodeMirror-vscrollbar { right: 0px; top: 0px; overflow: hidden; }
+.CodeMirror-hscrollbar { bottom: 0px; left: 0px; overflow-y: hidden; overflow-x: scroll; }
+.CodeMirror-scrollbar-filler { right: 0px; bottom: 0px; }
+.CodeMirror-gutter-filler { left: 0px; bottom: 0px; }
+.CodeMirror-gutters { position: absolute; left: 0px; top: 0px; padding-bottom: 30px; z-index: 3; }
+.CodeMirror-gutter { white-space: normal; height: 100%; box-sizing: content-box; padding-bottom: 30px; margin-bottom: -32px; display: inline-block; }
+.CodeMirror-gutter-wrapper { position: absolute; z-index: 4; background: 0px 0px !important; border: none !important; }
+.CodeMirror-gutter-background { position: absolute; top: 0px; bottom: 0px; z-index: 4; }
+.CodeMirror-gutter-elt { position: absolute; cursor: default; z-index: 4; }
+.CodeMirror-lines { cursor: text; }
+.CodeMirror pre { border-radius: 0px; border-width: 0px; background: 0px 0px; font-family: inherit; font-size: inherit; margin: 0px; white-space: pre; word-wrap: normal; color: inherit; z-index: 2; position: relative; overflow: visible; }
+.CodeMirror-wrap pre { word-wrap: break-word; white-space: pre-wrap; word-break: normal; }
+.CodeMirror-code pre { border-right: 30px solid transparent; width: fit-content; }
+.CodeMirror-wrap .CodeMirror-code pre { border-right: none; width: auto; }
+.CodeMirror-linebackground { position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; z-index: 0; }
+.CodeMirror-linewidget { position: relative; z-index: 2; overflow: auto; }
+.CodeMirror-wrap .CodeMirror-scroll { overflow-x: hidden; }
+.CodeMirror-measure { position: absolute; width: 100%; height: 0px; overflow: hidden; visibility: hidden; }
+.CodeMirror-measure pre { position: static; }
+.CodeMirror div.CodeMirror-cursor { position: absolute; visibility: hidden; border-right: none; width: 0px; }
+.CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+.CodeMirror-focused div.CodeMirror-cursor { visibility: inherit; }
+.cm-searching { background: rgba(255, 255, 0, 0.4); }
+@media print {
+  .CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+}
+.CodeMirror-lint-markers { width: 16px; }
+.CodeMirror-lint-tooltip { background-color: infobackground; border: 1px solid rgb(0, 0, 0); border-radius: 4px; color: infotext; font-family: var(--monospace); overflow: hidden; padding: 2px 5px; position: fixed; white-space: pre-wrap; z-index: 10000; max-width: 600px; opacity: 0; transition: opacity 0.4s; font-size: 0.8em; }
+.CodeMirror-lint-mark-error, .CodeMirror-lint-mark-warning { background-position: left bottom; background-repeat: repeat-x; }
+.CodeMirror-lint-mark-error { background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDw4cOCW1/KIAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAHElEQVQI12NggIL/DAz/GdA5/xkY/qPKMDAwAADLZwf5rvm+LQAAAABJRU5ErkJggg=="); }
+.CodeMirror-lint-marker-error, .CodeMirror-lint-marker-warning { background-position: center center; background-repeat: no-repeat; cursor: pointer; display: inline-block; height: 16px; width: 16px; vertical-align: middle; position: relative; }
+.CodeMirror-lint-message-error, .CodeMirror-lint-message-warning { padding-left: 18px; background-position: left top; background-repeat: no-repeat; }
+.CodeMirror-lint-marker-error, .CodeMirror-lint-message-error { background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAHlBMVEW7AAC7AACxAAC7AAC7AAAAAAC4AAC5AAD///+7AAAUdclpAAAABnRSTlMXnORSiwCK0ZKSAAAATUlEQVR42mWPOQ7AQAgDuQLx/z8csYRmPRIFIwRGnosRrpamvkKi0FTIiMASR3hhKW+hAN6/tIWhu9PDWiTGNEkTtIOucA5Oyr9ckPgAWm0GPBog6v4AAAAASUVORK5CYII="); }
+.CodeMirror-lint-marker-warning, .CodeMirror-lint-message-warning { background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAANlBMVEX/uwDvrwD/uwD/uwD/uwD/uwD/uwD/uwD/uwD6twD/uwAAAADurwD2tQD7uAD+ugAAAAD/uwDhmeTRAAAADHRSTlMJ8mN1EYcbmiixgACm7WbuAAAAVklEQVR42n3PUQqAIBBFUU1LLc3u/jdbOJoW1P08DA9Gba8+YWJ6gNJoNYIBzAA2chBth5kLmG9YUoG0NHAUwFXwO9LuBQL1giCQb8gC9Oro2vp5rncCIY8L8uEx5ZkAAAAASUVORK5CYII="); }
+.CodeMirror-lint-marker-multiple { background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAMAAADzjKfhAAAACVBMVEUAAAAAAAC/v7914kyHAAAAAXRSTlMAQObYZgAAACNJREFUeNo1ioEJAAAIwmz/H90iFFSGJgFMe3gaLZ0od+9/AQZ0ADosbYraAAAAAElFTkSuQmCC"); background-repeat: no-repeat; background-position: right bottom; width: 100%; height: 100%; }
+
+
 :root { --side-bar-bg-color: #fafafa; --control-text-color: #777; }
 @font-face { font-family: "Open Sans"; font-style: normal; font-weight: normal; src: local("Open Sans Regular"), url("./github/400.woff") format("woff"); }
 @font-face { font-family: "Open Sans"; font-style: italic; font-weight: normal; src: local("Open Sans Italic"), url("./github/400i.woff") format("woff"); }
@@ -228,6 +311,6 @@ header, .context-menu, .megamenu-content, footer { font-family: "Segoe UI", Aria
 </style>
 </head>
 <body class='typora-export os-windows' >
-<div  id='write'  class = 'is-node'><figure><table><thead><tr><th><a href="./2018-01.html" target="showframe"> 2018-01 </a></th><th><a href="./2018-02.html" target="showframe"> 2018-02 </a></th><th><a href="./2018-04.html" target="showframe"> 2018-04 </a></th></tr></thead><tbody><tr><td><a href="./ada.html" target="showframe"> ada </a></td><td><a href="./android.html" target="showframe"> android </a></td><td><a href="./apache.html" target="showframe"> apache </a></td></tr><tr><td><a href="./appML.html" target="showframe"> appML </a></td><td><a href="./astyle.html" target="showframe"> astyle </a></td><td><a href="./boa.html" target="showframe"> boa </a></td></tr><tr><td><a href="./c.html" target="showframe"> c </a></td><td><a href="./CentOS-QT-Install.html" target="showframe"> CentOS-QT-Install </a></td><td><a href="./CentOS_Config.html" target="showframe"> CentOS_Config </a></td></tr><tr><td><a href="./cmd.html" target="showframe"> cmd </a></td><td><a href="./curl.html" target="showframe"> curl </a></td><td><a href="./easylogger.html" target="showframe"> easylogger </a></td></tr><tr><td><a href="./find.html" target="showframe"> find </a></td><td><a href="./gcov_lcov.html" target="showframe"> gcov_lcov </a></td><td><a href="./gdb.html" target="showframe"> gdb </a></td></tr><tr><td><a href="./git.html" target="showframe"> git </a></td><td><a href="./gnat_ugn_unw_repeat.html" target="showframe"> gnat_ugn_unw_repeat </a></td><td><a href="./improve.html" target="showframe"> improve </a></td></tr><tr><td><a href="./java.html" target="showframe"> java </a></td><td><a href="./javascript.html" target="showframe"> javascript </a></td><td><a href="./jenkins.html" target="showframe"> jenkins </a></td></tr><tr><td><a href="./linux_cmd.html" target="showframe"> linux_cmd </a></td><td><a href="./linux_kernel.html" target="showframe"> linux_kernel </a></td><td><a href="./logparser.html" target="showframe"> logparser </a></td></tr><tr><td><a href="./lua.html" target="showframe"> lua </a></td><td><a href="./makefile.html" target="showframe"> makefile </a></td><td><a href="./markdown.html" target="showframe"> markdown </a></td></tr><tr><td><a href="./mobaxterm.html" target="showframe"> mobaxterm </a></td><td><a href="./modbus.html" target="showframe"> modbus </a></td><td><a href="./mysql.html" target="showframe"> mysql </a></td></tr><tr><td><a href="./MySQL5.7_Setup_And_Cfg.html" target="showframe"> MySQL5.7_Setup_And_Cfg </a></td><td><a href="./ncurses.html" target="showframe"> ncurses </a></td><td><a href="./net-snmp-develop.html" target="showframe"> net-snmp-develop </a></td></tr><tr><td><a href="./nginx.html" target="showframe"> nginx </a></td><td><a href="./open_source_protocal.html" target="showframe"> open_source_protocal </a></td><td><a href="./php.html" target="showframe"> php </a></td></tr><tr><td><a href="./powershell.html" target="showframe"> powershell </a></td><td><a href="./project.html" target="showframe"> project </a></td><td><a href="./protocol.html" target="showframe"> protocol </a></td></tr><tr><td><a href="./python.html" target="showframe"> python </a></td><td><a href="./python_selenium.html" target="showframe"> python_selenium </a></td><td><a href="./qemu.html" target="showframe"> qemu </a></td></tr><tr><td><a href="./readline.html" target="showframe"> readline </a></td><td><a href="./repository_platform.html" target="showframe"> repository_platform </a></td><td><a href="./rpm.html" target="showframe"> rpm </a></td></tr><tr><td><a href="./secureCRT.html" target="showframe"> secureCRT </a></td><td><a href="./sed.html" target="showframe"> sed </a></td><td><a href="./serial.html" target="showframe"> serial </a></td></tr><tr><td><a href="./shell.html" target="showframe"> shell </a></td><td><a href="./sublime.html" target="showframe"> sublime </a></td><td><a href="./svn.html" target="showframe"> svn </a></td></tr><tr><td><a href="./tcc.html" target="showframe"> tcc </a></td><td><a href="./tcpdump.html" target="showframe"> tcpdump </a></td><td><a href="./vim.html" target="showframe"> vim </a></td></tr><tr><td><a href="./win10_PHP_Apache_MySQL_EnvSetup.html" target="showframe"> win10_PHP_Apache_MySQL_EnvSetup </a></td><td><a href="./windows.html" target="showframe"> windows </a></td><td><a href="./wubi_五笔.html" target="showframe"> wubi_五笔 </a></td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table></figure></div>
+<div  id='write'  class = 'is-node'><h1><a name='header-n0' class='md-header-anchor '></a><center>sublime</center></h1><div class='md-toc' mdtype='toc'><p class="md-toc-content"><span class="md-toc-item md-toc-h1" data-ref="n0"><a class="md-toc-inner" style="cursor: pointer;" href="#header-n0">sublime</a></span><span class="md-toc-item md-toc-h1" data-ref="n23"><a class="md-toc-inner" style="cursor: pointer;" href="#header-n23">一、资源获取</a></span></p></div><p>&nbsp;</p><h1><a name='header-n23' class='md-header-anchor '></a>一、资源获取</h1><pre spellcheck="false" class="md-fences md-end-block contain-cm modeLoaded md-focus" lang="powershell"><div class="CodeMirror cm-s-inner CodeMirror-wrap CodeMirror-focused" lang="powershell"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 26.4px; left: 38.4px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="" style="position: relative;"><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-error">包含了</span> <span class="cm-identifier">x86</span> <span class="cm-error">和</span> <span class="cm-number">64</span><span class="cm-error">位两个版本：</span></span></pre></div><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: 0px; width: 0px;"></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-tab" role="presentation" cm-text="	">    </span><span class="cm-error">玩客云</span> <span class="cm-operator">&gt;</span><span class="cm-error">分区</span><span class="cm-number">1</span> <span class="cm-operator">&gt;</span> <span class="cm-identifier">onecloud</span> <span class="cm-operator">&gt;</span> <span class="cm-identifier">tools</span> <span class="cm-operator">&gt;</span> <span class="cm-identifier">sublimetext3</span><span class="cm-punctuation">.</span><span class="cm-identifier">zip</span></span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 54px;"></div><div class="CodeMirror-gutters" style="display: none; height: 54px;"></div></div></div></pre><p>&nbsp;</p></div>
 </body>
 </html>
