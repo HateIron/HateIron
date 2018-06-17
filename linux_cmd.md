@@ -208,7 +208,33 @@ tcp    0    0 10.63.180.95:22   10.63.180.93:1797   ESTABLISHED 129612/sshd: ser
 
 
 
-# 六、
+# 六、添加用户
+
+## 1、`useradd`
+
+```powershell
+# useradd -u 544 -d /home/testuser -g users -m testuser
+```
+
+然后为新用户添加 `samba`信息：
+
+```powershell
+[root@ samba] smbpasswd -a testuser
+```
+
+##2、编辑 `smb.conf`
+
+```powershell
+[testuser]
+	path       = /home/testuser
+	browseable = yes
+	security   = share
+	writable   = yes
+	valid users= testuser
+	create mode= 0777
+	force create mode = 0777
+	force directory mode = 0777
+```
 
 
 

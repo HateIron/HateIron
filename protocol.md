@@ -56,6 +56,8 @@ snmpwalk -v 2c -c public 10.0.1.52
 可以将 snmpwalk 替换成 snmpget / snmpgetnext 同样可以正常工作
 ```
 
+
+
 ##八、`ppp`协议
 
 |      | 7E   | FF                         | 03                       | 协议                                                         | 信息   | FCS  | 7E   |
