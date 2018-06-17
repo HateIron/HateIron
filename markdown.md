@@ -174,3 +174,18 @@ _这是\_包围的字体_
 ![pic_name](./picture_path)
 ````
 
+# 九、 markdown 中的 `<iframe>`嵌套网页
+
+```powershell
+<iframe src="http://www.baidu.com/" width="700px" height="500px" frameboarder="0" scrolling="no"></iframe>
+
+注意事项：
+	网址中的所有 '&'  都要替换成 '&amp;'，
+```
+
+效果如下：
+
+<iframe src="http://www.baidu.com/" width="700px" height="500px" frameboarder="0" scrolling="no"></iframe>
+
+
+

@@ -176,7 +176,35 @@ tcp    0    0 10.63.180.95:22   10.63.180.93:1797   ESTABLISHED 129612/sshd: ser
 
 
 
-# 五、
+# 五、常用关机命令
+
+```powershell
+1、shutdown
+	普通安全。
+	通知 init 进程，要求它改变运行级别。级别 0 关机。 级别6重启
+
+    # shutdown
+    # shutdown now
+    # shutdown 13:20  
+    # shutdown -p now  ### 关闭机器
+    # shutdown -H now  ### 停止机器      
+    # shutdown -r09:35 ### 在 09:35am 重启机器
+    
+2、halt
+    只是调用了 shutdown
+    # halt             ### 停止机器
+    # halt -p          ### 关闭机器
+    # halt --reboot    ### 重启机器
+3、poweroff 会发送一个 ACPI 信号来通知系统关机。
+    # poweroff           ### 关闭机器
+    # poweroff --halt    ### 停止机器
+    # poweroff --reboot  ### 重启机器
+    
+4、reboot 命令
+    # reboot           ### 重启机器
+    # reboot --halt    ### 停止机器
+    # reboot -p        ### 关闭机器
+```
 
 
 

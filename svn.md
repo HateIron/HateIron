@@ -257,3 +257,27 @@
 # svn ci
 ```
 
+#四、svn 连接服务器出错
+
+##1、提交入库报错`E000013`
+
+```powershell
+报错内容如下：
+    svn: E000013: Commit failed (details follow):不能打开文件"/data/svn/xxxx/db/txn-current-lock":权限不够
+```
+
+## 2、查看 `svnserve`服务进程是开启的
+
+```powershell
+ps -ef | grep 'svnserve'
+root@ubuntu:/data/svn/carserver# ps -fe |grep 'svn'
+ylmf      5199     1  0 20:32 ?        00:00:00 /usr/bin/svnserve -d -r /data/svn/
+root      7089  6607  0 21:07 pts/0    00:00:00 grep --color=auto svn
+```
+
+原来 svnserver  进程不是 root 开启的。
+
+然后将进程 kill 掉，以 root 开启之，问题解决
+
+
+

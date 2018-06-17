@@ -18,5 +18,6 @@
 |<a href="./rpm.html" target="showframe"> rpm </a>|<a href="./secureCRT.html" target="showframe"> secureCRT </a>|<a href="./sed.html" target="showframe"> sed </a>|
 |<a href="./serial.html" target="showframe"> serial </a>|<a href="./shell.html" target="showframe"> shell </a>|<a href="./sublime.html" target="showframe"> sublime </a>|
 |<a href="./svn.html" target="showframe"> svn </a>|<a href="./tcc.html" target="showframe"> tcc </a>|<a href="./tcpdump.html" target="showframe"> tcpdump </a>|
-|<a href="./vim.html" target="showframe"> vim </a>|<a href="./win10_PHP_Apache_MySQL_EnvSetup.html" target="showframe"> win10_PHP_Apache_MySQL_EnvSetup </a>|<a href="./windows.html" target="showframe"> windows </a>|
-|<a href="./wubi_五笔.html" target="showframe"> wubi_五笔 </a>| | |
+|<a href="./uml.html" target="showframe"> uml </a>|<a href="./valgrind.html" target="showframe"> valgrind </a>|<a href="./vim.html" target="showframe"> vim </a>|
+|<a href="./win10_PHP_Apache_MySQL_EnvSetup.html" target="showframe"> win10_PHP_Apache_MySQL_EnvSetup </a>|<a href="./windows.html" target="showframe"> windows </a>|<a href="./wubi_五笔.html" target="showframe"> wubi_五笔 </a>|
+| | | |
