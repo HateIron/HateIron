@@ -4,7 +4,7 @@
 
 [TOC]
 
-## 1、vim 下实现代码像 source insight 一样的跳转功能
+#1、vim 下实现代码像 source insight 一样的跳转功能
 
 > ### 1、首先要下载到 ctags.
 >
@@ -168,9 +168,7 @@
 >
 > 
 
-
-
-## 2、ctags 更多精美的配置
+#2、ctags 更多精美的配置
 
 ###本文来自http://www.cnblogs.com/feisky/archive/2012/02/07/2341932.html
 
@@ -353,7 +351,7 @@ nmap <F7> :copen<CR>
 nmap <F6> :cclose<CR>
 ```
 
-## 3、vimdiff 的使用
+#3、vimdiff 的使用
 
 > ### 用法主要整理来源于`https://jingyan.baidu.com/article/ae97a646da05debbfd461d33.html`
 >
@@ -422,13 +420,23 @@ nmap <F6> :cclose<CR>
 > :qa!
 > ```
 
-## 4、字符串替换
+## F、选中并且复制单词
+
+>`v + e`选中单词
+>
+>`v + e + y` 复制选中的单词
+>
+>`v + e + p`粘贴选中的文本
+
+
+
+#4、字符串替换
 
 ```shell
 :1,$s/old_str/new_str/g
 ```
 
-## 5、列编辑，如全部注释
+#5、列编辑，如全部注释
 
 引用 https://www.cnblogs.com/xiaowant/articles/1992923.html
 
@@ -446,7 +454,7 @@ nmap <F6> :cclose<CR>
 4.ESC 按两次，会在每行的选定的区域出现插入的内容。
 ```
 
-##6、vim 中清除 `^M`，实测第四种方法可行
+#6、vim 中清除 `^M`，实测第四种方法可行
 
 ```powershell
 第一种方法：
@@ -468,7 +476,7 @@ sed -i 's/^M//g' filename
 #^M 可用 /r 代替
 ```
 
-## 7、vim 打开文件后，指定行范围替换
+#7、vim 打开文件后，指定行范围替换
 
 ```powershell
 将101~130行中的 "../source" 替换成 "$(PrjDir)".
@@ -476,7 +484,7 @@ sed -i 's/^M//g' filename
 :101,130s/..\/source/$(PrjDir)/g
 ```
 
-## 8、vim 打开二进制文件后，以二进制方式查看
+#8、vim 打开二进制文件后，以二进制方式查看
 
 ```powershell
 此关键字可以在windows gvim 的菜单中快捷查看 

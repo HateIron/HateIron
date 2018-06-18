@@ -172,10 +172,6 @@ tcp    0    0 10.63.180.95:22   10.63.180.93:1797   ESTABLISHED 129612/sshd: ser
 [root@localhost ngrok]# setsid ./bin/ngrokd -tlsKey="assets/server/tls/snakeoil.key" -tlsCrt="assets/server/tls/snakeoil.crt" -domain="myngrok"  -httpAddr=":80" -httpsAddr=":8082" -tunnelAddr=":8083"
 ```
 
-
-
-
-
 # 五、常用关机命令
 
 ```powershell
@@ -214,6 +210,10 @@ tcp    0    0 10.63.180.95:22   10.63.180.93:1797   ESTABLISHED 129612/sshd: ser
 
 ```powershell
 # useradd -u 544 -d /home/testuser -g users -m testuser
+不满意可删除之：
+#userdel testuser
+为用户设置密码
+# passwd testuser
 ```
 
 然后为新用户添加 `samba`信息：
@@ -225,6 +225,24 @@ tcp    0    0 10.63.180.95:22   10.63.180.93:1797   ESTABLISHED 129612/sshd: ser
 ##2、编辑 `smb.conf`
 
 ```powershell
+[global]
+dos charset     = GB2312
+unix charset    = GB2312
+display charset = GB2312
+directory mask  = 0777
+force directory mode = 0777
+directory security mode = 0777
+force directory security mode = 0777
+create mask = 0777
+force create mode = 0777
+security mask = 0777
+force security mode = 0777
+workgroup           = homedir
+netbios             = homedir
+server string       = linux samba server
+security            = user
+username map        = /etc/samba/smbusers
+
 [testuser]
 	path       = /home/testuser
 	browseable = yes
@@ -234,11 +252,175 @@ tcp    0    0 10.63.180.95:22   10.63.180.93:1797   ESTABLISHED 129612/sshd: ser
 	create mode= 0777
 	force create mode = 0777
 	force directory mode = 0777
+
+# systemctl restart smb
+# setenforce 0
+# sudo systemctl stop firewalld.service && sudo systemctl disable firewalld.service
+查看smb启动状态
+# systemctl status smb.service
 ```
 
 
 
-# 七、
+# 七、`ftpget/ftpput`用法
+
+```powershell
+# ftpget -v -u user -p pwd remote_ip ./local_file  remote_file
+# ftpput -v -u user -p pwd remote_ip remote_name   ./local_nae
+```
+
+#八、 `linux ls -l`命令查看时间格式
+
+```powershell
+# ls -l --time-style=long-iso 得到的时间格式为
+2017-12-13 8:15
+其它的时间格式还有：iso，full-iso
+
+或者采用定制时间格式的方法：
+export TIME_STYLE='+%Y/%m/%d %H:%M:%S' 
+
+若要永久生效，须将此语句追加到 /etc/profile 之中
+```
+
+# 九、`sshpass`命令
+
+## 九一、`scp`命令COPY文件时，每次都要求输入密码
+
+```powershell
+scp -r ./ root@192.168.1.223:/opt/
+```
+
+##九二、使用期sshpass 命令，直接在命令行上带用户名/密码
+
+```powershell
+sshpass -p pwd scp -r ./ root@192.168.1.223:/opt/
+```
+
+
+
+# 十、文件压缩/解压
+
+```powershell
+tar   -zxvf  xx.tar.gz
+tar   -jxvf  xx.tar.bz2
+xz    -d     xx.tar.x2
+lzip  -d     xx.tar.lz
+unzip xx.zip
+unrar xx.rar
+```
+
+# 十二、删除指定目录
+
+```powershell
+删除所有 .svn 目录：
+find -type d | grep .svn$ | xargs rm -r
+效果等同于
+find ./ -type d | grep .svn$ | xargs rm -r
+
+删除所有 .exe 文件：
+   find ./ -name '*.exe' -type f -print -exec rm -rf {} ;
+
+命令执行详解：
+1、'./' 表示从当前目录开始递归查找
+2、"-name '*.exe'" 根据名称查找后缀名为 exe 的文件或者目录
+3、"-type f" 表示查找的类型为文件
+4、"-print" 输出查找到的文件名
+5、最主要的 "-exec" ，此选项后跟着一个所要执行的命令。
+   表示将 find 出来的内容执行此命令
+   -exec 后面跟的就是要执行的命令。然后一对 {}、一个空格和最后一个分号，中间要有空格
+```
+
+# 十三、漂亮的命令行提示符配置
+
+## 1、感性认识，可立即使用的效果
+
+```powershell
+只需要在 ~/.bash_profile 的最后加一行，命令行提示符就会变的漂亮起来：
+export PS1="\e[36m\u\e[0m@\e[32m\h\e[0m: \e[34m\W\e[0m\$ "
+
+  1 # .bash_profile
+  2 
+  3 # Get the aliases and functions
+  4 if [ -f ~/.bashrc ]; then
+  5         . ~/.bashrc
+  6 fi
+  7 
+  8 # User specific environment and startup programs
+  9 
+ 10 PATH=$PATH:$HOME/bin
+ 11 
+ 12 export PATH
+ 13 
+ 14 export PS1="\e[36m\u\e[0m@\e[32m\h\e[0m: \e[34m\W\e[0m\$ " 
+```
+
+```powershell
+保存退出，使文件生效
+
+[cofear@localhost ~]$ . .bash_profile
+```
+
+最快速的更改变生效：上一行为生效前效果，下一行为立即生效的效果。
+
+![](./pictures/linux_prompt.png)
+
+
+
+## 2、原理，详细配置
+
+### 什么是PS1
+
+PS1是Linux用来设置命令提示符的环境变量
+
+### "\h、\u、\W"是什么鬼
+
+`\u` ：当前用户的账号名称
+ `\H` ：完整的主机名称
+ `\h` ：主机名
+ `\w` ：完整的工作目录名称
+ `\W` ：当前工作目录名称
+ `\$` ：提示字符，root为# ，普通用户为$
+
+其它
+
+`\d` ：日期
+ `\t` ：显示时间为24小时格式
+ `\T` ：显示时间为12小时格式
+ `\A` ：显示时间为24小时格式
+
+### "\e[36m、\e[0m"又是什么鬼
+
+`\e[36m` 是ANSI控制码，又叫VT100系列控制码，用于在字符显示系统中控制光标移动和字符色彩等
+
+ANSI控制码开始的标志都为`ESC[`，ESC对应ASCII码表的033(八进制)，`\033`来输入ESC，`\033[36m`即为`ESC[36m`
+
+在Linux里`\033[`等同于`\e[`，故用`\e[36m`
+
+**颜色代码**
+
+| 背景色   | 字体色   |
+| -------- | -------- |
+| 40: 黑   | 30: 黑   |
+| 41: 红   | 31: 红   |
+| 42: 绿   | 32: 绿   |
+| 43: 黄   | 33: 黄   |
+| 44: 蓝   | 34: 蓝   |
+| 45: 紫   | 35: 紫   |
+| 46: 深绿 | 36: 深绿 |
+| 47: 白色 | 37: 白色 |
+
+**ANSI控制码**
+
+| 控制码                   | 说明         |
+| ------------------------ | ------------ |
+| `\033[30m` -- `\033[37m` | 设置前景色   |
+| `\033[40m` -- `\033[47m` | 设置背景色   |
+| `\033[0m`                | 关闭所有属性 |
+| `\033[1m`                | 设置高亮度   |
+| `\033[4m`                | 下划线       |
+| `\033[5m`                | 闪烁         |
+| `\033[7m`                | 反显         |
+| `\033[8m`                | 消隐         |
 
 
 

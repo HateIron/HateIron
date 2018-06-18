@@ -238,15 +238,17 @@ TYPE=Ethernet
 DEVICE=enp0s3
 ONBOOT=yes
 BOOTPROTO=static
-IPADDR=192.168.43.222
-#IPADDR=192.168.1.222
+IPADDR=192.168.1.222
 NETMASK=255.255.255.0
-#NETWORK=192.168.43.0
 NETWORK=192.168.1.0
-BROADCAST=192.168.43.255
-#BROADCAST=192.168.1.255
+BROADCAST=192.168.1.255
 GATEWAY=192.168.43.1
-#GATEWAY=192.168.1.1
+
+# IPADDR=192.168.43.222
+# NETMASK=255.255.255.0
+# NETWORK=192.168.43.0
+# BROADCAST=192.168.43.255
+# GATEWAY=192.168.43.1
 
 DNS1=8.8.8.8
 DNS2=8.8.4.4
@@ -259,4 +261,58 @@ ping: www.baidu.com: Name or service not known
 网络不通，需要重启网络：
 [root@localhost conf]# systemctl restart network
 ```
+
+#十六、 centos-everthing资源
+
+##1、先下载到资源
+
+```powershell
+http://isoredirect.centos.org/centos/7/isos/x86_64/CentOS-7-x86_64-Everything-1708.iso
+```
+
+<iframe src="http://isoredirect.centos.org/centos/7/isos/x86_64/CentOS-7-x86_64-Everything-1708.iso" width="900px" height="400px" scrolling="yes" boarder="3px"></iframe>
+
+##2、用法
+
+```powershell
+# mount -o /packages/CentOS-Everything.iso /mnt/cdrom
+
+# vim /etc/yum.repos.d/CentOS-media.repo
+
+name = [随便]
+baseurl = file:///mount/cdrom
+gpgcheck= 1
+enabled = 1
+```
+
+##3、安装 CCache
+
+```powershell
+yum install ccache
+报错，要求导入公钥：
+	rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+```
+
+
+
+
+
+# 十七、JDK1.8资源
+
+# 十八、CentOS 下安装 SecureCRT
+
+## 1、找到安装包
+
+```powershell
+都需要到网上查找，下载：
+scrt-7.3.3-779-rhelb-64.x86_64.rpm
+配置脚本：
+	securecrt_crack.pl 
+```
+
+
+
+
+
+
 
