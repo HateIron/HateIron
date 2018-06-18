@@ -283,6 +283,9 @@ name = [随便]
 baseurl = file:///mount/cdrom
 gpgcheck= 1
 enabled = 1
+
+解除光盘绑定
+#unmount /mnt/cdrom
 ```
 
 ##3、安装 CCache
@@ -298,6 +301,32 @@ yum install ccache
 
 
 # 十七、JDK1.8资源
+
+## 1、找到 jfd1.80_31 
+
+## 2、御载系统原生 openJDK
+
+```powershell
+先查询 
+# rpm -qa | grep java
+然后御载
+# rpm -e --nodeps tzdata-java-2014b-1.el7.noarch            |
+# rpm -e --nodeps java-1.7.0-openjdk-headless-1.7.0.71...   |  这些都是查到的包
+# rpm -e --nodeps java-1.7.0-openjdk-1.7.0.71...            |
+```
+
+## 3、安装新的 JDK1.80_31
+
+```powershell
+# mkdir -p /usr/lib/jvm
+# tar -zxvf jdk1.8.0_31.tar.gz -C /usr/lib/jvm
+
+然后设置环境变量  vim /etc/profile 增加几行：
+export JAVA_HOME = /usr/lib/jvm/jdk1.8.0_31
+export JRE_HOME  = ${JAVA_HOME}/jre
+export CLASSPATH = .:${JAVA_HOME}/lib:${JRE_HOME}/lib
+export PATH      = ${JAVA_HOME}/bin:$PATH
+```
 
 # 十八、CentOS 下安装 SecureCRT
 

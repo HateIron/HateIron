@@ -269,7 +269,9 @@ username map        = /etc/samba/smbusers
 # ftpput -v -u user -p pwd remote_ip remote_name   ./local_nae
 ```
 
-#八、 `linux ls -l`命令查看时间格式
+#八、 `linux ls`命令查看时间格式
+
+## 1、时间格式
 
 ```powershell
 # ls -l --time-style=long-iso 得到的时间格式为
@@ -281,6 +283,23 @@ export TIME_STYLE='+%Y/%m/%d %H:%M:%S'
 
 若要永久生效，须将此语句追加到 /etc/profile 之中
 ```
+
+
+
+## 2、查找所有者为 root 的文件
+
+```powershell
+ls -li -R | grep 'root root'
+
+[wishcell@localhost study]$ ls -li -R | grep 'root     root'
+50352691 -rwxr-xr-x. 1 root     root     16864 Feb 27 01:31 cpp_main
+50352685 -rw-r--r--. 1 root     root      1760 Feb 27 01:30 cpp_main.o
+50352686 -rw-r--r--. 1 root     root      2520 Feb 27 01:30 example.o
+50352673 -rw-r--r--. 1 root     root       675 Feb 27 01:30 simple_cpp_interface.ali
+50352677 -rw-r--r--. 1 root     root      1576 Feb 27 01:30 simple_cpp_interface.o
+```
+
+
 
 # 九、`sshpass`命令
 
@@ -307,6 +326,9 @@ xz    -d     xx.tar.x2
 lzip  -d     xx.tar.lz
 unzip xx.zip
 unrar xx.rar
+
+mkdir -p /usr/lib/jvm
+tar -zxvf jfd1.8.0-31.tar.gz -C /usr/lib/jvm
 ```
 
 # 十二、删除指定目录
