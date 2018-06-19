@@ -132,6 +132,10 @@ pipe get string :rtt min/avg/max/mdev = 35.364/49.116/66.508/12.972 ms
 
 # 七、C语言长/短参数
 
+```
+
+```
+
 
 
 

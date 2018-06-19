@@ -54,4 +54,5 @@ content = ''
 text    = ''  
 content+= file_scan('./')
 with open('index.md', 'w') as f:
-    f.writelines(content)     
+    f.writelines(content)
+print ("index.md is updated, please use it to generate a index.html")
