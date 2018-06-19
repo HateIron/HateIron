@@ -124,6 +124,8 @@ username map = /etc/samba/smbusers
 
 ## 十一、vsfptd 配置
 
+
+
 ##十二、无网络情况下，CentOS7如何安装最新 Firefox
 
 ###1、首先到官网上下载最新的 Linux相应版本
@@ -337,6 +339,34 @@ export PATH      = ${JAVA_HOME}/bin:$PATH
 scrt-7.3.3-779-rhelb-64.x86_64.rpm
 配置脚本：
 	securecrt_crack.pl 
+```
+
+# 十九、开机启动命令
+
+```powershell
+[wishcell@localhost ~]$ vim /etc/rc.d/rc.local
+[wishcell@localhost ~]$
+#!/bin/bash
+# THIS FILE IS ADDED FOR COMPATIBILITY PURPOSES
+#
+# It is highly advisable to create own systemd services or udev rules
+# to run scripts during boot instead of using this file.
+#
+# In contrast to previous versions due to parallel execution during boot
+# this script will NOT be run after all other services.
+#
+# Please note that you must run 'chmod +x /etc/rc.d/rc.local' to ensure
+# that this script will be executed during boot.
+
+touch /var/lock/subsys/local
+
+# 默认以 root 运行程序
+/usr/local/nginx/sbin/nginx
+
+# 指定用户启动程序，但是似乎不生效
+/bin/su - wishcell -C "svnserve -d -r /home1/wishcell/svndata/"
+
+# 最后，要给程序可执行权限 ： chmod +x /etc/rc.d/rc.local
 ```
 
 
