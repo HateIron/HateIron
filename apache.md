@@ -2,7 +2,13 @@
 
 [TOC]
 
-## 一、 apache 只要找个绿色版安装包，解压即可，关键在配置
+# 一、获取资源
+
+```powershell
+玩客云 》分区１　》　onecloud 》 tools 》httpd-2.4.33-win64-VC15.zip
+```
+
+#二、找个绿色版安装包，解压即可，关键在配置
 
 ###1、先 copy 一份如下
 
@@ -557,7 +563,7 @@
 
 
 
-## 二、[apache 官网讲解](https://wiki.archlinux.org/index.php/Apache_HTTP_Server_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#AH00534:_httpd:_Configuration_error:_No_MPM_loaded.)
+#三、[apache 官网讲解](https://wiki.archlinux.org/index.php/Apache_HTTP_Server_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#AH00534:_httpd:_Configuration_error:_No_MPM_loaded.)
 
 ### 1、介绍
 
@@ -635,7 +641,7 @@ Syntax OK
 
 ### 
 
-## 三、`apache`配置多个虚拟机
+# 四、`apache`配置多个虚拟机
 
 ```powershell
 多番尝试未果，被阻一天，状态不佳

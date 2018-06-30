@@ -2,11 +2,33 @@
 
 [TOC]
 
-## 一、环境安装与配置
+# 一、环境安装与配置
+
+## 1、资源获取
+
+### A、 windows 版
+
+```powershell
+1、玩客云 》 分区1 》 onecloud 》 mysql-installer-community-5.7.20.msi  本文档所采用的版本
+```
+
+### B、LINUX 版
+
+```
+
+```
+
+
+
+##2、安装与配置
+
+### A、windows 版
 
 > <a href = "./MySQL5.7_Setup_And_Cfg.html"> MySQL5.7_Setup_And_Cfg.html </a>
 
-## 二、连接上数据库后
+### B、LINUX 版
+
+#二、连接上数据库后
 
 ###1、连接数据库
 
@@ -389,9 +411,7 @@ mysql> source d:/show_tbl.sql
 　　mysql> FLUSH PRIVILEGES;
 ```
 
-
-
-##三、备份&恢复数据库：(命令在`DOS`的`\mysql\bin`目录下执行)
+# 三、备份&恢复数据库：(命令在`DOS`的`\mysql\bin`目录下执行)
 
 ###1、导出整个数据库（备份）
 

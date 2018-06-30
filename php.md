@@ -2,7 +2,17 @@
 
 [TOC]
 
-##一、基于win10搭建php环境
+
+
+# 一、资源获取
+
+```powershell
+玩客云 》分区１》　onecloud 》　php-7.2.4-Win32-VC15-x64.zip
+```
+
+
+
+#二、基于win10搭建php环境
 
 ```powershell
 这里是基于win10配置php-7.1.0+apache2.4.23+mysql-5.7.16的介绍
@@ -41,7 +51,7 @@
 
 ### 方法/步骤4、配置Apache
 
-> * 用记事本打开E:\phptools\ApacheServer\Apache\conf
+> * 用记事本打开apache 配置文件httpd.conf（本例为：E:\phptools\ApacheServer\Apache\conf\httpd.conf)
 >
 >   查找ServerRoot，修改ServerRoot `"C:/Apache24" => ServerRoot "E:/phptools/ApacheServer/Apache"`（这里输入的是你解压apache安装包后放的位置）
 >
@@ -94,13 +104,11 @@ MySQL免安装版环境配置已有朋友写过相关经验，我就不赘述了
 2016-12-10T16:18:50.886005Z 1 [Note] A temporary password is generated for root@localhost: fdglskdjggsl    加粗的即为登录密码。还有需要注意的是cmd命令必须是以管理员权限运行的，否则权限不够，会报错。下图就是MySQL成功启动并且登录后的界面。
 ```
 
-## 二、环境配置好后，验证一下
+# 三、环境配置好后，验证一下
 
 <a href="./win10_PHP_Apache_MySQL_EnvSetup.html">win10_PHP_Apache_MySQL_EnvSetup.html</a>
 
-
-
-## 三、第一个页面
+#四、第一个页面
 
 ###1、第一个静态页面
 

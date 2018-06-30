@@ -279,5 +279,36 @@ root      7089  6607  0 21:07 pts/0    00:00:00 grep --color=auto svn
 
 然后将进程 kill 掉，以 root 开启之，问题解决
 
+## 3、 `svn`入库是提示没有编辑器
 
+- ### A、以命令行消息解决
+
+```powershell
+此方法方便简洁，但是内容不够详细
+# svn ci -m "commig msg"
+```
+
+- ### B、配置编辑器工具
+
+```powershell
+方法１：
+   vim ~/.subversion/config 
+   找到 editor-cmd 一行，将其设置为 vim
+方法2：
+	vim ~/.bash_profile
+	在文件末尾追加一行　export SVN_EDITOR = "/usr/bin/vim" 
+	然后执行命令 source ~/.bash_profile
+方法3：
+   　直接在终端输入 export SVN_EDITOR = vim
+   　但是此方法在终端断开后即失效。
+```
+
+#五、windows 环境 svn 命令行工具
+
+##1、资源获取，名称`Subversion for Windows`
+
+```powershell
+一： https://sourceforge.net/projects/win32svn/?source=typ_redirect
+二：玩客云 》分区１　》　onecloud 》　tools
+```
 
