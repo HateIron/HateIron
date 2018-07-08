@@ -12,6 +12,14 @@ Downloadable Git bundle information for project [tinycc](http://repo.or.cz/tinyc
 | -------------------------------------- | ---------------------------------------- | ------- | ------- | ------- |
 | [tinycc](http://repo.or.cz/tinycc.git) | [tinycc-d3ecfd20.bundle](http://repo.or.cz/tinycc.git/tinycc-d3ecfd20.bundle)<br />[tinycc-d3ecfd20.bundle](./2018-02/tinycc-d3ecfd20.bundle) | 3.4 MiB | 5 days  | current |
 
+# windows 版 tcc 下载
+
+```powershell
+玩客云 》分区1 》onecloud 》tools 》TinyCCompiler-win10.rar
+```
+
+
+
 ### Instructions
 
 #### 0. Quick Overview
