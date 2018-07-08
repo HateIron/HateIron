@@ -709,6 +709,112 @@ endef
 $(foreach dir, $(MKDIRS), $(eval $(call SAFE_MKDIR, $(dir)))) dir $@) && touch $@
 ```
 
+# 十六、 Makefile 自己编译依赖模块
+
+```makefile
+# AModule=$(wildcard ${GTestDir}/make/*.a) 不能写成通用表达式的风格，这样不认
+AModule=${GTestDir}/make/gtest_main.a     #必须写成明确的文件
+$(AModule):
+	make -C ../${GTestDir}/make/ clean
+	make -C ../${GTestDir}/make/ gtest_main.a
+```
+
+# 十七、Makefile 中排除不需要的`C/CPP`文件
+
+## I、第一步
+
+```makefile
+AllCppCase=$(wildcard ./case/*.cpp)
+```
+
+## II、第二步，去掉路径
+
+```powershell
+aSRCC=$(notdir ${AllCppCase})
+得到诸如： a.cpp b.cpp c.cpp 的一个字符串
+```
+
+## III、第三步，将`b.cpp` 从字符串中删除
+
+```powershell
+SRCC=$(subst b.cpp,,${aSRCC})
+利用subst 函数，将 b.cpp 替换成空，即达到删除之目的
+```
+
+## IV、第四步，删除多个`cpp`文件
+
+```makefile
+SRCC=$(subst a.cpp,, \
+ 	 $(subst b.cpp,, \
+ 	 $(subst c.cpp,, ${aSRCC})\
+ 	 ))
+ 	 
+解释：
+	1、将 c.cpp 从源字符串 ${aSRCC} 中删除，返回一个字符串
+	2、从第1步返回的字符串中，删除 b.cpp
+	3、从第2步返回的字符串中，删除 a.cpp，并将最终值返回给 SRCC
+```
+
+## V、误删问题
+
+```powershell
+在删除 a.cpp 时，用了 subst 函数，直接将 a.cpp 替换为空。
+如果此时恰好存在 da.cpp，那么 da.cpp 就会被误删，变成 d。造成编译失败
+```
+
+### 1、方案一：暴力解决
+
+``` powershell
+删除所有包含 a.cpp 的文件 ：
+	SRCC=$(patsubst %a.cpp,,${aSRCC})
+	
+改用 patsubst 函数， %a.cpp ，即任何以 a.cpp 结尾的字符串
+```
+
+### 2、方案二：精准删除
+
+```powershell
+2018-07-02 暂时尚未弄明白
+```
+
+# 十八、完整的，整合多项功能的 Makefile
+
+- 支持剔除部分不需要文件
+- 支持自动编译依赖库
+- 支持增量编译
+- 支持单独文件编译
+
+```powershell
+用法：
+	make file=ab.cpp 则只编译 ab.cpp
+	make             则全部编译
+```
+
+```Makefile
+vpath %.c   ../PrjDir/A/source
+vpath %.c   ../PrjDir/B/source
+vpath %.cpp ./case
+
+OriginSRC := $(notdir $(wildcard ../PrjDir/A/source/*.c)) \
+			$(notdir $(wildcard ../PrjDir/B/source/*.c)) \
+			$(notdir $(wildcard ./case/stub/source/*.c))
+SRC = $(patsubst %test.c,,\ 
+	  $(subst aaa.c,,\ 
+	  $(subst bbb.c,,${OriginSRC}) \
+      ))
+
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 

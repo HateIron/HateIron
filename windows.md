@@ -392,6 +392,34 @@ int main() {
 
 
 
+#十二、 `Microsoft SQL Server Management studio`执行脚本报错及解决办法
+
+<iframe src="./HRESULT_E_FAIL_mscorlib.html" width="1000px" height="1000px" boarder="1px" scrolling="yes"></iframe>
+
+# 十三、偷 Microsoft 的 visual studio 2017
+
+```powershell
+下载地址点击这里(https://visualstudio.microsoft.com/zh-hans/downloads/)
+    该版本堪称史上最大IDE，随便勾了几个选项，就要占用几十个GB的安装空间，最后果断选择了最小安装包，只要600多Mb
+    安装成功，随便打开一个项目之后，就获得提示：要打开这个项目，还需要继续安装xxx和xxx选项，点击确定后弹出安装界面，vs自动帮我勾选了4个多G的安装内容（赞一下这个安装方式，按需安装，尽量减少磁盘空间占用）
+    最后就是贴出安装序列号啦，建议大家安装企业版，功能最强大
+
+企业版：NJVYC-BMHX2-G77MM-4XJMR-6Q8QF
+专业版：KBJFW-NXHK6-W4WJM-CRMQB-G3CDH
+```
+
+
+
+# 十四、 delphi
+
+## I、基础安装
+
+<iframe src="./delphi.html" width="1000px" height="1000px" boarder="1px" scrolling="yes"></iframe>
+
+
+
+
+
 
 
 
