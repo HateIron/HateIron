@@ -1466,3 +1466,35 @@ tcpdump过滤项
   #tcpdump -i any -n icmp   
     21:25:42.550374 IP 192.168.199.1 > 192.168.199.125: ICMP *.*.*.* unreachable - need to frag (mtu 1480), length 556
 ```
+
+
+
+
+# tcpdupm 抓 http 包
+
+```powershell
+tcpdump  -XvvennSs 0 -i eth0 tcp[20:2]=0x4745 or tcp[20:2]=0x4854
+解释：
+	0x4745 为"GET"前两个字母"GE",0x4854 为"HTTP"前两个字母"HT"
+	
+输出到文件：
+	sudo tcpdump  -XvvennSs 0 -i rvi0 tcp[20:2]=0x4745 or tcp[20:2]=0x4854 >> ~/out.pcapng
+```
+
+
+
+```powershell
+一个通用命令：
+tcpdump tcp -i eth1 -t -s 0 -c 100 and dst port ! 22 and src net 192.168.1.0/24 -w ./target.cap
+
+解释：
+(1)tcp: ip icmp arp rarp 和 tcp、udp、icmp这些选项等都要放到第一个参数的位置，用来过滤数据报的类型
+(2)-i eth1 : 只抓经过接口eth1的包
+(3)-t : 不显示时间戳
+(4)-s 0 : 抓取数据包时默认抓取长度为68字节。加上-S 0 后可以抓到完整的数据包
+(5)-c 100 : 只抓取100个数据包
+(6)dst port ! 22 : 不抓取目标端口是22的数据包
+(7)src net 192.168.1.0/24 : 数据包的源网络地址为192.168.1.0/24
+(8)-w ./target.cap : 保存成cap文件，方便用ethereal(即wireshark)分析
+```
+

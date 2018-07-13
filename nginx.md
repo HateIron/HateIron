@@ -2,15 +2,29 @@
 
 [TOC]
 
-## 一、源码编译
+## 一、资源获取，源码编译
 
-
-
-## 二、密码配置
+## I、资源获取
 
 ```powershell
-https://blog.csdn.net/sinat_21302587/article/details/54599135
+这里有各种版本：
+	http://nginx.org/download/
+
+自己的空间
+	玩客云 》分区１　》　onecloud 》 tools 》　nginx-1.9.3.tar.gz 
+	玩客云 》分区１　》　onecloud 》 tools 》　nginx-1.9.5.tar.gz 
+	玩客云 》分区１　》　onecloud 》 tools 》　nginx-1.9.9.tar.gz     
 ```
+
+## II、编译安装
+
+```
+./configure & make & make install
+```
+
+
+
+## 二、密码配置。[来自](https://blog.csdn.net/sinat_21302587/article/details/54599135)
 
 ### 1、nginx配置文件中加入
 
